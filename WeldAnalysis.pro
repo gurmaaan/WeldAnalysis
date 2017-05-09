@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui printsupport
 
 #QT += axcontainer - needed for Excel document Read/Write
 QT += axcontainer
@@ -32,7 +32,27 @@ SOURCES += main.cpp\
 
 HEADERS  += mainwindow.h \
     qcustomplot/qcustomplot.h \
-    exceldatamanager.h
+    exceldatamanager.h \
+    usbmanager.hpp \
+    thirdparty/libusb/libusb/os/darwin_usb.h \
+    thirdparty/libusb/libusb/os/haiku_usb.h \
+    thirdparty/libusb/libusb/os/haiku_usb_raw.h \
+    thirdparty/libusb/libusb/os/linux_usbfs.h \
+    thirdparty/libusb/libusb/os/poll_posix.h \
+    thirdparty/libusb/libusb/os/poll_windows.h \
+    thirdparty/libusb/libusb/os/sunos_usb.h \
+    thirdparty/libusb/libusb/os/threads_posix.h \
+    thirdparty/libusb/libusb/os/threads_windows.h \
+    thirdparty/libusb/libusb/os/wince_usb.h \
+    thirdparty/libusb/libusb/os/windows_common.h \
+    thirdparty/libusb/libusb/os/windows_nt_common.h \
+    thirdparty/libusb/libusb/os/windows_usbdk.h \
+    thirdparty/libusb/libusb/os/windows_winusb.h \
+    thirdparty/libusb/libusb/hotplug.h \
+    thirdparty/libusb/libusb/libusb.h \
+    thirdparty/libusb/libusb/libusbi.h \
+    thirdparty/libusb/libusb/version.h \
+    thirdparty/libusb/libusb/version_nano.h
 
 FORMS    += mainwindow.ui
 
