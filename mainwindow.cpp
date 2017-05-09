@@ -5,8 +5,6 @@
 #include <QFileDialog>
 #include <QString>
 #include <QFileInfo>
-#include <QStandardItem>
-#include <QStandardItemModel>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -23,7 +21,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::setUIlogic()
 {
-    setTablesColumnWidth();
+    setTablesUI();
 }
 
 void MainWindow::setTablesUI()
@@ -32,23 +30,16 @@ void MainWindow::setTablesUI()
     QStandardItemModel *settingsModel = new QStandardItemModel;
     QStandardItemModel *realTimeModel = new QStandardItemModel;
 
-    //Установка заголовков в обе таблицы
-    QStringList headers;
-    headers.append("Параметр");
-    headers.append("Значение");
-    settingsModel->setHorizontalHeaderLabels(headers);
-    realTimeModel->setHorizontalHeaderLabels(headers);
-}
+    ExcelDataManager dataManager;
+    QAxObject *excelFile = dataManager.openExcelFile(defaultsSettingsFilePath);
+    settingsModel = dataManager.getSettingsModel(excelFile);
+    realTimeModel = dataManager.getRealTimeModel(excelFile);
 
-void MainWindow::setTablesColumnWidth()
-{
-    int realTimeTableWidth = ui->realTime_table->width();
-    ui->realTime_table->setColumnWidth(0, realTimeTableWidth/2);
-    ui->realTime_table->setColumnWidth(1, realTimeTableWidth/2);
+    ui->settings_table->setModel(settingsModel);
+    ui->realTime_table->setModel(realTimeModel);
 
-    int settingsTableWidth = ui->settings_table->width();
-    ui->settings_table->setColumnWidth(0, settingsTableWidth/2);
-    ui->settings_table->setColumnWidth(1, settingsTableWidth/2);
+    ui->settings_table->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
+    ui->realTime_table->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
 }
 
 void MainWindow::on_menu_other_app_advanced_button_clicked()
@@ -63,7 +54,7 @@ void MainWindow::on_menu_other_app_advanced_button_clicked()
     ExcelDataManager testManager;
 
     //Нумерация книг в Excel начинается с 1
-    QAxObject* sheet = testManager.getDocumentSheet(testManager.openExcelFile(excelFilePath), 1);
+    QAxObject* sheet = testManager.getDocumentSheet(testManager.openExcelFile(excelFilePath), 2);
     QAxObject* usedRange = sheet->querySubObject("UsedRange");
     QAxObject* rows = usedRange->querySubObject("Rows");
     int countRows = rows->property("Count").toInt();

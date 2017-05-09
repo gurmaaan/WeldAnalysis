@@ -20,7 +20,6 @@ QAxObject *ExcelDataManager::openExcelFile(QString filePath)
 QAxObject *ExcelDataManager::getDocumentSheet(QAxObject* excelFile, int sheetNumber)
 {
      QAxObject* sheets = excelFile->querySubObject("Worksheets");
-     qDebug() << "Число листов в документе: " << sheets->property("Count").toInt();
      QAxObject* sheet = sheets->querySubObject("Item(int)", sheetNumber);
      return sheet;
 }
@@ -41,4 +40,69 @@ int ExcelDataManager::getSheetColumnsCount(QAxObject *excelSheet)
     QAxObject* columns = usedRange->querySubObject("Columns");
     int countCols = columns->property("Count").toInt();
     return countCols;
+}
+
+//Ковертация статистики эксперимента в модель для таблицы правой панели
+QStandardItemModel *ExcelDataManager::getRealTimeModel(QAxObject *excelFile)
+{
+    QStandardItemModel *model = new QStandardItemModel;
+    QAxObject* sheet = getDocumentSheet(excelFile, 2);
+
+    model = setModelHeaders(sheet, model);
+
+    for (int col = 1; col <= 2; col ++) {
+        for (int row = 7; row <= 10; row++) {
+            //Cell(row, col)
+            QAxObject* cell = sheet->querySubObject("Cells(int,int)", row, col);
+            QVariant value = cell->property("Value");
+            QStandardItem* item = new QStandardItem(value.toString());
+            model->setItem(row - 7, col - 1, item);
+        }
+    }
+
+    return model;
+}
+
+//Ковертация настроек эксперимента в модель для таблицы правой панели
+QStandardItemModel *ExcelDataManager::getSettingsModel(QAxObject *excelFile)
+{
+    QStandardItemModel *model = new QStandardItemModel;
+    QStandardItem *item;
+    QAxObject* sheet = getDocumentSheet(excelFile, 2);
+
+    model = setModelHeaders(sheet, model);
+//Первая часть до статистики
+    for (int col = 1; col <= 2; col ++) {
+        for (int row = 2; row <= 6; row++) {
+            //Cell(row, col)
+            QAxObject* cell = sheet->querySubObject("Cells(int,int)", row, col);
+            QVariant value = cell->property("Value");
+            QStandardItem* item = new QStandardItem(value.toString());
+            model->setItem(row - 2, col - 1, item);
+        }
+    }
+//Вторая часть после статистики
+    for (int col = 1; col <= 2; col ++) {
+        for (int row = 11; row <= 28; row++) {
+            //Cell(row, col)
+            QAxObject* cell = sheet->querySubObject("Cells(int,int)", row, col);
+            QVariant value = cell->property("Value");
+            QStandardItem* item = new QStandardItem(value.toString());
+            model->setItem(row - 6, col - 1, item);
+        }
+    }
+    return model;
+}
+
+//Установка заголовков моделей
+QStandardItemModel *ExcelDataManager::setModelHeaders(QAxObject *excelSheet, QStandardItemModel *model)
+{
+    QStringList headers;
+    for (int colH = 0; colH < 2; colH++) {
+        QAxObject* cellH = excelSheet->querySubObject("Cells(int,int)", 1, colH + 1);
+        QVariant cellHValue = cellH->property("Value");
+        headers.append(cellHValue.toString());
+    }
+    model->setHorizontalHeaderLabels(headers);
+    return model;
 }
