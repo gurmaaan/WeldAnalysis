@@ -1,0 +1,17 @@
+//Возвращает указатель на колонку в листе, по указателю на лист и номеру колонки. Нумерация колонок начинается с  
+QAxObject *ExcelFileManager::getSheetColumn(QAxObject *excelSheet, int columnNumber)
+{
+    QAxObject* usedRange = excelSheet->querySubObject("UsedRange");
+    QAxObject* columns = usedRange->querySubObject("Columns");
+    QAxObject* column = columns->querySubObject("Item(int", columnNumber);
+    return column;
+}
+
+//Возвращает указатель на строку в листе, по указателю на лист и номеру строки 
+QAxObject *ExcelFileManager::getSheetRow(QAxObject *excelSheet, int rowNumber)
+{
+    QAxObject* usedRange = excelSheet->querySubObject("UsedRange");
+    QAxObject* rows = usedRange->querySubObject("Rows");
+    QAxObject* row = rows->querySubObject("Item(int", rowNumber);
+    return row;
+}
