@@ -1,9 +1,8 @@
 #include "mainwindow.h"
 #include <QApplication>
 
-#include <QDebug>
-
-#include "usbmanager.hpp"
+//#include <QDebug>
+//#include "usbmanager.hpp"
 
 int main(int argc, char *argv[])
 {

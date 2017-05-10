@@ -62,7 +62,14 @@
       <item>
        <layout class="QHBoxLayout" name="pathList_tool">
         <item>
-         <widget class="QTableView" name="pathList_table"/>
+         <widget class="QTableView" name="pathList_table">
+          <attribute name="horizontalHeaderVisible">
+           <bool>false</bool>
+          </attribute>
+          <attribute name="verticalHeaderVisible">
+           <bool>false</bool>
+          </attribute>
+         </widget>
         </item>
         <item>
          <layout class="QVBoxLayout" name="pathList_buttons_group">
