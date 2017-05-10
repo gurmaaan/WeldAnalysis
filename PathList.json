@@ -1,6 +1,35 @@
 {
-	"Items": {
-		"DefaultSettings": "C:/Users/Dima/YandexDisk/_Application/WeldAnalysis/ExperimentDefaults.xlsx",
-		"Reference": "C:/Users/Dima/YandexDisk/_Application/WeldAnalysis/UserManual.pdf"
-	}
+	"Items": [
+		{
+			"Name": "PathList",
+			"Path": "C:/Users/Dima/YandexDisk/_Application/WeldAnalysis/PathList.json"
+		},
+		{
+			"Name": "DefaultSettings",
+			"Path": "C:/Users/Dima/YandexDisk/_Application/WeldAnalysis/ExperimentDefaults.xlsx"
+		},
+		{
+			"Name": "Reference",
+			"Path": "C:/Users/Dima/YandexDisk/_Application/WeldAnalysis/UserManual.pdf"
+		}	
+	]
+}{
+    "Items": [
+        {
+            "Name": "PathList",
+            "Path": "C:/Users/Dima/YandexDisk/_Application/WeldAnalysis/PathList.json"
+        },
+        {
+            "Name": "DefaultSettings",
+            "Path": "C:/Users/Dima/YandexDisk/_Application/WeldAnalysis/ExperimentDefaults.xlsx"
+        },
+        {
+            "Name": "Reference",
+            "Path": "C:/Users/Dima/YandexDisk/_Application/WeldAnalysis/UserManual.pdf"
+        },
+        {
+            "Name": "ычфысч",
+            "Path": "счфычыч"
+        }
+    ]
 }

@@ -2419,7 +2419,7 @@ PNG</string>
                  </size>
                 </property>
                 <property name="toolTip">
-                 <string>Описание функциональности программы</string>
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Руководство пользователя pdf&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                 </property>
                 <property name="text">
                  <string>Справка</string>
@@ -2478,6 +2478,9 @@ PNG</string>
                 </property>
                 <property name="shortcut">
                  <string>Ctrl+Shift+F11</string>
+                </property>
+                <property name="checkable">
+                 <bool>true</bool>
                 </property>
                 <property name="toolButtonStyle">
                  <enum>Qt::ToolButtonTextUnderIcon</enum>
@@ -2588,7 +2591,7 @@ PNG</string>
          <widget class="QCustomPlot" name="graph_screen" native="true">
           <property name="minimumSize">
            <size>
-            <width>500</width>
+            <width>600</width>
             <height>300</height>
            </size>
           </property>
@@ -2704,9 +2707,6 @@ PNG</string>
           <property name="autoScroll">
            <bool>false</bool>
           </property>
-          <property name="autoScrollMargin">
-           <number>10</number>
-          </property>
           <property name="editTriggers">
            <set>QAbstractItemView::NoEditTriggers</set>
           </property>
@@ -2719,6 +2719,9 @@ PNG</string>
           <property name="alternatingRowColors">
            <bool>true</bool>
           </property>
+          <property name="textElideMode">
+           <enum>Qt::ElideNone</enum>
+          </property>
           <property name="verticalScrollMode">
            <enum>QAbstractItemView::ScrollPerPixel</enum>
           </property>
@@ -2728,6 +2731,9 @@ PNG</string>
           <property name="cornerButtonEnabled">
            <bool>false</bool>
           </property>
+          <attribute name="verticalHeaderVisible">
+           <bool>false</bool>
+          </attribute>
          </widget>
         </item>
         <item>
@@ -2780,6 +2786,12 @@ PNG</string>
           <property name="dragDropOverwriteMode">
            <bool>false</bool>
           </property>
+          <property name="alternatingRowColors">
+           <bool>true</bool>
+          </property>
+          <property name="textElideMode">
+           <enum>Qt::ElideNone</enum>
+          </property>
           <property name="verticalScrollMode">
            <enum>QAbstractItemView::ScrollPerPixel</enum>
           </property>
@@ -2789,6 +2801,9 @@ PNG</string>
           <property name="cornerButtonEnabled">
            <bool>false</bool>
           </property>
+          <attribute name="verticalHeaderVisible">
+           <bool>false</bool>
+          </attribute>
          </widget>
         </item>
        </layout>
@@ -2804,7 +2819,7 @@ PNG</string>
   <customwidget>
    <class>QCustomPlot</class>
    <extends>QWidget</extends>
-   <header>qcustomplot.h</header>
+   <header>qcustomplot/qcustomplot.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

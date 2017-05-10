@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "advancedmode.h"
 
 namespace Ui {
 class MainWindow;
@@ -20,8 +21,15 @@ public:
 private slots:
     void on_menu_other_app_advanced_button_clicked();
 
+    void on_menu_device_manualSearch_button_clicked();
+
+    void on_menu_other_app_fullScreen_button_clicked();
+
+    void on_menu_other_app_reference_button_clicked();
+
 private:
     Ui::MainWindow *ui;
+    AdvancedMode advanced;
     void setUIlogic();
     void setTablesUI();
     void setTablesColumnWidth();

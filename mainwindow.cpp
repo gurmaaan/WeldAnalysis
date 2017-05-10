@@ -1,10 +1,9 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QDebug>
+#include <QDesktopServices>
 #include "exceldatamanager.h"
-#include <QFileDialog>
-#include <QString>
-#include <QFileInfo>
+#include "usbmanager.hpp"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -44,19 +43,32 @@ void MainWindow::setTablesUI()
 
 void MainWindow::on_menu_other_app_advanced_button_clicked()
 {
-    QFileInfo filePath = QFileDialog::getOpenFileName(
-                this,
-                tr("Chose Excel workbook"),
-                QDir::rootPath(),
-                tr("Workbooks (*.xlsx)")
-            );
-    QString excelFilePath = filePath.absoluteFilePath();
-    ExcelDataManager testManager;
+    advanced.show();
+}
 
-    //Нумерация книг в Excel начинается с 1
-    QAxObject* sheet = testManager.getDocumentSheet(testManager.openExcelFile(excelFilePath), 2);
-    QAxObject* usedRange = sheet->querySubObject("UsedRange");
-    QAxObject* rows = usedRange->querySubObject("Rows");
-    int countRows = rows->property("Count").toInt();
-    qDebug() << "Количество строк 1-го листа книги: " << countRows;
+void MainWindow::on_menu_device_manualSearch_button_clicked() {
+    std::list<USBDevice> devices = USBManager::getDevicesList();
+
+//    for (auto it = devices.begin(); it != devices.end(); ++it) {
+//        qDebug() << QString::fromStdWString(it->name)
+//                 << QString::fromStdString(it->type)
+//                 << QString::fromStdString(it->hidPID)
+//                 << QString::fromStdString(it->hidVID);
+//    }
+}
+
+void MainWindow::on_menu_other_app_fullScreen_button_clicked()
+{
+    bool buttonStatus = ui->menu_other_app_fullScreen_button->isChecked();
+    ui->menu_other_app_fullScreen_button->setChecked(buttonStatus);
+    if(buttonStatus)
+        this->showFullScreen();
+    else
+        this->showNormal();
+}
+
+
+void MainWindow::on_menu_other_app_reference_button_clicked()
+{
+    QDesktopServices::openUrl(QUrl("file:///C:/Users/Dima/YandexDisk/_Application/WeldAnalysis/UserManual.pdf", QUrl::TolerantMode));
 }

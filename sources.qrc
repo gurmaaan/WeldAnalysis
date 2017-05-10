@@ -39,4 +39,8 @@
         <file>ExperimentDefaults.xlsx</file>
         <file>ExperimentTemplate.xlsx</file>
     </qresource>
+    <qresource prefix="/Other">
+        <file>UserManual.pdf</file>
+        <file>PathList.json</file>
+    </qresource>
 </RCC>

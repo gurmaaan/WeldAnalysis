@@ -7,12 +7,14 @@ ExcelDataManager::ExcelDataManager()
 
 }
 
-//Возвращает указатель Excel файл (Workbook) по абсолютного пути
+//Возвращает указатель Excel файла (Workbook) по абсолютного пути
 QAxObject *ExcelDataManager::openExcelFile(QString filePath)
 {
     QAxObject* excel = new QAxObject("Excel.Application", 0);
     QAxObject* workbooks = excel->querySubObject("Workbooks");
     QAxObject* curentFile = workbooks->querySubObject("Open(const QString&)", filePath);
+//    curentFile->dynamicCall("Close()");
+//    excel->dynamicCall("Quit()");
     return curentFile;
 }
 
@@ -67,7 +69,6 @@ QStandardItemModel *ExcelDataManager::getRealTimeModel(QAxObject *excelFile)
 QStandardItemModel *ExcelDataManager::getSettingsModel(QAxObject *excelFile)
 {
     QStandardItemModel *model = new QStandardItemModel;
-    QStandardItem *item;
     QAxObject* sheet = getDocumentSheet(excelFile, 2);
 
     model = setModelHeaders(sheet, model);

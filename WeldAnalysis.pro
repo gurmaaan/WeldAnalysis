@@ -28,33 +28,19 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += main.cpp\
         mainwindow.cpp \
     qcustomplot/qcustomplot.cpp \
-    exceldatamanager.cpp
+    exceldatamanager.cpp \
+    advancedmode.cpp \
+    jsondatamanager.cpp
 
 HEADERS  += mainwindow.h \
     qcustomplot/qcustomplot.h \
     exceldatamanager.h \
     usbmanager.hpp \
-    thirdparty/libusb/libusb/os/darwin_usb.h \
-    thirdparty/libusb/libusb/os/haiku_usb.h \
-    thirdparty/libusb/libusb/os/haiku_usb_raw.h \
-    thirdparty/libusb/libusb/os/linux_usbfs.h \
-    thirdparty/libusb/libusb/os/poll_posix.h \
-    thirdparty/libusb/libusb/os/poll_windows.h \
-    thirdparty/libusb/libusb/os/sunos_usb.h \
-    thirdparty/libusb/libusb/os/threads_posix.h \
-    thirdparty/libusb/libusb/os/threads_windows.h \
-    thirdparty/libusb/libusb/os/wince_usb.h \
-    thirdparty/libusb/libusb/os/windows_common.h \
-    thirdparty/libusb/libusb/os/windows_nt_common.h \
-    thirdparty/libusb/libusb/os/windows_usbdk.h \
-    thirdparty/libusb/libusb/os/windows_winusb.h \
-    thirdparty/libusb/libusb/hotplug.h \
-    thirdparty/libusb/libusb/libusb.h \
-    thirdparty/libusb/libusb/libusbi.h \
-    thirdparty/libusb/libusb/version.h \
-    thirdparty/libusb/libusb/version_nano.h
+    advancedmode.h \
+    jsondatamanager.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    advancedmode.ui
 
 RESOURCES += \
     sources.qrc
