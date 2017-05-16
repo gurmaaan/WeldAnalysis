@@ -1,11 +1,6 @@
 <RCC>
     <qresource prefix="/GUI">
         <file>Icons/icon.ico</file>
-        <file>Icons/icon_black.ico</file>
-        <file>Icons/icon_white.ico</file>
-        <file>Icons/MainIcon.png</file>
-        <file>Icons/MainIcon_black.png</file>
-        <file>Icons/MainIcon_white.png</file>
         <file>Icons/Device/DeviceManager.png</file>
         <file>Icons/Device/DriverBad.png</file>
         <file>Icons/Device/DriverGood.png</file>
@@ -35,12 +30,9 @@
         <file>Icons/Other/Reference.png</file>
         <file>Icons/Other/Table.png</file>
     </qresource>
-    <qresource prefix="/Data">
-        <file>ExperimentDefaults.xlsx</file>
-        <file>ExperimentTemplate.xlsx</file>
-    </qresource>
     <qresource prefix="/Other">
-        <file>UserManual.pdf</file>
         <file>PathList.json</file>
+        <file>UserManual.pdf</file>
+        <file>DeviceManager.bat</file>
     </qresource>
 </RCC>

@@ -36,7 +36,7 @@ QStandardItemModel *JsonDataManager::getListModel(QJsonArray array)
 
 bool JsonDataManager::saveJsonFile(QAbstractItemModel *model)
 {
-    QFile saveFile("C:/Users/Dima/YandexDisk/_Application/WeldAnalysis/PathList.json");
+    QFile saveFile("%HOMEPATH%/YandexDisk/_Application/WeldAnalysis/PathList.json");
 
     if (!saveFile.open(QIODevice::ReadWrite | QIODevice::Text)) {
         qWarning("Couldn't open save file.");

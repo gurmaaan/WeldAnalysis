@@ -5,6 +5,7 @@
 #include <QFileInfo>
 #include <QClipboard>
 #include <QStandardItemModel>
+//#include "constants.h"
 
 AdvancedMode::AdvancedMode(QWidget *parent) :
     QDialog(parent),
@@ -37,13 +38,13 @@ void AdvancedMode::on_viewPath_copy_button_clicked()
 
 void AdvancedMode::on_viewPath_browse_button_clicked()
 {
-    QFileInfo filePath = QFileDialog::getOpenFileName(
-                this,
-                tr("Chose file"),
-                QDir::homePath()
-            );
-    QString excelFilePath = filePath.absoluteFilePath();
-    ui->viewPath_lineEdit->setText(excelFilePath);
+//    QFileInfo filePath = QFileDialog::getOpenFileName(
+//                this,
+//                TIT_BROWSE,
+//                QDir::homePath()
+//            );
+//    QString excelFilePath = filePath.absoluteFilePath();
+//    ui->viewPath_lineEdit->setText(excelFilePath);
 }
 
 void AdvancedMode::on_pathList_add_button_clicked()

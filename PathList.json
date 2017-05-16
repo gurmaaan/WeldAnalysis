@@ -2,15 +2,15 @@
   "Items": [
     {
       "Name": "PathList",
-      "Path": "C:/Users/Dima/YandexDisk/_Application/WeldAnalysis/PathList.json"
+      "Path": "%HOMEPATH%/YandexDisk/_Application/WeldAnalysis/PathList.json"
     },
     {
       "Name": "DefaultSettings",
-      "Path": "C:/Users/Dima/YandexDisk/_Application/WeldAnalysis/ExperimentDefaults.xlsx"
+      "Path": "%HOMEPATH%/YandexDisk/_Application/WeldAnalysis/ExperimentDefaults.xlsx"
     },
     {
       "Name": "Reference",
-      "Path": "C:/Users/Dima/YandexDisk/_Application/WeldAnalysis/UserManual.pdf"
+      "Path": "%HOMEPATH%/YandexDisk/_Application/WeldAnalysis/UserManual.pdf"
     }
   ]
 }

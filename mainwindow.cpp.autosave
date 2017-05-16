@@ -20,6 +20,7 @@ MainWindow::MainWindow(QWidget *parent) :
     DATA_PATH = apdr.dataDirPath();
     apdr.copyFilesToAppData();
     ui->setupUi(this);
+    
     setUIlogic();
 }
 

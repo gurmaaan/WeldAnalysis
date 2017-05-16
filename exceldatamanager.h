@@ -6,6 +6,8 @@
 
 class ExcelDataManager
 {
+private:
+    bool isInstalled();
 public:
     ExcelDataManager();
     QAxObject *openExcelFile(QString filePath);

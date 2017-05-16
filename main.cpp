@@ -10,6 +10,7 @@ int main(int argc, char *argv[])
 //    qDebug() << USBManager::autoSearch();
 
     QApplication a(argc, argv);
+    a.setApplicationName("WeldAnalysis"); //Имя папка в AppData
     MainWindow w;
     w.show();
 

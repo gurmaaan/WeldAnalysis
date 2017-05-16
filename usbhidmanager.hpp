@@ -14,9 +14,9 @@
 const std::string DEVICE_VID = "0403";
 const std::string DEVICE_PID = "6001";
 
-class USBDevice {
+class USBDeviceHIDManager {
 public:
-    USBDevice(std::wstring name, std::string type, std::string hidVID="", std::string hidPID=""):
+    USBDeviceHIDManager(std::wstring name, std::string type, std::string hidVID="", std::string hidPID=""):
         name(name),
         type(type),
         hidVID(hidVID),
@@ -48,8 +48,8 @@ public:
 
 class USBManager {
 public:
-    static std::list<USBDevice> getDevicesList() {
-        std::list<USBDevice> devices;
+    static std::list<USBDeviceHIDManager> getDevicesList() {
+        std::list<USBDeviceHIDManager> devices;
 
         UINT nDevices;
         GetRawInputDeviceList(NULL, &nDevices, sizeof(RAWINPUTDEVICELIST));
@@ -87,13 +87,12 @@ public:
                 continue;
             }
 
-            int nResult = 0;
-            nResult = GetRawInputDeviceInfo(
+            int nResult = GetRawInputDeviceInfo(
                 pRawInputDeviceList[i].hDevice,
                 RIDI_DEVICENAME,
                 NULL,
                 &nBufferSize);
-
+            nResult = nResult; //HOTFIX чтобы не было варнингов
             WCHAR* wcDeviceName = new WCHAR[nBufferSize + 1];
 
             nResult = GetRawInputDeviceInfo(
@@ -113,9 +112,9 @@ public:
             std::wstring name(wcDeviceName);
 
             if (deviceInfo.dwType == RIM_TYPEMOUSE)
-                devices.emplace_back(USBDevice(name, "mouse"));
+                devices.emplace_back(USBDeviceHIDManager(name, "mouse"));
             else if (deviceInfo.dwType == RIM_TYPEKEYBOARD)
-                devices.emplace_back(USBDevice(name, "keyboard"));
+                devices.emplace_back(USBDeviceHIDManager(name, "keyboard"));
             else if (deviceInfo.dwType == RIM_TYPEHID) {
                 std::ostringstream vidStream;
                 vidStream << deviceInfo.hid.dwVendorId;
@@ -125,7 +124,7 @@ public:
                 pidStream << deviceInfo.hid.dwProductId;
                 std::string pid = pidStream.str();
 
-                devices.emplace_back(USBDevice(name, "hid", vid, pid));
+                devices.emplace_back(USBDeviceHIDManager(name, "hid", vid, pid));
             }
         }
 
@@ -135,9 +134,9 @@ public:
     }
 
     static bool autoSearch() {
-        std::list<USBDevice> devices = USBManager::getDevicesList();
+        std::list<USBDeviceHIDManager> devices = USBManager::getDevicesList();
 
-        for (USBDevice &device: devices)
+        for (USBDeviceHIDManager &device: devices)
             if (device.type == "hid" && device.hidPID == DEVICE_PID && device.hidVID == DEVICE_VID)
                 return true;
 

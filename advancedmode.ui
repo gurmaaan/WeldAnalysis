@@ -2,9 +2,6 @@
 <ui version="4.0">
  <class>AdvancedMode</class>
  <widget class="QDialog" name="AdvancedMode">
-  <property name="windowModality">
-   <enum>Qt::ApplicationModal</enum>
-  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -19,10 +16,7 @@
   <property name="sizeGripEnabled">
    <bool>true</bool>
   </property>
-  <property name="modal">
-   <bool>true</bool>
-  </property>
-  <layout class="QVBoxLayout" name="verticalLayout_2">
+  <layout class="QVBoxLayout" name="_2">
    <item>
     <widget class="QGroupBox" name="viewPath_group">
      <property name="title">
