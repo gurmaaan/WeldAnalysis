@@ -7,26 +7,26 @@ JsonDataManager::JsonDataManager()
 
 }
 
-QJsonArray JsonDataManager::getArrayFromFile(QFile *file)
+QJsonArray JsonDataManager::getArrayFromFile(QFile *file, QString rootItem)
 {
     QJsonDocument doc = QJsonDocument().fromJson(file->readAll());
     QJsonObject obj = doc.object();
-    QJsonArray arr = obj["Items"].toArray();
+    QJsonArray arr = obj[rootItem].toArray();
     file->flush();
     file->close();
     return arr;
 }
 
-QStandardItemModel *JsonDataManager::getListModel(QJsonArray array)
+QStandardItemModel *JsonDataManager::getModel(QJsonArray array, QString key, QString val)
 {
     QStandardItemModel *model = new QStandardItemModel();
     int row = 0;
 
     foreach (const QJsonValue &value, array) {
         QJsonObject itemObj = value.toObject();
-        QStandardItem *itemName = new QStandardItem(itemObj["Name"].toString());
+        QStandardItem *itemName = new QStandardItem(itemObj.value(key).toString());
         model->setItem(row, 0, itemName);
-        QStandardItem *itemPath = new QStandardItem(itemObj["Path"].toString());
+        QStandardItem *itemPath = new QStandardItem(itemObj.value(val).toString());
         model->setItem(row, 1, itemPath);
         row++;
     }

@@ -12,9 +12,8 @@ QAxObject *ExcelDataManager::openExcelFile(QString filePath)
 {
     QAxObject* excel = new QAxObject("Excel.Application", 0);
     QAxObject* workbooks = excel->querySubObject("Workbooks");
+    excel->dynamicCall("Quit()");
     QAxObject* curentFile = workbooks->querySubObject("Open(const QString&)", filePath);
-//    curentFile->dynamicCall("Close()");
-//    excel->dynamicCall("Quit()");
     return curentFile;
 }
 
@@ -52,6 +51,7 @@ QStandardItemModel *ExcelDataManager::getRealTimeModel(QAxObject *excelFile)
 
     model = setModelHeaders(sheet, model);
 
+    //TODO переделывание формата (номера строк)
     for (int col = 1; col <= 2; col ++) {
         for (int row = 7; row <= 10; row++) {
             //Cell(row, col)
@@ -61,7 +61,7 @@ QStandardItemModel *ExcelDataManager::getRealTimeModel(QAxObject *excelFile)
             model->setItem(row - 7, col - 1, item);
         }
     }
-
+    excelFile->dynamicCall("Close()");
     return model;
 }
 

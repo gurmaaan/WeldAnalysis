@@ -3,6 +3,7 @@
 #include <QDebug>
 #include <QDesktopServices>
 #include "exceldatamanager.h"
+#include "jsondatamanager.h"
 #include "usbhidmanager.hpp"
 #include <QStandardPaths>
 #include <QDir>
@@ -11,15 +12,16 @@
 #include <QFileInfo>
 #include <QMessageBox>
 #include "constants.h"
+#include <QAction>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
-    AppDir apdr;
     DATA_PATH = apdr.dataDirPath();
     apdr.copyFilesToAppData();
     ui->setupUi(this);
+
     setUIlogic();
 }
 
@@ -31,28 +33,48 @@ MainWindow::~MainWindow()
 void MainWindow::setUIlogic()
 {
     setTablesUI();
+    setFullScreenButtonMenu();
 }
 
 void MainWindow::setTablesUI()
 {
     //Создание моделей для установки в tableView
     QStandardItemModel *settingsModel = new QStandardItemModel;
-    QStandardItemModel *realTimeModel = new QStandardItemModel;
+    QStandardItemModel *statisticsModel = new QStandardItemModel;
 
-    ExcelDataManager dataManager;
-    QAxObject *excelFile = dataManager.openExcelFile(defaultsSettingsFilePath);
-    settingsModel = dataManager.getSettingsModel(excelFile);
-    realTimeModel = dataManager.getRealTimeModel(excelFile);
+    QFile settingsFile(RES_EMPTSET);
+    settingsFile.open(QFile::ReadOnly);
+    QFile statisticsFile(RES_EMPSTAT);
+    statisticsFile.open(QFile::ReadOnly);
+
+    settingsModel = jsonManager.getModel(jsonManager.getArrayFromFile(&settingsFile, JS_SETTINGS), JS_KEY, JS_VAL);
+    settingsFile.close();
+    statisticsModel = jsonManager.getModel(jsonManager.getArrayFromFile(&statisticsFile, JS_STATISTICS), JS_KEY, JS_VAL);
+    statisticsFile.close();
 
     ui->settings_table->setModel(settingsModel);
-    ui->realTime_table->setModel(realTimeModel);
+    ui->realTime_table->setModel(statisticsModel);
 
     ui->settings_table->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
     ui->realTime_table->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
 }
 
+void MainWindow::setFullScreenButtonMenu()
+{
+    QMenu *menu = new QMenu();
+    QAction *maximazeAction = new QAction(ACT_STRETCH, this);
+
+    QPixmap iconPicture(RES_MAXICON);
+    QIcon icon(iconPicture);
+    maximazeAction->setIcon(icon);
+    connect(maximazeAction, SIGNAL(triggered(bool)), this, SLOT(maximizeButtonAction()));
+    menu->addAction(maximazeAction);
+    ui->menu_other_app_fullScreen_button->setMenu(menu);
+}
+
 void MainWindow::on_menu_other_app_advanced_button_clicked()
 {
+    advanced.showDirPath(DATA_PATH);
     advanced.show();
 }
 
@@ -74,21 +96,21 @@ void MainWindow::on_menu_other_app_fullScreen_button_clicked()
     bool buttonStatus = ui->menu_other_app_fullScreen_button->isChecked();
     ui->menu_other_app_fullScreen_button->setChecked(buttonStatus);
     if(buttonStatus)
-        this->showMaximized();
+        this->showFullScreen();
     else
         this->showNormal();
 }
 
-
 void MainWindow::on_menu_other_app_reference_button_clicked()
 {
-    QDesktopServices::openUrl(QUrl("file:///C:/Users/Dima/YandexDisk/_Application/WeldAnalysis/Experiments/UserManual.pdf", QUrl::TolerantMode));
+    QString userManualPath = LINK_FILE + DATA_PATH + NAMS_MANUAL;
+    QDesktopServices::openUrl(QUrl(userManualPath, QUrl::TolerantMode));
 }
 
 void MainWindow::on_menu_device_winManager_button_clicked()
 {
-    QString deviceManagerpath = QStandardPaths::writableLocation(QStandardPaths::DataLocation);
-    QDesktopServices::openUrl(QUrl("file:///C:/Users/Dima/YandexDisk/_Application/WeldAnalysis/Experiments/devicemanager.bat", QUrl::TolerantMode));
+    QString deviceManagerpath = LINK_FILE + DATA_PATH + NAMS_DEVMAN;
+    QDesktopServices::openUrl(QUrl(deviceManagerpath, QUrl::TolerantMode));
 }
 
 //Обработчик нажатия на кнопку перезагрузки программы - DONE
@@ -96,6 +118,21 @@ void MainWindow::on_menu_file_restart_button_clicked()
 {
     qApp->quit();
     QProcess::startDetached(qApp->arguments()[0], qApp->arguments());
+}
+
+//Действие при нажатии на меню кнопки полного экрана
+void MainWindow::maximizeButtonAction()
+{
+    if (this->isMaximized())
+    {
+        ui->menu_other_app_fullScreen_button->setChecked(false);
+        showNormal();
+    }
+    else
+    {
+        ui->menu_other_app_fullScreen_button->setChecked(false);
+        showMaximized();
+    }
 }
 
 //Возвращает путь к папке с данными
@@ -116,14 +153,12 @@ void AppDir::copyFilesToAppData()
         else
             showCreateMessageBox(APP_NAME);
 
-
-
 //Копирование из ресурсов в корень директории
     //Руководство пользователя
     copyFile(&dir, NAM_MANUAL);
 
     //Создание папок и проверка отсутствия
-    createDirectory(&dir, DIR_GUI);
+    createDirectory(&dir, DIR_DEFAULTS);
     createDirectory(&dir, DIR_BAT);
 
 //Переход в директорию батников
@@ -162,7 +197,7 @@ void AppDir::createDirectory(QDir *dir, QString name)
 void AppDir::showCopyMessageBox(QString fileName, QString *filePath)
 {
     QMessageBox mesBox;
-    mesBox.setText(TIT_COPYING);
+    mesBox.setText(TIT_ERCOP);
     QString message = MES_FILE + fileName + MES_NOTCOPIEDF + MES_SELFBROWSE;
     mesBox.setInformativeText(message);
 
@@ -193,7 +228,7 @@ void AppDir::showCopyMessageBox(QString fileName, QString *filePath)
 void AppDir::showCreateMessageBox(QString dirName)
 {
     QMessageBox mesBox;
-    mesBox.setText(TIT_CREATING);
+    mesBox.setText(TIT_ERCREATE);
     QString message = MES_DIRECTORY + dirName + MES_NOTCREATEDD + MES_SELFCREATE;
     mesBox.setInformativeText(message);
 
@@ -211,5 +246,17 @@ void AppDir::showCreateMessageBox(QString dirName)
         break;
     default:
         break;
+    }
+}
+
+//Нажатие на кнопку сохранения картинки
+void MainWindow::on_menu_other_data_picture_button_clicked()
+{
+    QTemporaryDir tempDir;
+    if (tempDir.isValid()) {
+      const QString tempFile = tempDir.path() + "/temp.png";
+      ui->graph_screen->savePng(tempFile);
+      picture.openPicture(tempFile);
+      picture.show();
     }
 }

@@ -3,9 +3,13 @@
 
 #include <QString>
 
-//Имя программы
+//Глобальное
 #ifndef APP_NAME
 #define APP_NAME "WeldAnalysis"
+#endif
+
+#ifndef LINK_FILE
+#define LINK_FILE "file:///"
 #endif
 //
 
@@ -16,6 +20,49 @@
 
 #ifndef RES_DEVMAN
 #define RES_DEVMAN ":/Other/devicemanager.bat"
+#endif
+
+#ifndef RES_MAXICON
+#define RES_MAXICON ":/GUI/Icons/Other/Maximazed.png"
+#endif
+
+#ifndef RES_SETTINGS
+#define RES_SETTINGS ":/GUI/Defaults/Settings.json"
+#endif
+
+#ifndef RES_STATISTICS
+#define RES_STATISTICS ":/GUI/Defaults/Statistics.json"
+#endif
+
+#ifndef RES_EMPTSET
+#define RES_EMPTSET ":/GUI/Defaults/EmptySettings.json"
+#endif
+
+#ifndef RES_EMPSTAT
+#define RES_EMPSTAT ":/GUI/Defaults/EmptyStatistics.json"
+#endif
+//
+
+//Пункты меню ACT_
+#ifndef ACT_STRETCH
+#define ACT_STRETCH "Растянуть"
+#endif
+//
+
+//JSON имена JS_
+#ifndef JS_SETTINGS
+#define JS_SETTINGS "Settings"
+#endif
+
+#ifndef JS_STATISTICS
+#define JS_STATISTICS "Statistics"
+#endif
+
+#ifndef JS_KEY
+#define JS_KEY "Key"
+#endif
+#ifndef JS_VAL
+#define JS_VAL "Value"
 #endif
 //
 
@@ -40,8 +87,8 @@
 //
 
 //Названия папок DIR_
-#ifndef DIR_GUI
-#define DIR_GUI "GUI"
+#ifndef DIR_DEFAULTS
+#define DIR_DEFAULTS "Defaults"
 #endif
 
 #ifndef DIR_BAT
@@ -50,18 +97,27 @@
 //
 
 //Заголовки окон ошибок TIT_
-#ifndef TIT_COPYING
-#define TIT_COPYING "Ошибка копирования"
+#ifndef TIT_ERCOP
+#define TIT_ERCOP "Ошибка копирования"
 #endif
 
-#ifndef TIT_CREATING
-#define TIT_CREATING "Ошибка создания"
+#ifndef TIT_ERCREATE
+#define TIT_ERCREATE "Ошибка создания"
 #endif
 
 #ifndef TIT_BROWSE
 #define TIT_BROWSE "Выберите файл"
 #endif
+
+#ifndef TIT_SAVE
+#define TIT_SAVE "Сохраните файл"
+#endif
 //
+
+//Фильтры типов файлов FIL_
+#ifndef FIL_IMAGE
+#define FIL_IMAGE "Image Files (*.png *.jpg *.bmp)"
+#endif
 
 //Сообщения ошибок MES_
 #ifndef MES_FILE
@@ -110,6 +166,10 @@
 
 #ifndef MES_SELFCREATE
 #define MES_SELFCREATE "\nСоздать самостоятельно?"
+#endif
+
+#ifndef MES_TRYAGAIN
+#define MES_TRYAGAIN "Попробуйте указать другое имя или папку."
 #endif
 //
 

@@ -15,15 +15,12 @@ class AdvancedMode : public QDialog
 public:
     explicit AdvancedMode(QWidget *parent = 0);
     ~AdvancedMode();
+    void showDirPath(QString path);
 
 private slots:
-
     void on_viewPath_copy_button_clicked();
-
     void on_viewPath_browse_button_clicked();
-
     void on_pathList_add_button_clicked();
-
     void on_pathList_refresh_button_clicked();
 
 private:

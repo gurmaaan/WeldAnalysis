@@ -32,7 +32,8 @@ SOURCES += main.cpp\
     advancedmode.cpp \
     jsondatamanager.cpp \
     usbdeviceslistwindow.cpp \
-    usbcommanager.cpp
+    usbcommanager.cpp \
+    picturewindow.cpp
 
 HEADERS  += mainwindow.h \
     qcustomplot/qcustomplot.h \
@@ -42,11 +43,13 @@ HEADERS  += mainwindow.h \
     usbdeviceslistwindow.h \
     usbhidmanager.hpp \
     usbcommanager.h \
-    constants.h
+    constants.h \
+    picturewindow.h
 
 FORMS    += mainwindow.ui \
     advancedmode.ui \
-    usbdeviceslistwindow.ui
+    usbdeviceslistwindow.ui \
+    picturewindow.ui
 
 RESOURCES += \
     sources.qrc

@@ -3,6 +3,8 @@
 
 #include <QMainWindow>
 #include "advancedmode.h"
+#include "picturewindow.h"
+#include "jsondatamanager.h"
 #include "usbdeviceslistwindow.h"
 #include <QDir>
 #include <QString>
@@ -23,6 +25,12 @@ private:
     void showCreateMessageBox (QString dirName);
 };
 
+//class ExternalApp
+//{
+//public:
+//    bool isInstalled()
+//};
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -30,31 +38,31 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-    //TODO - исправить абсолютный путь на относительный, с относительным через файл ресурсов не работает
-    QString defaultsSettingsFilePath = "C:/Users/Dima/YandexDisk/_Application/WeldAnalysis/Experiments/ExperimentDefaults.xlsx";
     QString DATA_PATH;
+    AppDir apdr;
 
 private slots:
     void on_menu_other_app_advanced_button_clicked();
-
     void on_menu_device_manualSearch_button_clicked();
-
     void on_menu_other_app_fullScreen_button_clicked();
-
     void on_menu_other_app_reference_button_clicked();
-
     void on_menu_device_winManager_button_clicked();
-
     void on_menu_file_restart_button_clicked();
+    void maximizeButtonAction();
+
+    void on_menu_other_data_picture_button_clicked();
 
 private:
     Ui::MainWindow *ui;
     AdvancedMode advanced;
+    PictureWindow picture;
+    JsonDataManager jsonManager;
     UsbDevicesListWindow usbDeviceListWindow;
 
     void setUIlogic();
     void setTablesUI();
-    void setTablesColumnWidth();
+
+    void setFullScreenButtonMenu();
 
 };
 

@@ -11,8 +11,8 @@ class JsonDataManager
 {
 public:
     JsonDataManager();
-    QJsonArray getArrayFromFile(QFile *file);
-    QStandardItemModel *getListModel(QJsonArray array);
+    QJsonArray getArrayFromFile(QFile *file, QString rootItem);
+    QStandardItemModel *getModel(QJsonArray array, QString key, QString val);
     bool saveJsonFile(QAbstractItemModel *model);
 };
 
