@@ -1,5 +1,5 @@
 #include "advancedwindow.h"
-#include "ui_advancedmode.h"
+#include "ui_advancedwindow.h"
 #include <QFileDialog>
 #include <QString>
 #include <QFileInfo>

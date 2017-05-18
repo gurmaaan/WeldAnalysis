@@ -64,7 +64,7 @@ QStandardItemModel *ExcelDataManager::getStatisticsModel(QAxObject *excelFile)
             model->setItem(row - EXCEL_STATROWBEGIN, col - EXCEL_SETSTATCOLBEGIN, item);
         }
     }
-    excelFile->dynamicCall(EXCE);
+    excelFile->dynamicCall(EXCEL_CLOSE);
     return model;
 }
 

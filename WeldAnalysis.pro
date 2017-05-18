@@ -27,22 +27,20 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    qcustomplot/qcustomplot.cpp \
     exceldatamanager.cpp \
     jsondatamanager.cpp \
     picturewindow.cpp \
     advancedwindow.cpp \
-    qrightclicktoolbutton.cpp
+    ExternalLibs/QCustomPlot/qcustomplot.cpp
 
 HEADERS  += mainwindow.h \
-    qcustomplot/qcustomplot.h \
     exceldatamanager.h \
     jsondatamanager.h \
     usbhidmanager.hpp \
     constants.h \
     picturewindow.h \
     advancedwindow.h \
-    qrightclicktoolbutton.h
+    ExternalLibs/QCustomPlot/qcustomplot.h
 
 FORMS    += mainwindow.ui \
     picturewindow.ui \
