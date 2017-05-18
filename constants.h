@@ -13,6 +13,93 @@
 #endif
 //
 
+//Excel EXCEL_
+#ifndef EXCEL_SETROWBEGIN
+#define EXCEL_SETROWBEGIN 2
+#endif
+
+#ifndef EXCEL_SETROWEND
+#define EXCEL_SETROWEND 23
+#endif
+
+#ifndef EXCEL_STATROWBEGIN
+#define EXCEL_STATROWBEGIN 24
+#endif
+
+#ifndef EXCEL_STATROWEND
+#define EXCEL_STATROWEND 27
+#endif
+
+#ifndef EXCEL_SETSTATCOLBEGIN
+#define EXCEL_SETSTATCOLBEGIN 1
+#endif
+
+#ifndef EXCEL_SETSTATCOLEND
+#define EXCEL_SETSTATCOLEND 2
+#endif
+
+#ifndef EXCEL_SETSTATPAGE
+#define EXCEL_SETSTATPAGE 2
+#endif
+
+#ifndef EXCEL_DATAPAGE
+#define EXCEL_DATAPAGE 1
+#endif
+
+#ifndef EXCEL_APP
+#define EXCEL_APP "Excel.Application"
+#endif
+
+#ifndef EXCEL_WORKBOOKS
+#define EXCEL_WORKBOOKS "Workbooks"
+#endif
+
+#ifndef EXCEL_WORKSHEETS
+#define EXCEL_WORKSHEETS "Worksheets"
+#endif
+
+#ifndef EXCEL_CELL
+#define EXCEL_CELL "Cells(int,int)"
+#endif
+
+#ifndef EXCEL_VALUE
+#define EXCEL_VALUE "Value"
+#endif
+
+#ifndef EXCEL_COLUMNS
+#define EXCEL_COLUMNS "Columns"
+#endif
+
+#ifndef EXCEL_ROWS
+#define EXCEL_ROWS "Rows"
+#endif
+
+#ifndef EXCEL_OPEN
+#define EXCEL_OPEN "Open(const QString&)"
+#endif
+
+#ifndef EXCEL_ITEM
+#define EXCEL_ITEM "Item(int)"
+#endif
+
+#ifndef EXCEL_COUNT
+#define EXCEL_COUNT "Count"
+#endif
+
+#ifndef EXCEL_USEDRANGE
+#define EXCEL_USEDRANGE "UsedRange"
+#endif
+
+#ifndef EXCEL_CLOSE
+#define EXCEL_CLOSE "Close()"
+#endif
+
+#ifndef EXCEL_QUIT
+#define EXCEL_QUIT "Quit()"
+#endif
+
+//
+
 //Пути в ресурсах RES_
 #ifndef RES_MANUAL
 #define RES_MANUAL ":/Other/UserManual.pdf"

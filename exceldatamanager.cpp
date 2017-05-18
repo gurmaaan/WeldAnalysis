@@ -1,6 +1,7 @@
 #include "exceldatamanager.h"
 #include <QAxObject>
 #include <QDebug>
+#include "constants.h"
 
 ExcelDataManager::ExcelDataManager()
 {
@@ -10,36 +11,38 @@ ExcelDataManager::ExcelDataManager()
 //Возвращает указатель Excel файла (Workbook) по абсолютного пути
 QAxObject *ExcelDataManager::openExcelFile(QString filePath)
 {
-    QAxObject* excel = new QAxObject("Excel.Application", 0);
-    QAxObject* workbooks = excel->querySubObject("Workbooks");
-    excel->dynamicCall("Quit()");
-    QAxObject* curentFile = workbooks->querySubObject("Open(const QString&)", filePath);
+    QAxObject* excel = new QAxObject(EXCEL_APP, 0);
+    QAxObject* workbooks = excel->querySubObject(EXCEL_WORKBOOKS);
+    excel->dynamicCall(EXCEL_QUIT);
+    QAxObject* curentFile = workbooks->querySubObject(EXCEL_OPEN, filePath);
     return curentFile;
 }
 
-//Возвращает указатель на лист (Sheet) в книге по указателю на книгу и номеру листа. Нумерация листов начинается с 1.
+//Возвращает указатель на лист (Sheet) в книге по указателю на книгу и номеру листа.
+//Нумерация листов начинается с 1.
 QAxObject *ExcelDataManager::getDocumentSheet(QAxObject* excelFile, int sheetNumber)
 {
-     QAxObject* sheets = excelFile->querySubObject("Worksheets");
-     QAxObject* sheet = sheets->querySubObject("Item(int)", sheetNumber);
+     QAxObject* sheets = excelFile->querySubObject(EXCEL_WORKSHEETS);
+     QAxObject* sheet = sheets->querySubObject(EXCEL_ITEM, sheetNumber);
      return sheet;
 }
 
-//Возвращает количество непустых строк на листе по указателю на лист. Нумерация строк начинается с 1.
+//Возвращает количество непустых строк на листе по указателю на лист.
+//Нумерация строк начинается с 1.
 int ExcelDataManager::getSheetRowsCount(QAxObject *excelSheet)
 {
-    QAxObject* usedRange = excelSheet->querySubObject("UsedRange");
-    QAxObject* rows = usedRange->querySubObject("Rows");
-    int countRows = rows->property("Count").toInt();
+    QAxObject* usedRange = excelSheet->querySubObject(EXCEL_USEDRANGE);
+    QAxObject* rows = usedRange->querySubObject(EXCEL_ROWS);
+    int countRows = rows->property(EXCEL_COUNT).toInt();
     return countRows;
 }
 
 //Возвращает количество непустых столбцов на листе по указателю на лист. Нумерация колонок начинается с 1.
 int ExcelDataManager::getSheetColumnsCount(QAxObject *excelSheet)
 {
-    QAxObject* usedRange = excelSheet->querySubObject("UsedRange");
-    QAxObject* columns = usedRange->querySubObject("Columns");
-    int countCols = columns->property("Count").toInt();
+    QAxObject* usedRange = excelSheet->querySubObject(EXCEL_USEDRANGE);
+    QAxObject* columns = usedRange->querySubObject(EXCEL_COLUMNS);
+    int countCols = columns->property(EXCEL_COUNT).toInt();
     return countCols;
 }
 
@@ -47,21 +50,21 @@ int ExcelDataManager::getSheetColumnsCount(QAxObject *excelSheet)
 QStandardItemModel *ExcelDataManager::getStatisticsModel(QAxObject *excelFile)
 {
     QStandardItemModel *model = new QStandardItemModel;
-    QAxObject* sheet = getDocumentSheet(excelFile, 2);
+    QAxObject* sheet = getDocumentSheet(excelFile, EXCEL_SETSTATPAGE);
 
     model = setModelHeaders(sheet, model);
 
-    //TODO переделывание формата (номера строк)
-    for (int col = 1; col <= 2; col ++) {
-        for (int row = 7; row <= 10; row++) {
-            //Cell(row, col)
-            QAxObject* cell = sheet->querySubObject("Cells(int,int)", row, col);
-            QVariant value = cell->property("Value");
+    for (int col = EXCEL_SETSTATCOLBEGIN; col <= EXCEL_SETSTATCOLEND; col ++)
+    {
+        for (int row = EXCEL_STATROWBEGIN; row <= EXCEL_STATROWEND; row++)
+        {
+            QAxObject* cell = sheet->querySubObject(EXCEL_CELL, row, col);
+            QVariant value = cell->property(EXCEL_VALUE);
             QStandardItem* item = new QStandardItem(value.toString());
-            model->setItem(row - 7, col - 1, item);
+            model->setItem(row - EXCEL_STATROWBEGIN, col - EXCEL_SETSTATCOLBEGIN, item);
         }
     }
-    excelFile->dynamicCall("Close()");
+    excelFile->dynamicCall(EXCE);
     return model;
 }
 
