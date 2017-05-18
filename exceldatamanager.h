@@ -15,8 +15,9 @@ public:
     int getSheetRowsCount(QAxObject* excelSheet);
     int getSheetColumnsCount(QAxObject* excelSheet);
 
-    QStandardItemModel *getRealTimeModel(QAxObject* excelFile);
+    QStandardItemModel *getStatisticsModel(QAxObject* excelFile);
     QStandardItemModel *getSettingsModel(QAxObject* excelFile);
+    QStandardItemModel *getDataModel(QAxObject* excelFile);
     QStandardItemModel *setModelHeaders(QAxObject* excelSheet, QStandardItemModel* model);
 };
 

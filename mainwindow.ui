@@ -241,7 +241,7 @@
             <property name="orientation">
              <enum>Qt::Vertical</enum>
             </property>
-            <widget class="QWidget" name="layoutWidget">
+            <widget class="QWidget" name="layoutWidget1">
              <layout class="QHBoxLayout" name="menu_file_exit_tools">
               <item>
                <widget class="QToolButton" name="menu_file_save_button">
@@ -384,7 +384,7 @@
             <property name="orientation">
              <enum>Qt::Vertical</enum>
             </property>
-            <widget class="QWidget" name="layoutWidget">
+            <widget class="QWidget" name="layoutWidget2">
              <layout class="QHBoxLayout" name="horizontalLayout_8">
               <item>
                <widget class="QToolButton" name="menu_file_restart_button">
@@ -505,7 +505,7 @@
             <property name="orientation">
              <enum>Qt::Vertical</enum>
             </property>
-            <widget class="QWidget" name="layoutWidget">
+            <widget class="QWidget" name="layoutWidget3">
              <layout class="QHBoxLayout" name="menu_device_port_tools">
               <item>
                <widget class="QToolButton" name="menu_device_autoSearch_button">
@@ -674,7 +674,7 @@
             <property name="orientation">
              <enum>Qt::Vertical</enum>
             </property>
-            <widget class="QWidget" name="layoutWidget">
+            <widget class="QWidget" name="layoutWidget4">
              <layout class="QHBoxLayout" name="menu_device_driver_tools">
               <item>
                <widget class="QToolButton" name="menu_device_driverInfo_button">
@@ -848,7 +848,7 @@
             <property name="orientation">
              <enum>Qt::Vertical</enum>
             </property>
-            <widget class="QWidget" name="layoutWidget">
+            <widget class="QWidget" name="layoutWidget5">
              <layout class="QHBoxLayout" name="menu_device_status_tools">
               <item>
                <widget class="QToolButton" name="menu_device_connetionPort_button">
@@ -1035,7 +1035,7 @@
           <property name="opaqueResize">
            <bool>false</bool>
           </property>
-          <widget class="QWidget" name="layoutWidget">
+          <widget class="QWidget" name="layoutWidget6">
            <layout class="QVBoxLayout" name="menu_experiment_grid_tools">
             <item>
              <widget class="QCheckBox" name="menu_experiment_grid_checkbox">
@@ -1251,7 +1251,7 @@
           <property name="opaqueResize">
            <bool>false</bool>
           </property>
-          <widget class="QWidget" name="layoutWidget">
+          <widget class="QWidget" name="layoutWidget7">
            <layout class="QVBoxLayout" name="menu_experiment_minMax_tools">
             <item>
              <widget class="QCheckBox" name="menu_experiment_minMax_checkbox">
@@ -1526,7 +1526,7 @@
           <property name="opaqueResize">
            <bool>false</bool>
           </property>
-          <widget class="QWidget" name="layoutWidget">
+          <widget class="QWidget" name="layoutWidget8">
            <layout class="QVBoxLayout" name="menu_experiment_curve_tools">
             <item>
              <layout class="QHBoxLayout" name="menu_experiment_curveLine_tool">
@@ -1720,7 +1720,7 @@
           <property name="opaqueResize">
            <bool>false</bool>
           </property>
-          <widget class="QWidget" name="layoutWidget">
+          <widget class="QWidget" name="layoutWidget9">
            <layout class="QVBoxLayout" name="verticalLayout_2">
             <item>
              <widget class="QCheckBox" name="checkBox">
@@ -2070,7 +2070,7 @@
             <property name="orientation">
              <enum>Qt::Vertical</enum>
             </property>
-            <widget class="QWidget" name="layoutWidget">
+            <widget class="QWidget" name="layoutWidget10">
              <layout class="QHBoxLayout" name="menu_other_mathcad_tools">
               <item>
                <widget class="QToolButton" name="menu_other_mathcad_check_button">
@@ -2203,7 +2203,7 @@
             <property name="orientation">
              <enum>Qt::Vertical</enum>
             </property>
-            <widget class="QWidget" name="layoutWidget">
+            <widget class="QWidget" name="layoutWidget11">
              <layout class="QHBoxLayout" name="menu_other_data_tools">
               <item>
                <widget class="QToolButton" name="menu_other_data_picture_button">
@@ -2338,7 +2338,7 @@ PNG</string>
             <property name="orientation">
              <enum>Qt::Vertical</enum>
             </property>
-            <widget class="QWidget" name="layoutWidget">
+            <widget class="QWidget" name="layoutWidget12">
              <layout class="QHBoxLayout" name="menu_other_app_tools">
               <item>
                <widget class="QToolButton" name="menu_other_app_reference_button">
@@ -2788,8 +2788,8 @@ PNG</string>
    <slot>close()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1012</x>
-     <y>107</y>
+     <x>119</x>
+     <y>122</y>
     </hint>
     <hint type="destinationlabel">
      <x>1051</x>

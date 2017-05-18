@@ -13,6 +13,8 @@
 #include <QMessageBox>
 #include "constants.h"
 #include <QAction>
+#include <QEvent>
+#include <QMenu>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -20,9 +22,11 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     DATA_PATH = apdr.dataDirPath();
     apdr.copyFilesToAppData();
-    ui->setupUi(this);
 
+    ui->setupUi(this);
     setUIlogic();
+
+    ui->menu_other_app_fullScreen_button->installEventFilter(this);
 }
 
 MainWindow::~MainWindow()
@@ -62,16 +66,48 @@ void MainWindow::setTablesUI()
 void MainWindow::setFullScreenButtonMenu()
 {
     QMenu *menu = new QMenu();
-    QAction *maximazeAction = new QAction(ACT_STRETCH, this);
-
+    QAction *maximazeAction = new QAction("", this);
     QPixmap iconPicture(RES_MAXICON);
     QIcon icon(iconPicture);
     maximazeAction->setIcon(icon);
-    connect(maximazeAction, SIGNAL(triggered(bool)), this, SLOT(maximizeButtonAction()));
     menu->addAction(maximazeAction);
     ui->menu_other_app_fullScreen_button->setMenu(menu);
+
+    connect(maximazeAction, SIGNAL(triggered(bool)), this, SLOT(maximizeButtonAction()));
 }
 
+//Обработчик нажатия на кнопку полного экрана (ПКМ)
+bool MainWindow::eventFilter(QObject *watched, QEvent *event)
+{
+    QToolButton *button = ui->menu_other_app_fullScreen_button;
+    if ( (watched == button) && (event->type() == QEvent::MouseButtonPress) )
+    {
+        QMouseEvent *e = static_cast<QMouseEvent *>(event);
+        if (e->button() == Qt::RightButton) {
+            button->menu()->popup(button->mapToGlobal(e->pos()));
+            return true;
+        } else
+            return false;
+    }
+    return false;
+}
+
+void MainWindow::resizeEvent(QResizeEvent *event)
+{
+    if ( isMaximized() )
+    {
+        //qDebug() << windowState();
+        ui->menu_other_app_fullScreen_button->menu()->actions().at(0)->setText(ACT_MIN);
+        ui->menu_other_app_fullScreen_button->setChecked(false);
+    }
+    else
+    {
+        ui->menu_other_app_fullScreen_button->menu()->actions().at(0)->setText(ACT_MAX);
+        ui->menu_other_app_fullScreen_button->setChecked(false);
+    }
+}
+
+//Обработчик нажатия на кнопку продвинутых настроек
 void MainWindow::on_menu_other_app_advanced_button_clicked()
 {
     advanced.showDirPath(DATA_PATH);
@@ -79,7 +115,6 @@ void MainWindow::on_menu_other_app_advanced_button_clicked()
 }
 
 void MainWindow::on_menu_device_manualSearch_button_clicked() {
-    usbDeviceListWindow.open();
 
     //std::list<USBDeviceHIDManager> devices = USBDeviceHIDManager::getDevicesList();
 
@@ -91,6 +126,7 @@ void MainWindow::on_menu_device_manualSearch_button_clicked() {
 //    }
 }
 
+//Обработчик нажатия на кнопку полного экрана (ЛКМ)
 void MainWindow::on_menu_other_app_fullScreen_button_clicked()
 {
     bool buttonStatus = ui->menu_other_app_fullScreen_button->isChecked();
@@ -113,7 +149,7 @@ void MainWindow::on_menu_device_winManager_button_clicked()
     QDesktopServices::openUrl(QUrl(deviceManagerpath, QUrl::TolerantMode));
 }
 
-//Обработчик нажатия на кнопку перезагрузки программы - DONE
+//Обработчик нажатия на кнопку перезагрузки программы
 void MainWindow::on_menu_file_restart_button_clicked()
 {
     qApp->quit();
@@ -125,11 +161,13 @@ void MainWindow::maximizeButtonAction()
 {
     if (this->isMaximized())
     {
+        //ui->menu_other_app_fullScreen_button->menu()->actions().at(0)->setText(ACT_MAX);
         ui->menu_other_app_fullScreen_button->setChecked(false);
         showNormal();
     }
     else
     {
+        //ui->menu_other_app_fullScreen_button->menu()->actions().at(0)->setText(ACT_MIN);
         ui->menu_other_app_fullScreen_button->setChecked(false);
         showMaximized();
     }
@@ -148,10 +186,12 @@ void AppDir::copyFilesToAppData()
     //Проверка пути на валидность создание при отсутствии
     QDir dir(appPath);
     if ( !dir.exists() )
+    {
         if ( dir.mkpath(appPath) )
             qDebug() << MES_PATH << APP_NAME << MES_CREATEDF;
         else
             showCreateMessageBox(APP_NAME);
+    }
 
 //Копирование из ресурсов в корень директории
     //Руководство пользователя

@@ -1,4 +1,4 @@
-#include "advancedmode.h"
+#include "advancedwindow.h"
 #include "ui_advancedmode.h"
 #include <QFileDialog>
 #include <QString>
@@ -7,7 +7,7 @@
 #include <QStandardItemModel>
 #include "constants.h"
 
-AdvancedMode::AdvancedMode(QWidget *parent) :
+AdvancedWindow::AdvancedWindow(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::AdvancedMode)
 {
@@ -17,17 +17,17 @@ AdvancedMode::AdvancedMode(QWidget *parent) :
                          Qt::WindowCloseButtonHint | Qt::WindowMinMaxButtonsHint);
 }
 
-AdvancedMode::~AdvancedMode()
+AdvancedWindow::~AdvancedWindow()
 {
     delete ui;
 }
 
-void AdvancedMode::showDirPath(QString path)
+void AdvancedWindow::showDirPath(QString path)
 {
     ui->label_2->setText(path);
 }
 
-void AdvancedMode::updatePathList()
+void AdvancedWindow::updatePathList()
 {
     QFile file(":/Other/PathList.json");
     file.open(QFile::ReadOnly);
@@ -36,14 +36,14 @@ void AdvancedMode::updatePathList()
     ui->pathList_table->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
 }
 
-void AdvancedMode::on_viewPath_copy_button_clicked()
+void AdvancedWindow::on_viewPath_copy_button_clicked()
 {
     QClipboard *clipboard = QApplication::clipboard();
     QString path = ui->viewPath_lineEdit->text();
     clipboard->setText(path);
 }
 
-void AdvancedMode::on_viewPath_browse_button_clicked()
+void AdvancedWindow::on_viewPath_browse_button_clicked()
 {
     QFileInfo filePath = QFileDialog::getOpenFileName(
                 this,
@@ -54,7 +54,7 @@ void AdvancedMode::on_viewPath_browse_button_clicked()
     ui->viewPath_lineEdit->setText(excelFilePath);
 }
 
-void AdvancedMode::on_pathList_add_button_clicked()
+void AdvancedWindow::on_pathList_add_button_clicked()
 {
     QAbstractItemModel *model = ui->pathList_table->model();
     int lastRow = model->rowCount();
@@ -65,7 +65,7 @@ void AdvancedMode::on_pathList_add_button_clicked()
     model->submit();
 }
 
-void AdvancedMode::on_pathList_refresh_button_clicked()
+void AdvancedWindow::on_pathList_refresh_button_clicked()
 {
     manager.saveJsonFile(ui->pathList_table->model());
     updatePathList();

@@ -44,8 +44,12 @@
 //
 
 //Пункты меню ACT_
-#ifndef ACT_STRETCH
-#define ACT_STRETCH "Растянуть"
+#ifndef ACT_MAX
+#define ACT_MAX "Растянуть"
+#endif
+
+#ifndef ACT_MIN
+#define ACT_MIN "Свернуть"
 #endif
 //
 

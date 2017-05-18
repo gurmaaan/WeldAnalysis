@@ -29,27 +29,24 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     qcustomplot/qcustomplot.cpp \
     exceldatamanager.cpp \
-    advancedmode.cpp \
     jsondatamanager.cpp \
-    usbdeviceslistwindow.cpp \
-    usbcommanager.cpp \
-    picturewindow.cpp
+    picturewindow.cpp \
+    advancedwindow.cpp \
+    qrightclicktoolbutton.cpp
 
 HEADERS  += mainwindow.h \
     qcustomplot/qcustomplot.h \
     exceldatamanager.h \
-    advancedmode.h \
     jsondatamanager.h \
-    usbdeviceslistwindow.h \
     usbhidmanager.hpp \
-    usbcommanager.h \
     constants.h \
-    picturewindow.h
+    picturewindow.h \
+    advancedwindow.h \
+    qrightclicktoolbutton.h
 
 FORMS    += mainwindow.ui \
-    advancedmode.ui \
-    usbdeviceslistwindow.ui \
-    picturewindow.ui
+    picturewindow.ui \
+    advancedwindow.ui
 
 RESOURCES += \
     sources.qrc

@@ -2,12 +2,12 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include "advancedmode.h"
+#include "advancedwindow.h"
 #include "picturewindow.h"
 #include "jsondatamanager.h"
-#include "usbdeviceslistwindow.h"
 #include <QDir>
 #include <QString>
+#include <QMouseEvent>
 
 namespace Ui {
 class MainWindow;
@@ -34,7 +34,6 @@ private:
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
-
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
@@ -49,20 +48,18 @@ private slots:
     void on_menu_device_winManager_button_clicked();
     void on_menu_file_restart_button_clicked();
     void maximizeButtonAction();
-
     void on_menu_other_data_picture_button_clicked();
 
 private:
     Ui::MainWindow *ui;
-    AdvancedMode advanced;
+    AdvancedWindow advanced;
     PictureWindow picture;
     JsonDataManager jsonManager;
-    UsbDevicesListWindow usbDeviceListWindow;
-
     void setUIlogic();
     void setTablesUI();
-
     void setFullScreenButtonMenu();
+    bool eventFilter(QObject *watched, QEvent *event);
+    void resizeEvent(QResizeEvent *event);
 
 };
 

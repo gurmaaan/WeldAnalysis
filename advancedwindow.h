@@ -8,13 +8,13 @@ namespace Ui {
 class AdvancedMode;
 }
 
-class AdvancedMode : public QDialog
+class AdvancedWindow : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit AdvancedMode(QWidget *parent = 0);
-    ~AdvancedMode();
+    explicit AdvancedWindow(QWidget *parent = 0);
+    ~AdvancedWindow();
     void showDirPath(QString path);
 
 private slots:

@@ -44,7 +44,7 @@ int ExcelDataManager::getSheetColumnsCount(QAxObject *excelSheet)
 }
 
 //Ковертация статистики эксперимента в модель для таблицы правой панели
-QStandardItemModel *ExcelDataManager::getRealTimeModel(QAxObject *excelFile)
+QStandardItemModel *ExcelDataManager::getStatisticsModel(QAxObject *excelFile)
 {
     QStandardItemModel *model = new QStandardItemModel;
     QAxObject* sheet = getDocumentSheet(excelFile, 2);
