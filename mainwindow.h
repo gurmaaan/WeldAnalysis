@@ -7,6 +7,7 @@
 #include "jsondatamanager.h"
 #include <QDir>
 #include <QString>
+#include <QLabel>
 #include <QMouseEvent>
 
 namespace Ui {
@@ -40,6 +41,9 @@ public:
     QString DATA_PATH;
     AppDir apdr;
 
+public slots:
+    void setStatusBarMessage(QString message);
+
 private slots:
     void on_menu_other_app_advanced_button_clicked();
     void on_menu_device_manualSearch_button_clicked();
@@ -55,9 +59,12 @@ private:
     AdvancedWindow advanced;
     PictureWindow picture;
     JsonDataManager jsonManager;
+    QLabel* portStatus;
+    QLabel* connectionStatus;
     void setUIlogic();
     void setTablesUI();
     void setFullScreenButtonMenu();
+    void setStatusBarWidgets();
     bool eventFilter(QObject *watched, QEvent *event);
     void resizeEvent(QResizeEvent *event);
 

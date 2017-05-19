@@ -72,7 +72,7 @@ QStandardItemModel *ExcelDataManager::getStatisticsModel(QAxObject *excelFile)
 QStandardItemModel *ExcelDataManager::getSettingsModel(QAxObject *excelFile)
 {
     QStandardItemModel *model = new QStandardItemModel;
-    QAxObject* sheet = getDocumentSheet(excelFile, 2);
+    QAxObject* sheet = getDocumentSheet(excelFile, EXCEL_SETSTATPAGE);
 
     model = setModelHeaders(sheet, model);
 //Первая часть до статистики

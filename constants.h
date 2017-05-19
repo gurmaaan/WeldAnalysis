@@ -13,6 +13,33 @@
 #endif
 //
 
+//Статус бар
+#ifndef STATUS_PORT
+#define STATUS_PORT "Порт "
+#endif
+
+#ifndef STATUS_DELAY
+#define STATUS_DELAY 5000
+#endif
+
+
+#ifndef STATUS_PORTINFNULL
+#define STATUS_PORTINFNULL "--"
+#endif
+
+#ifndef STATUS_CONNECTINFOFF
+#define STATUS_CONNECTINFOFF "отключено "
+#endif
+
+#ifndef STATUS_CONNECTINFON
+#define STATUS_CONNECTINFON "подключено "
+#endif
+
+#ifndef STATUS_CONNECT
+#define STATUS_CONNECT "Устройство "
+#endif
+//
+
 //Excel EXCEL_
 #ifndef EXCEL_SETROWBEGIN
 #define EXCEL_SETROWBEGIN 2
@@ -165,6 +192,22 @@
 #ifndef NAM_DEVMAN
 #define NAM_DEVMAN "DeviceManager.bat"
 #endif
+
+#ifndef NAM_PLOT
+#define NAM_PLOT "plot_"
+#endif
+
+#ifndef NAM_DATEFORMAT
+#define NAM_DATEFORMAT "dd-MM_yyyy"
+#endif
+
+#ifndef NAM_TIMEFORMAT
+#define NAM_TIMEFORMAT "hh-mm"
+#endif
+
+#ifndef NAM_DATETIMEFORMAT
+#define NAM_DATETIMEFORMAT "dd-MM_yyyy_hh-mm"
+#endif
 //
 
 //Имена файлов со слэшем NAMS_
@@ -196,12 +239,20 @@
 #define TIT_ERCREATE "Ошибка создания"
 #endif
 
+#ifndef TIT_ERSAVE
+#define TIT_ERSAVE "Ошибка сохранения"
+#endif
+
 #ifndef TIT_BROWSE
 #define TIT_BROWSE "Выберите файл"
 #endif
 
+#ifndef TIT_BROWSEDIR
+#define TIT_BROWSEDIR "Выберите папку"
+#endif
+
 #ifndef TIT_SAVE
-#define TIT_SAVE "Сохраните файл"
+#define TIT_SAVE "Сохраните файл "
 #endif
 //
 
@@ -209,6 +260,15 @@
 #ifndef FIL_IMAGE
 #define FIL_IMAGE "Image Files (*.png *.jpg *.bmp)"
 #endif
+
+#ifndef FIL_PNGEXT
+#define FIL_PNGEXT ".png"
+#endif
+
+#ifndef FIL_PNGFORMAT
+#define FIL_PNGFORMAT "PNG"
+#endif
+//
 
 //Сообщения ошибок MES_
 #ifndef MES_FILE
@@ -259,8 +319,8 @@
 #define MES_SELFCREATE "\nСоздать самостоятельно?"
 #endif
 
-#ifndef MES_TRYAGAIN
-#define MES_TRYAGAIN "Попробуйте указать другое имя или папку."
+#ifndef MES_CHECKNAME
+#define MES_CHECKNAME "\nПопробуйте указать другое имя или папку."
 #endif
 //
 

@@ -22,10 +22,9 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     DATA_PATH = apdr.dataDirPath();
     apdr.copyFilesToAppData();
-
+    connect(&picture, SIGNAL(savedFileName(QString)), this, SLOT(setStatusBarMessage(QString)));
     ui->setupUi(this);
     setUIlogic();
-
     ui->menu_other_app_fullScreen_button->installEventFilter(this);
 }
 
@@ -34,10 +33,16 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::setStatusBarMessage(QString message)
+{
+    statusBar()->showMessage(message, 5000);
+}
+
 void MainWindow::setUIlogic()
 {
     setTablesUI();
     setFullScreenButtonMenu();
+    setStatusBarWidgets();
 }
 
 void MainWindow::setTablesUI()
@@ -76,6 +81,24 @@ void MainWindow::setFullScreenButtonMenu()
     connect(maximazeAction, SIGNAL(triggered(bool)), this, SLOT(maximizeButtonAction()));
 }
 
+void MainWindow::setStatusBarWidgets()
+{
+    QLabel *portLabel = new QLabel(this);
+    QLabel *connectionLabel = new QLabel(this);
+    portStatus = new QLabel(this);
+    connectionStatus = new QLabel(this);
+
+    connectionLabel->setText(STATUS_CONNECT);
+    connectionStatus->setText(STATUS_CONNECTINFOFF);
+    portLabel->setText(STATUS_PORT);
+    portStatus->setText(STATUS_PORTINFNULL);
+
+    statusBar()->addWidget(connectionLabel);
+    statusBar()->addWidget(connectionStatus);
+    statusBar()->addWidget(portLabel);
+    statusBar()->addWidget(portStatus);
+}
+
 //Обработчик нажатия на кнопку полного экрана (ПКМ)
 bool MainWindow::eventFilter(QObject *watched, QEvent *event)
 {
@@ -92,6 +115,7 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
     return false;
 }
 
+//TODO - fix with FullScreen button context menu
 void MainWindow::resizeEvent(QResizeEvent *event)
 {
     if ( isMaximized() )
@@ -298,5 +322,6 @@ void MainWindow::on_menu_other_data_picture_button_clicked()
       ui->graph_screen->savePng(tempFile);
       picture.openPicture(tempFile);
       picture.show();
+      QApplication::alert(this, 0);
     }
 }

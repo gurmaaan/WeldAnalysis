@@ -16,12 +16,26 @@ public:
     ~PictureWindow();
     void openPicture(QString path);
 
+signals:
+    void fileSaved(bool status);
+    void savedFileName(QString name);
+
 private slots:
-    void on_buttonBox_accepted();
+    void on_browse_button_clicked();
+    void on_width_spinBox_valueChanged(int w);
+    void on_height_spinBox_valueChanged(int h);
+    void on_resetSize_button_clicked();
+    void on_save_button_clicked();
+
+    void on_name_lineEdit_textEdited(const QString &arg1);
 
 private:
     Ui::PictureWindow *ui;
-    QString tempPath;
+    int defH = 0;
+    int defW = 0;
+    QPixmap defPixMap;
+    void resizePicture(int w, int h, bool ratio);
+    QString defName();
 };
 
 #endif // PICTUREWINDOW_H

@@ -48,8 +48,7 @@ FORMS    += mainwindow.ui \
 
 RESOURCES += \
     sources.qrc
-
-DISTFILES +=
-
 #RC_FILE - needed for Application .exe icon
 win32:RC_FILE = iconsource.rc
+
+TRANSLATIONS +=ru.ts
