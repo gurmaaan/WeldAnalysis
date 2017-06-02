@@ -9,6 +9,7 @@
 #include <QString>
 #include <QLabel>
 #include <QMouseEvent>
+#include <QSystemTrayIcon>
 
 namespace Ui {
 class MainWindow;
@@ -42,7 +43,9 @@ public:
     AppDir apdr;
 
 public slots:
-    void setStatusBarMessage(QString message);
+    void pushStatusBarMessage(QString message);
+    void pushInformationNotification(QString message);
+    void showSavedFile(QString path);
 
 private slots:
     void on_menu_other_app_advanced_button_clicked();
@@ -53,6 +56,8 @@ private slots:
     void on_menu_file_restart_button_clicked();
     void maximizeButtonAction();
     void on_menu_other_data_picture_button_clicked();
+
+    void on_menu_other_mathcad_check_button_clicked();
 
 private:
     Ui::MainWindow *ui;
@@ -67,6 +72,9 @@ private:
     void setStatusBarWidgets();
     bool eventFilter(QObject *watched, QEvent *event);
     void resizeEvent(QResizeEvent *event);
+
+    QSystemTrayIcon *trayIcon;
+    QMenu *trayIconMenu;
 
 };
 

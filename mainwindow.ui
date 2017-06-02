@@ -1284,7 +1284,7 @@
               <item>
                <widget class="QLabel" name="menu_experiment_minMaxUmin_label">
                 <property name="enabled">
-                 <bool>true</bool>
+                 <bool>false</bool>
                 </property>
                 <property name="minimumSize">
                  <size>
@@ -1303,7 +1303,7 @@
               <item>
                <widget class="QDoubleSpinBox" name="menu_experiment_minMaxUmin_spin">
                 <property name="enabled">
-                 <bool>true</bool>
+                 <bool>false</bool>
                 </property>
                 <property name="minimumSize">
                  <size>
@@ -1331,7 +1331,7 @@
               <item>
                <widget class="QLabel" name="menu_experiment_minMaxUmax_label">
                 <property name="enabled">
-                 <bool>true</bool>
+                 <bool>false</bool>
                 </property>
                 <property name="minimumSize">
                  <size>
@@ -1350,7 +1350,7 @@
               <item>
                <widget class="QDoubleSpinBox" name="menu_experiment_minMaxUmax_spin">
                 <property name="enabled">
-                 <bool>true</bool>
+                 <bool>false</bool>
                 </property>
                 <property name="minimumSize">
                  <size>
@@ -1402,7 +1402,7 @@
               <item>
                <widget class="QLabel" name="menu_experiment_minMaxTmin_label">
                 <property name="enabled">
-                 <bool>true</bool>
+                 <bool>false</bool>
                 </property>
                 <property name="minimumSize">
                  <size>
@@ -1421,7 +1421,7 @@
               <item>
                <widget class="QSpinBox" name="menu_experiment_minMaxTmin_spin">
                 <property name="enabled">
-                 <bool>true</bool>
+                 <bool>false</bool>
                 </property>
                 <property name="minimumSize">
                  <size>
@@ -1440,7 +1440,7 @@
               <item>
                <widget class="QLabel" name="menu_experiment_minMaxTmax_label">
                 <property name="enabled">
-                 <bool>true</bool>
+                 <bool>false</bool>
                 </property>
                 <property name="minimumSize">
                  <size>
@@ -1459,7 +1459,7 @@
               <item>
                <widget class="QSpinBox" name="menu_experiment_minMaxTmax_spin">
                 <property name="enabled">
-                 <bool>true</bool>
+                 <bool>false</bool>
                 </property>
                 <property name="minimumSize">
                  <size>
@@ -1642,7 +1642,7 @@
                </widget>
               </item>
               <item>
-               <widget class="QDoubleSpinBox" name="menu_experiment_curveDT_spin">
+               <widget class="QSpinBox" name="menu_experiment_curveDT_spin">
                 <property name="enabled">
                  <bool>true</bool>
                 </property>
@@ -1658,17 +1658,11 @@
                 <property name="suffix">
                  <string> ms</string>
                 </property>
-                <property name="decimals">
-                 <number>1</number>
-                </property>
-                <property name="maximum">
-                 <double>2.000000000000000</double>
-                </property>
-                <property name="singleStep">
-                 <double>0.100000000000000</double>
-                </property>
                 <property name="value">
-                 <double>0.500000000000000</double>
+                 <number>5</number>
+                </property>
+                <property name="displayIntegerBase">
+                 <number>10</number>
                 </property>
                </widget>
               </item>
@@ -1753,7 +1747,7 @@
               <item>
                <widget class="QLabel" name="menu_experiment_limitsNmax_label">
                 <property name="enabled">
-                 <bool>true</bool>
+                 <bool>false</bool>
                 </property>
                 <property name="minimumSize">
                  <size>
@@ -1791,7 +1785,7 @@
               <item>
                <widget class="QSpinBox" name="menu_experiment_limitsNmax_spin">
                 <property name="enabled">
-                 <bool>true</bool>
+                 <bool>false</bool>
                 </property>
                 <property name="minimumSize">
                  <size>
@@ -1853,7 +1847,7 @@
               <item>
                <widget class="QLabel" name="menu_experiment_limitsTintervalT1_label">
                 <property name="enabled">
-                 <bool>true</bool>
+                 <bool>false</bool>
                 </property>
                 <property name="minimumSize">
                  <size>
@@ -1878,7 +1872,7 @@
               <item>
                <widget class="QSpinBox" name="menu_experiment_limitsTintervalT1_spin">
                 <property name="enabled">
-                 <bool>true</bool>
+                 <bool>false</bool>
                 </property>
                 <property name="minimumSize">
                  <size>
@@ -1897,7 +1891,7 @@
               <item>
                <widget class="QLabel" name="menu_experiment_limitsTintervalT2_label">
                 <property name="enabled">
-                 <bool>true</bool>
+                 <bool>false</bool>
                 </property>
                 <property name="minimumSize">
                  <size>
@@ -1922,7 +1916,7 @@
               <item>
                <widget class="QSpinBox" name="menu_experiment_limitsTintervalT2_spin">
                 <property name="enabled">
-                 <bool>true</bool>
+                 <bool>false</bool>
                 </property>
                 <property name="minimumSize">
                  <size>
@@ -2279,6 +2273,9 @@ PNG</string>
                   <width>50</width>
                   <height>50</height>
                  </size>
+                </property>
+                <property name="popupMode">
+                 <enum>QToolButton::MenuButtonPopup</enum>
                 </property>
                 <property name="toolButtonStyle">
                  <enum>Qt::ToolButtonTextUnderIcon</enum>

@@ -7,6 +7,7 @@
 #include <QMessageBox>
 #include "constants.h"
 #include <QDateTime>
+#include <QDesktopServices>
 
 PictureWindow::PictureWindow(QWidget *parent) :
     QDialog(parent),
@@ -15,7 +16,8 @@ PictureWindow::PictureWindow(QWidget *parent) :
     ui->setupUi(this);
     this->setWindowFlags(Qt::Dialog | Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowFullscreenButtonHint |
                          Qt::WindowCloseButtonHint | Qt::WindowMinMaxButtonsHint);
-    this->setWindowTitle(TIT_SAVE + defName() + FIL_PNGEXT + "*");
+    setWindowModified(true);
+    setWindowFilePath(TIT_SAVE + defName() + FIL_PNGEXT);
     ui->path_lineEdit->setText(QDir::homePath());
     ui->name_lineEdit->setText(defName());
 }
@@ -50,7 +52,7 @@ void PictureWindow::on_width_spinBox_valueChanged(int w)
     bool ratio = ui->aspectRatio_checkBox->isChecked();
     int h =  ui->picture_label->pixmap()->size().height();
     resizePicture(w, h, ratio);
-    if (ratio)
+    if (!ratio)
         ui->height_spinBox->setValue(h);
 }
 
@@ -73,7 +75,7 @@ void PictureWindow::on_height_spinBox_valueChanged(int h)
     bool ratio = ui->aspectRatio_checkBox->isChecked();
     int w =  ui->picture_label->pixmap()->size().width();
     resizePicture(w, h, ratio);
-    if (ratio)
+    if (!ratio)
         ui->width_spinBox->setValue(w);
 }
 
@@ -97,6 +99,7 @@ void PictureWindow::on_save_button_clicked()
         {
             this->accept();
             emit savedFileName(MES_FILE + ui->name_lineEdit->text() + MES_CREATEDF);
+            emit savedFilePath(path);
             file.close();
         }
     }
@@ -110,5 +113,5 @@ void PictureWindow::on_save_button_clicked()
 
 void PictureWindow::on_name_lineEdit_textEdited(const QString &arg1)
 {
-    this->setWindowTitle(TIT_SAVE + arg1 + FIL_PNGEXT + "*");
+    this->setWindowFilePath(TIT_SAVE + arg1 + FIL_PNGEXT);
 }

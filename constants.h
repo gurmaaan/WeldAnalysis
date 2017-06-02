@@ -11,6 +11,10 @@
 #ifndef LINK_FILE
 #define LINK_FILE "file:///"
 #endif
+
+#ifndef TRAY_DELAY
+#define TRAY_DELAY 3000
+#endif
 //
 
 //Статус бар
@@ -136,8 +140,16 @@
 #define RES_DEVMAN ":/Other/devicemanager.bat"
 #endif
 
+#ifndef RES_APPICON
+#define RES_APPICON ":/GUI/Icons/icon.ico"
+#endif
+
 #ifndef RES_MAXICON
 #define RES_MAXICON ":/GUI/Icons/Other/Maximazed.png"
+#endif
+
+#ifndef RES_MAINICON
+#define RES_MAINICON ":/GUI/Icons/MainIcon.png"
 #endif
 
 #ifndef RES_SETTINGS
@@ -254,6 +266,10 @@
 #ifndef TIT_SAVE
 #define TIT_SAVE "Сохраните файл "
 #endif
+
+#ifndef TIT_SAVED
+#define TIT_SAVED "сохранено"
+#endif
 //
 
 //Фильтры типов файлов FIL_
@@ -275,6 +291,10 @@
 #define MES_FILE "Файл "
 #endif
 
+#ifndef MES_IMG
+#define MES_IMG "Изображение "
+#endif
+
 #ifndef MES_DIRECTORY
 #define MES_DIRECTORY "Директория "
 #endif
@@ -291,10 +311,10 @@
 #endif
 
 #ifndef MES_COPIEDF
-#define MES_COPIEDF " скопирован."
+#define MES_COPIEDF " скопирован. "
 #endif
 #ifndef MES_COPIEDD
-#define MES_COPIEDD " скопирована."
+#define MES_COPIEDD " скопирована. "
 #endif
 
 #ifndef MES_NOTCREATEDF
@@ -305,22 +325,26 @@
 #endif
 
 #ifndef MES_CREATEDF
-#define MES_CREATEDF " создан."
+#define MES_CREATEDF " создан. "
 #endif
 #ifndef MES_CREATEDD
-#define MES_CREATEDD " создана."
+#define MES_CREATEDD " создана. "
 #endif
 
 #ifndef MES_SELFBROWSE
-#define MES_SELFBROWSE "\nУказать путь вручную?"
+#define MES_SELFBROWSE "\nУказать путь вручную? "
 #endif
 
 #ifndef MES_SELFCREATE
-#define MES_SELFCREATE "\nСоздать самостоятельно?"
+#define MES_SELFCREATE "\nСоздать самостоятельно? "
 #endif
 
 #ifndef MES_CHECKNAME
-#define MES_CHECKNAME "\nПопробуйте указать другое имя или папку."
+#define MES_CHECKNAME "\nПопробуйте указать другое имя или папку. "
+#endif
+
+#ifndef MES_SUCSAVE
+#define MES_SUCSAVE " было успешно сохранено в указанную вами папку. "
 #endif
 //
 

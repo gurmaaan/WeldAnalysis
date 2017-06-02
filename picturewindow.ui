@@ -2,6 +2,9 @@
 <ui version="4.0">
  <class>PictureWindow</class>
  <widget class="QDialog" name="PictureWindow">
+  <property name="windowModality">
+   <enum>Qt::ApplicationModal</enum>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -16,8 +19,11 @@
     <pointsize>10</pointsize>
    </font>
   </property>
-  <property name="windowTitle">
-   <string>Сохранить фотографию? </string>
+  <property name="sizeGripEnabled">
+   <bool>true</bool>
+  </property>
+  <property name="modal">
+   <bool>true</bool>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
@@ -64,6 +70,12 @@
     <layout class="QHBoxLayout" name="horizontalLayout_3">
      <item>
       <widget class="QLabel" name="name_label">
+       <property name="minimumSize">
+        <size>
+         <width>36</width>
+         <height>0</height>
+        </size>
+       </property>
        <property name="text">
         <string>Имя</string>
        </property>
@@ -105,6 +117,9 @@
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
+       <property name="sizeType">
+        <enum>QSizePolicy::MinimumExpanding</enum>
+       </property>
        <property name="sizeHint" stdset="0">
         <size>
          <width>40</width>
@@ -119,6 +134,9 @@
         <spacer name="verticalSpacer_2">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::MinimumExpanding</enum>
          </property>
          <property name="sizeHint" stdset="0">
           <size>
@@ -149,6 +167,9 @@
          <property name="orientation">
           <enum>Qt::Vertical</enum>
          </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::MinimumExpanding</enum>
+         </property>
          <property name="sizeHint" stdset="0">
           <size>
            <width>20</width>
@@ -163,6 +184,9 @@
       <spacer name="horizontalSpacer_2">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeType">
+        <enum>QSizePolicy::MinimumExpanding</enum>
        </property>
        <property name="sizeHint" stdset="0">
         <size>
@@ -240,6 +264,9 @@
       <widget class="QPushButton" name="save_button">
        <property name="text">
         <string>Сохранить</string>
+       </property>
+       <property name="shortcut">
+        <string>Ctrl+S</string>
        </property>
       </widget>
      </item>

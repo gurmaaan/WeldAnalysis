@@ -31,9 +31,9 @@
         <file>Icons/Other/Table.png</file>
         <file>Defaults/EmptySettings.json</file>
         <file>Defaults/EmptyStatistics.json</file>
-        <file>Defaults/Settings.json</file>
         <file>Defaults/Statistics.json</file>
         <file>Icons/Other/Maximazed.png</file>
+        <file>Icons/MainIcon.png</file>
     </qresource>
     <qresource prefix="/Other">
         <file>PathList.json</file>

@@ -17,8 +17,8 @@ public:
     void openPicture(QString path);
 
 signals:
-    void fileSaved(bool status);
     void savedFileName(QString name);
+    void savedFilePath(QString path);
 
 private slots:
     void on_browse_button_clicked();

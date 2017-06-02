@@ -15,6 +15,7 @@
 #include <QAction>
 #include <QEvent>
 #include <QMenu>
+#include <QSettings>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -22,10 +23,18 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     DATA_PATH = apdr.dataDirPath();
     apdr.copyFilesToAppData();
-    connect(&picture, SIGNAL(savedFileName(QString)), this, SLOT(setStatusBarMessage(QString)));
+    connect(&picture, SIGNAL(savedFileName(QString)), this, SLOT(pushStatusBarMessage(QString)));
+    connect(&picture, SIGNAL(savedFileName(QString)), this, SLOT(pushInformationNotification(QString)));
+    connect(&picture, SIGNAL(savedFilePath(QString)), this, SLOT(showSavedFile(QString)));
+
     ui->setupUi(this);
     setUIlogic();
     ui->menu_other_app_fullScreen_button->installEventFilter(this);
+
+    trayIcon = new QSystemTrayIcon(this);
+    trayIcon->setToolTip(APP_NAME);
+    trayIcon->setIcon(QIcon(RES_APPICON));
+    trayIcon->show();
 }
 
 MainWindow::~MainWindow()
@@ -33,9 +42,24 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::setStatusBarMessage(QString message)
+void MainWindow::pushStatusBarMessage(QString message)
 {
     statusBar()->showMessage(message, 5000);
+}
+
+void MainWindow::pushInformationNotification(QString message)
+{
+    QString title = QString(MES_IMG) + QString(TIT_SAVED),
+            messageText = message + QString(MES_IMG) + QString(MES_SUCSAVE);
+    trayIcon->showMessage(title, messageText, QSystemTrayIcon::Information, TRAY_DELAY);   
+}
+
+void MainWindow::showSavedFile(QString path)
+{
+    showMinimized();
+    QApplication::alert(this, 0);
+    QDir savedDir(path);
+    QDesktopServices::openUrl(QUrl::fromLocalFile(savedDir.absolutePath()));
 }
 
 void MainWindow::setUIlogic()
@@ -245,7 +269,7 @@ void AppDir::copyFile(QDir *dir, QString name)
         showCopyMessageBox(NAM_MANUAL, &abs);
 }
 
-//Функция создания папки
+//Функция создания папки приложения
 void AppDir::createDirectory(QDir *dir, QString name)
 {
     if (!dir->exists(name))
@@ -324,4 +348,15 @@ void MainWindow::on_menu_other_data_picture_button_clicked()
       picture.show();
       QApplication::alert(this, 0);
     }
+}
+
+//Нажатие на кнопку проверить версию MathCad
+void MainWindow::on_menu_other_mathcad_check_button_clicked()
+{
+    QSettings settings("HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall", QSettings::NativeFormat);
+    QStringList keyList = settings.allKeys().filter( "DisplayName" );
+
+    foreach ( QString key, keyList)
+        qDebug() << settings.value( key ).toString();
+
 }
