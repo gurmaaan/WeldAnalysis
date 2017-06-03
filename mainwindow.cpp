@@ -26,10 +26,13 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(&picture, SIGNAL(savedFileName(QString)), this, SLOT(pushStatusBarMessage(QString)));
     connect(&picture, SIGNAL(savedFileName(QString)), this, SLOT(pushInformationNotification(QString)));
     connect(&picture, SIGNAL(savedFilePath(QString)), this, SLOT(showSavedFile(QString)));
+    connect(&mathcad, SIGNAL(detected(bool)), this, SLOT(enableMathCadButton(bool)));
 
     ui->setupUi(this);
     setUIlogic();
     ui->menu_other_app_fullScreen_button->installEventFilter(this);
+
+    mathcad.check();
 
     trayIcon = new QSystemTrayIcon(this);
     trayIcon->setToolTip(APP_NAME);
@@ -42,11 +45,13 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+//Вывод сообщения в статус бар (слот)
 void MainWindow::pushStatusBarMessage(QString message)
 {
     statusBar()->showMessage(message, 5000);
 }
 
+//Вывод сообщения в нотификейшн центр (слот)
 void MainWindow::pushInformationNotification(QString message)
 {
     QString title = QString(MES_IMG) + QString(TIT_SAVED),
@@ -54,12 +59,18 @@ void MainWindow::pushInformationNotification(QString message)
     trayIcon->showMessage(title, messageText, QSystemTrayIcon::Information, TRAY_DELAY);   
 }
 
+
 void MainWindow::showSavedFile(QString path)
 {
     showMinimized();
     QApplication::alert(this, 0);
     QDir savedDir(path);
     QDesktopServices::openUrl(QUrl::fromLocalFile(savedDir.absolutePath()));
+}
+
+void MainWindow::enableMathCadButton(bool status)
+{
+    ui->menu_other_mathcad_open_button->setEnabled(status);
 }
 
 void MainWindow::setUIlogic()
@@ -164,7 +175,7 @@ void MainWindow::on_menu_other_app_advanced_button_clicked()
 
 void MainWindow::on_menu_device_manualSearch_button_clicked() {
 
-    //std::list<USBDeviceHIDManager> devices = USBDeviceHIDManager::getDevicesList();
+//    std::list<USBDeviceHIDManager> devices = USBDeviceHIDManager::
 
 //    for (auto it = devices.begin(); it != devices.end(); ++it) {
 //        qDebug() << QString::fromStdWString(it->name)
@@ -193,7 +204,8 @@ void MainWindow::on_menu_other_app_reference_button_clicked()
 
 void MainWindow::on_menu_device_winManager_button_clicked()
 {
-    QString deviceManagerpath = LINK_FILE + DATA_PATH + NAMS_DEVMAN;
+    QString deviceManagerpath = LINK_FILE + DATA_PATH + "/" + DIR_BAT +NAMS_DEVMAN;
+    qDebug() << deviceManagerpath;
     QDesktopServices::openUrl(QUrl(deviceManagerpath, QUrl::TolerantMode));
 }
 
@@ -353,10 +365,14 @@ void MainWindow::on_menu_other_data_picture_button_clicked()
 //Нажатие на кнопку проверить версию MathCad
 void MainWindow::on_menu_other_mathcad_check_button_clicked()
 {
-    QSettings settings("HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall", QSettings::NativeFormat);
-    QStringList keyList = settings.allKeys().filter( "DisplayName" );
+    mathcad.check();
+    mathcad.show();
+}
 
-    foreach ( QString key, keyList)
-        qDebug() << settings.value( key ).toString();
-
+void MainWindow::on_menu_other_mathcad_open_button_clicked()
+{
+    mathcad.check();
+    QDir::setCurrent(mathcad.getFolder());
+    QProcess *mcproc = new QProcess(this);
+    mcproc->startDetached(MAT_EXENAM);
 }

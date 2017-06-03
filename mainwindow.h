@@ -5,6 +5,7 @@
 #include "advancedwindow.h"
 #include "picturewindow.h"
 #include "jsondatamanager.h"
+#include "mathcadwindow.h"
 #include <QDir>
 #include <QString>
 #include <QLabel>
@@ -46,6 +47,7 @@ public slots:
     void pushStatusBarMessage(QString message);
     void pushInformationNotification(QString message);
     void showSavedFile(QString path);
+    void enableMathCadButton(bool status);
 
 private slots:
     void on_menu_other_app_advanced_button_clicked();
@@ -59,11 +61,14 @@ private slots:
 
     void on_menu_other_mathcad_check_button_clicked();
 
+    void on_menu_other_mathcad_open_button_clicked();
+
 private:
     Ui::MainWindow *ui;
     AdvancedWindow advanced;
     PictureWindow picture;
     JsonDataManager jsonManager;
+    MathCadWindow mathcad;
     QLabel* portStatus;
     QLabel* connectionStatus;
     void setUIlogic();

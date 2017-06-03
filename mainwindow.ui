@@ -2,6 +2,9 @@
 <ui version="4.0">
  <class>MainWindow</class>
  <widget class="QMainWindow" name="MainWindow">
+  <property name="enabled">
+   <bool>true</bool>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -2122,6 +2125,9 @@
               </item>
               <item>
                <widget class="QToolButton" name="menu_other_mathcad_open_button">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                   <horstretch>0</horstretch>
@@ -2785,8 +2791,8 @@ PNG</string>
    <slot>close()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>119</x>
-     <y>122</y>
+     <x>1058</x>
+     <y>135</y>
     </hint>
     <hint type="destinationlabel">
      <x>1051</x>

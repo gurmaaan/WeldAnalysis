@@ -348,4 +348,45 @@
 #endif
 //
 
+//Окно Маткада
+#ifndef MAT_REGFOLDER
+#define MAT_REGFOLDER "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall"
+#endif
+
+#ifndef MAT_DISPLAYKEY
+#define MAT_DISPLAYKEY "DisplayName"
+#endif
+
+#ifndef MAT_VERSIONKEY
+#define MAT_VERSIONKEY "DisplayName"
+#endif
+
+#ifndef MAT_PATH
+#define MAT_PATH "C:\\Program Files (x86)\\Mathcad\\Mathcad "
+#endif
+
+#ifndef MAT_NAME14
+#define MAT_NAME14 "Mathcad 14"
+#endif
+
+#ifndef MAT_NAME15
+#define MAT_NAME15 "Mathcad 15"
+#endif
+
+#ifndef MAT_EXENAM
+#define MAT_EXENAM "mathcad.exe"
+#endif
+
+#ifndef MAT_SUCCESS
+#define MAT_SUCCESS "Установлен"
+#endif
+
+#ifndef MAT_SUCCESSCOLOR
+#define MAT_SUCCESSCOLOR "color: rgb(131, 198, 63)"
+#endif
+
+#ifndef MAT_SUCCESSMES
+#define MAT_SUCCESSMES "Готов к работе"
+#endif
+
 #endif // CONSTANTS_H
