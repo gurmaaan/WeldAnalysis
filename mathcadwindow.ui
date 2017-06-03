@@ -53,6 +53,9 @@
          <bold>true</bold>
         </font>
        </property>
+       <property name="frameShape">
+        <enum>QFrame::Panel</enum>
+       </property>
        <property name="text">
         <string>Статус:</string>
        </property>
@@ -65,6 +68,9 @@
          <family>Arial</family>
          <pointsize>10</pointsize>
         </font>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::Panel</enum>
        </property>
        <property name="text">
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ff8585;&quot;&gt;Не установлен&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>

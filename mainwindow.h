@@ -23,6 +23,7 @@ public:
     void copyFilesToAppData();
 private:
     void copyFile (QDir *dir, QString name);
+    void copyExeFile(QDir *dir, QString name);
     void createDirectory (QDir *dir, QString name);
     void showCopyMessageBox (QString fileName, QString *filePath);
     void showCreateMessageBox (QString dirName);
@@ -58,10 +59,10 @@ private slots:
     void on_menu_file_restart_button_clicked();
     void maximizeButtonAction();
     void on_menu_other_data_picture_button_clicked();
-
     void on_menu_other_mathcad_check_button_clicked();
-
     void on_menu_other_mathcad_open_button_clicked();
+    void on_menu_device_driverInfo_button_clicked();
+    void on_menu_device_driverSetUp_button_clicked();
 
 private:
     Ui::MainWindow *ui;
@@ -77,9 +78,11 @@ private:
     void setStatusBarWidgets();
     bool eventFilter(QObject *watched, QEvent *event);
     void resizeEvent(QResizeEvent *event);
-
+    QTimer *timer;
     QSystemTrayIcon *trayIcon;
     QMenu *trayIconMenu;
+
+
 
 };
 

@@ -191,9 +191,45 @@
 #ifndef JS_KEY
 #define JS_KEY "Key"
 #endif
+
 #ifndef JS_VAL
 #define JS_VAL "Value"
 #endif
+//
+
+//Имена ехе с дровами
+#ifndef DRIVER_FTDI
+#define DRIVER_FTDI "FTDI.exe"
+#endif
+
+#ifndef DRIVER_IVI
+#define DRIVER_IVI "IVI.exe"
+#endif
+
+#ifndef DRIVER_AGILENT
+#define DRIVER_AGILENT "Agilent.msi"
+#endif
+
+#ifndef DRIVER_IVIVARIBLE
+#define DRIVER_IVIVARIBLE  "IVIROOTDIR"
+#endif
+
+#ifndef DRIVER_AGIVARIBLE
+#define DRIVER_AGIVARIBLE  "Lib_x64\\msc\\Ag34401.lib"
+#endif
+
+#ifndef DRIVER_MESSAGE
+#define DRIVER_MESSAGE  "Нажмите для установки "
+#endif
+
+#ifndef DRIVER_MESSAGEWAIT
+#define DRIVER_MESSAGEWAIT  "Дождитесь 3-х системных уведомлений "
+#endif
+
+#ifndef DRIVER_TEXT
+#define DRIVER_TEXT  "Драйвер "
+#endif
+
 //
 
 //Имена файлов NAM_
@@ -239,6 +275,10 @@
 
 #ifndef DIR_BAT
 #define DIR_BAT "BAT"
+#endif
+
+#ifndef DIR_DRIVERS
+#define DIR_DRIVERS "Drivers"
 #endif
 //
 
@@ -378,7 +418,7 @@
 #endif
 
 #ifndef MAT_SUCCESS
-#define MAT_SUCCESS "Установлен"
+#define MAT_SUCCESS " установлен"
 #endif
 
 #ifndef MAT_SUCCESSCOLOR

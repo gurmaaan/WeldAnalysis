@@ -40,4 +40,5 @@
         <file>UserManual.pdf</file>
         <file>DeviceManager.bat</file>
     </qresource>
+    <qresource prefix="/Drivers"/>
 </RCC>

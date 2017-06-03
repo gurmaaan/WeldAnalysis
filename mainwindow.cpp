@@ -16,6 +16,7 @@
 #include <QEvent>
 #include <QMenu>
 #include <QSettings>
+#include <QDesktopServices>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -103,6 +104,7 @@ void MainWindow::setTablesUI()
     ui->realTime_table->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
 }
 
+//Добавление меню в кнопку полного экрана
 void MainWindow::setFullScreenButtonMenu()
 {
     QMenu *menu = new QMenu();
@@ -116,6 +118,7 @@ void MainWindow::setFullScreenButtonMenu()
     connect(maximazeAction, SIGNAL(triggered(bool)), this, SLOT(maximizeButtonAction()));
 }
 
+//Настройка статус бара
 void MainWindow::setStatusBarWidgets()
 {
     QLabel *portLabel = new QLabel(this);
@@ -196,12 +199,14 @@ void MainWindow::on_menu_other_app_fullScreen_button_clicked()
         this->showNormal();
 }
 
+//Открытие руководства пользователя
 void MainWindow::on_menu_other_app_reference_button_clicked()
 {
     QString userManualPath = LINK_FILE + DATA_PATH + NAMS_MANUAL;
     QDesktopServices::openUrl(QUrl(userManualPath, QUrl::TolerantMode));
 }
 
+//Менеджер устройств Windows
 void MainWindow::on_menu_device_winManager_button_clicked()
 {
     QString deviceManagerpath = LINK_FILE + DATA_PATH + "/" + DIR_BAT +NAMS_DEVMAN;
@@ -260,11 +265,21 @@ void AppDir::copyFilesToAppData()
     //Создание папок и проверка отсутствия
     createDirectory(&dir, DIR_DEFAULTS);
     createDirectory(&dir, DIR_BAT);
+    createDirectory(&dir, DIR_DRIVERS);
 
 //Переход в директорию батников
     dir.cd(DIR_BAT);
     //Батник запуска девайс менеджера
     copyFile(&dir, NAM_DEVMAN);
+
+//Перешли в папку дров
+    dir.cdUp();
+    dir.cd(DIR_DRIVERS);
+    //Копируем дрова с ехе
+    copyExeFile(&dir, DRIVER_FTDI);
+    copyExeFile(&dir, DRIVER_IVI);
+    copyExeFile(&dir, DRIVER_AGILENT);
+
 }
 
 //Функция копирования файла
@@ -279,6 +294,21 @@ void AppDir::copyFile(QDir *dir, QString name)
     }
     else if (copied)
         showCopyMessageBox(NAM_MANUAL, &abs);
+}
+
+//Копирование экзешников с дровами
+void AppDir::copyExeFile(QDir *dir, QString name)
+{
+    QString absAppData = dir->path() + "/" + name;
+    QString absCoreDir = QCoreApplication::applicationDirPath() + "/" + QString(DIR_DRIVERS) + "/" + name;
+    bool copied = false;
+    if(QFile::copy(absCoreDir, absAppData))
+    {
+        qDebug() << MES_FILE << name << MES_COPIEDF;
+        copied = true;
+    }
+    else if (copied)
+        showCopyMessageBox(NAM_MANUAL, &absAppData);
 }
 
 //Функция создания папки приложения
@@ -369,10 +399,57 @@ void MainWindow::on_menu_other_mathcad_check_button_clicked()
     mathcad.show();
 }
 
+//Отркрыть макткад
 void MainWindow::on_menu_other_mathcad_open_button_clicked()
 {
     mathcad.check();
     QDir::setCurrent(mathcad.getFolder());
     QProcess *mcproc = new QProcess(this);
     mcproc->startDetached(MAT_EXENAM);
+}
+
+//Наличие драйверов в системе
+void MainWindow::on_menu_device_driverInfo_button_clicked()
+{
+    pushStatusBarMessage(DRIVER_MESSAGEWAIT);
+    bool ividriver = false,
+         ftdidriver = false,
+         agilentdriver = false;
+
+    //Если компоненты ИВИ установлены => есть системная переменная IVIROOTDIR, проверка:
+    QStringList varibleList =(QProcess::systemEnvironment());
+    foreach (const QString &varible, varibleList) {
+        if (varible.contains(DRIVER_IVIVARIBLE)) {
+            ividriver = true;
+            trayIcon->showMessage(QString(DRIVER_TEXT) + QString(DRIVER_IVI) + QString(MAT_SUCCESS), " ", QSystemTrayIcon::Information, TRAY_DELAY/4);
+
+            QStringList var = varible.split("=");
+            QString libPath = var[1] + DRIVER_AGIVARIBLE;
+            if (QFile(libPath).exists()) {
+                agilentdriver = true;
+                trayIcon->showMessage(QString(DRIVER_TEXT) + QString(DRIVER_AGILENT) + QString(MAT_SUCCESS), " ", QSystemTrayIcon::Information, TRAY_DELAY/4);
+            }
+            else {
+                trayIcon->showMessage(QString(DRIVER_TEXT) + QString(DRIVER_AGILENT) + QString(MES_NOTCOPIEDF), DRIVER_MESSAGE, QSystemTrayIcon::Critical, TRAY_DELAY/4);
+            }
+            break;
+        }
+    }
+    if (!ividriver)
+        trayIcon->showMessage(QString(DRIVER_TEXT) + QString(DRIVER_IVI) + QString(MES_NOTCOPIEDF), DRIVER_MESSAGE, QSystemTrayIcon::Critical, TRAY_DELAY/4);
+}
+
+//Установить
+void MainWindow::on_menu_device_driverSetUp_button_clicked()
+{
+    QDir::setCurrent(DATA_PATH + "/" + QString(DIR_DRIVERS));
+
+    QProcess *ftdiproc = new QProcess(this);
+    QProcess *iviproc = new QProcess(this);
+    QProcess *agilentproc = new QProcess(this);
+
+    ftdiproc->startDetached(DRIVER_FTDI);
+    iviproc->startDetached(DRIVER_IVI);
+    agilentproc->startDetached(DRIVER_AGILENT);
+
 }

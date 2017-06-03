@@ -24,6 +24,7 @@ void MathCadWindow::check()
     foreach ( QString key, keyListDisplay)
     {
         QString currentSetting = settings.value(key).toString();
+        //qDebug() << currentSetting;
         if((currentSetting.contains(MAT_NAME14, Qt::CaseInsensitive)) || (currentSetting.contains(MAT_NAME15, Qt::CaseInsensitive)))
         {
             exist = true;

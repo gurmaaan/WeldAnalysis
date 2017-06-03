@@ -31,7 +31,8 @@ SOURCES += main.cpp\
     jsondatamanager.cpp \
     picturewindow.cpp \
     advancedwindow.cpp \
-    ExternalLibs/QCustomPlot/qcustomplot.cpp
+    ExternalLibs/QCustomPlot/qcustomplot.cpp \
+    mathcadwindow.cpp
 
 HEADERS  += mainwindow.h \
     exceldatamanager.h \
@@ -40,11 +41,13 @@ HEADERS  += mainwindow.h \
     constants.h \
     picturewindow.h \
     advancedwindow.h \
-    ExternalLibs/QCustomPlot/qcustomplot.h
+    ExternalLibs/QCustomPlot/qcustomplot.h \
+    mathcadwindow.h
 
 FORMS    += mainwindow.ui \
     picturewindow.ui \
-    advancedwindow.ui
+    advancedwindow.ui \
+    mathcadwindow.ui
 
 RESOURCES += \
     sources.qrc
