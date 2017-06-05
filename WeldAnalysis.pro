@@ -4,11 +4,11 @@
 #
 #-------------------------------------------------
 
-QT       += core gui printsupport
+QT       += core gui printsupport axcontainer help
 
 #QT += axcontainer - needed for Excel document Read/Write
-QT += axcontainer
 #QT+=printer support -needed for QCustomPlot library
+
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport
 
 TARGET = WeldAnalysis
@@ -31,8 +31,7 @@ SOURCES += main.cpp\
     jsondatamanager.cpp \
     picturewindow.cpp \
     advancedwindow.cpp \
-    ExternalLibs/QCustomPlot/qcustomplot.cpp \
-    mathcadwindow.cpp
+    ExternalLibs/QCustomPlot/qcustomplot.cpp
 
 HEADERS  += mainwindow.h \
     exceldatamanager.h \
@@ -41,13 +40,11 @@ HEADERS  += mainwindow.h \
     constants.h \
     picturewindow.h \
     advancedwindow.h \
-    ExternalLibs/QCustomPlot/qcustomplot.h \
-    mathcadwindow.h
+    ExternalLibs/QCustomPlot/qcustomplot.h
 
 FORMS    += mainwindow.ui \
     picturewindow.ui \
-    advancedwindow.ui \
-    mathcadwindow.ui
+    advancedwindow.ui
 
 RESOURCES += \
     sources.qrc
@@ -55,3 +52,5 @@ RESOURCES += \
 win32:RC_FILE = iconsource.rc
 
 TRANSLATIONS +=ru.ts
+
+STATECHARTS +=

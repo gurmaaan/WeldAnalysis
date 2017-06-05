@@ -23,6 +23,8 @@ private slots:
     void on_pathList_add_button_clicked();
     void on_pathList_refresh_button_clicked();
 
+    void on_pushButton_clicked();
+
 private:
     Ui::AdvancedMode *ui;
     void updatePathList();

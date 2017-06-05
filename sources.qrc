@@ -34,6 +34,12 @@
         <file>Defaults/Statistics.json</file>
         <file>Icons/Other/Maximazed.png</file>
         <file>Icons/MainIcon.png</file>
+        <file>Icons/Other/InternalTable.png</file>
+        <file>Icons/Other/TableExcel.png</file>
+        <file>Icons/Other/TxtTable.png</file>
+        <file>Icons/Device/Agilent.png</file>
+        <file>Icons/Device/FTDI.png</file>
+        <file>Icons/Device/IVI.png</file>
     </qresource>
     <qresource prefix="/Other">
         <file>PathList.json</file>
@@ -41,4 +47,8 @@
         <file>DeviceManager.bat</file>
     </qresource>
     <qresource prefix="/Drivers"/>
+    <qresource prefix="/">
+        <file>Hgfdfg.qml</file>
+        <file>HgfdfgForm.ui.qml</file>
+    </qresource>
 </RCC>

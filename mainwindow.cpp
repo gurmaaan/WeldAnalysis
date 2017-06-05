@@ -24,16 +24,15 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     DATA_PATH = apdr.dataDirPath();
     apdr.copyFilesToAppData();
+
     connect(&picture, SIGNAL(savedFileName(QString)), this, SLOT(pushStatusBarMessage(QString)));
     connect(&picture, SIGNAL(savedFileName(QString)), this, SLOT(pushInformationNotification(QString)));
     connect(&picture, SIGNAL(savedFilePath(QString)), this, SLOT(showSavedFile(QString)));
-    connect(&mathcad, SIGNAL(detected(bool)), this, SLOT(enableMathCadButton(bool)));
 
     ui->setupUi(this);
     setUIlogic();
-    ui->menu_other_app_fullScreen_button->installEventFilter(this);
 
-    mathcad.check();
+    checkMathCad();
 
     trayIcon = new QSystemTrayIcon(this);
     trayIcon->setToolTip(APP_NAME);
@@ -60,7 +59,7 @@ void MainWindow::pushInformationNotification(QString message)
     trayIcon->showMessage(title, messageText, QSystemTrayIcon::Information, TRAY_DELAY);   
 }
 
-
+//Открытие проводника после сохранения изображения
 void MainWindow::showSavedFile(QString path)
 {
     showMinimized();
@@ -69,18 +68,18 @@ void MainWindow::showSavedFile(QString path)
     QDesktopServices::openUrl(QUrl::fromLocalFile(savedDir.absolutePath()));
 }
 
-void MainWindow::enableMathCadButton(bool status)
-{
-    ui->menu_other_mathcad_open_button->setEnabled(status);
-}
-
+//Установка всех предварительных действий в интерфейсе
 void MainWindow::setUIlogic()
 {
+    ui->menu_other_app_fullScreen_button->installEventFilter(this);
+    ui->menu_other_data_table_button->installEventFilter(this);
+
     setTablesUI();
-    setFullScreenButtonMenu();
+    setButtonsMenu();
     setStatusBarWidgets();
 }
 
+//Инициализация таблиц
 void MainWindow::setTablesUI()
 {
     //Создание моделей для установки в tableView
@@ -104,18 +103,117 @@ void MainWindow::setTablesUI()
     ui->realTime_table->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
 }
 
-//Добавление меню в кнопку полного экрана
-void MainWindow::setFullScreenButtonMenu()
+//Добавление меню ПКМ во все кнопки
+void MainWindow::setButtonsMenu()
 {
-    QMenu *menu = new QMenu();
-    QAction *maximazeAction = new QAction("", this);
-    QPixmap iconPicture(RES_MAXICON);
-    QIcon icon(iconPicture);
-    maximazeAction->setIcon(icon);
-    menu->addAction(maximazeAction);
-    ui->menu_other_app_fullScreen_button->setMenu(menu);
+    //Кнопка полного экрана
+    QMenu *menuFullScreen = new QMenu();
+    menuFullScreen->addAction(ui->action_fullScreen_maximize);
+    ui->menu_other_app_fullScreen_button->setMenu(menuFullScreen);
 
-    connect(maximazeAction, SIGNAL(triggered(bool)), this, SLOT(maximizeButtonAction()));
+    //Кнопка таблица
+    QMenu *menuTable = new QMenu();
+    menuTable->addAction(ui->action_table_internal);
+    menuTable->addAction(ui->action_table_excel);
+    menuTable->addAction(ui->action_table_notepad);
+    ui->menu_other_data_table_button->setMenu(menuTable);
+
+}
+
+//Обработчик всех нажатий ПКМ по кнопкам
+bool MainWindow::eventFilter(QObject *watched, QEvent *event)
+{
+    QToolButton *buttonTable = ui->menu_other_data_table_button;
+    if ( (watched == buttonTable) && (event->type() == QEvent::MouseButtonPress) )
+    {
+        QMouseEvent *e = static_cast<QMouseEvent *>(event);
+        if (e->button() == Qt::RightButton) {
+            buttonTable->menu()->popup(buttonTable->mapToGlobal(e->pos()));
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    QToolButton *buttonFullScreen = ui->menu_other_app_fullScreen_button;
+    if ( (watched == buttonFullScreen) && (event->type() == QEvent::MouseButtonPress) )
+    {
+        QMouseEvent *e = static_cast<QMouseEvent *>(event);
+        if (e->button() == Qt::RightButton) {
+            buttonFullScreen->menu()->popup(buttonFullScreen->mapToGlobal(e->pos()));
+            return true;
+        } else {
+            return false;
+        }
+    }
+    return false;
+}
+
+//Проверка установленной версии Маткада
+void MainWindow::checkMathCad()
+{
+    QSettings settings(MAT_REGFOLDER, QSettings::NativeFormat);
+    QStringList keyListDisplay = settings.allKeys().filter( MAT_DISPLAYKEY );
+    QStringList versionKeyList = settings.allKeys().filter( MAT_VERSIONKEY );
+    QStringList pathKeyList = settings.allKeys().filter( "InstallLocation");
+
+    bool exist = false, versionGood = false;
+
+    foreach ( QString key, keyListDisplay)
+    {
+        const QString currentSetting = settings.value(key).toString();
+        int step = keyListDisplay.indexOf(key);
+        //const QString currentPath = settings.value(pathKeyList.at(step)).toString();
+        const QString currentVersion = settings.value(versionKeyList.at(step)).toString();
+        if( (currentSetting == MAT_NAME14) || (currentSetting == MAT_NAME15) )
+        {
+            exist = true;
+
+            ui->menu_other_mathcad_versionStatus->setText(currentVersion);
+            QStringList versionList = currentVersion.split(".");
+            bool convertation;
+            int versionNumber = versionList.at(0).toInt(&convertation, 10);
+            if(convertation && (versionNumber >= 14))
+                versionGood = true;
+            else
+            {
+                versionGood = false;
+                QString badMes = QString(MAT_VERMES) + currentVersion + ".";
+                trayIcon->showMessage(MAT_ERRORVERTIT, badMes, QSystemTrayIcon::Critical, TRAY_DELAY/4);
+                statusBar()->showMessage(badMes, TRAY_DELAY);
+            }
+
+            break;
+        }
+        else
+        {
+            exist = false;
+        }
+    }
+
+    ui->menu_other_mathcad_statusCheck->setChecked(exist);
+    if (exist) {
+        ui->menu_other_mathcad_statusCheck->setStyleSheet(MAT_SUCCESSCOLOR);
+        ui->menu_other_mathcad_statusCheck->setText(MAT_SUCCESSINF);
+    }
+    else {
+        trayIcon->showMessage(MAT_ERRORTIT, MAT_ERRORMES, QSystemTrayIcon::Critical, TRAY_DELAY/4);
+        statusBar()->showMessage(MAT_ERRORTIT, TRAY_DELAY);
+        ui->menu_other_mathcad_statusCheck->setText(MAT_ERRORINF);
+        ui->menu_other_mathcad_statusCheck->setStyleSheet(MAT_ERRORCOLOR);
+    }
+
+    ui->menu_other_mathcad_messageCheck->setChecked(exist && versionGood);
+    if (exist && versionGood) {
+        ui->menu_other_mathcad_messageCheck->setStyleSheet(MAT_SUCCESSCOLOR);
+        ui->menu_other_mathcad_messageCheck->setText(MAT_SUCCESSVERINF);
+    }
+    else{
+        ui->menu_other_mathcad_messageCheck->setStyleSheet(MAT_ERRORCOLOR);
+        ui->menu_other_mathcad_messageCheck->setText(MAT_ERRORVERINF);
+    }
+
+    ui->menu_other_mathcad_open_button->setEnabled(exist && versionGood);
 }
 
 //Настройка статус бара
@@ -137,38 +235,6 @@ void MainWindow::setStatusBarWidgets()
     statusBar()->addWidget(portStatus);
 }
 
-//Обработчик нажатия на кнопку полного экрана (ПКМ)
-bool MainWindow::eventFilter(QObject *watched, QEvent *event)
-{
-    QToolButton *button = ui->menu_other_app_fullScreen_button;
-    if ( (watched == button) && (event->type() == QEvent::MouseButtonPress) )
-    {
-        QMouseEvent *e = static_cast<QMouseEvent *>(event);
-        if (e->button() == Qt::RightButton) {
-            button->menu()->popup(button->mapToGlobal(e->pos()));
-            return true;
-        } else
-            return false;
-    }
-    return false;
-}
-
-//TODO - fix with FullScreen button context menu
-void MainWindow::resizeEvent(QResizeEvent *event)
-{
-    if ( isMaximized() )
-    {
-        //qDebug() << windowState();
-        ui->menu_other_app_fullScreen_button->menu()->actions().at(0)->setText(ACT_MIN);
-        ui->menu_other_app_fullScreen_button->setChecked(false);
-    }
-    else
-    {
-        ui->menu_other_app_fullScreen_button->menu()->actions().at(0)->setText(ACT_MAX);
-        ui->menu_other_app_fullScreen_button->setChecked(false);
-    }
-}
-
 //Обработчик нажатия на кнопку продвинутых настроек
 void MainWindow::on_menu_other_app_advanced_button_clicked()
 {
@@ -176,6 +242,8 @@ void MainWindow::on_menu_other_app_advanced_button_clicked()
     advanced.show();
 }
 
+//Ручной поиск устройства
+//TODO  интеграция сережиной хуйни
 void MainWindow::on_menu_device_manualSearch_button_clicked() {
 
 //    std::list<USBDeviceHIDManager> devices = USBDeviceHIDManager::
@@ -188,18 +256,8 @@ void MainWindow::on_menu_device_manualSearch_button_clicked() {
 //    }
 }
 
-//Обработчик нажатия на кнопку полного экрана (ЛКМ)
-void MainWindow::on_menu_other_app_fullScreen_button_clicked()
-{
-    bool buttonStatus = ui->menu_other_app_fullScreen_button->isChecked();
-    ui->menu_other_app_fullScreen_button->setChecked(buttonStatus);
-    if(buttonStatus)
-        this->showFullScreen();
-    else
-        this->showNormal();
-}
-
 //Открытие руководства пользователя
+//TODO создать само руководство + руководство в формате chm
 void MainWindow::on_menu_other_app_reference_button_clicked()
 {
     QString userManualPath = LINK_FILE + DATA_PATH + NAMS_MANUAL;
@@ -221,27 +279,36 @@ void MainWindow::on_menu_file_restart_button_clicked()
     QProcess::startDetached(qApp->arguments()[0], qApp->arguments());
 }
 
-//Действие при нажатии на меню кнопки полного экрана
-void MainWindow::maximizeButtonAction()
+//Нажатие кнопки полного экрана ЛКМ
+void MainWindow::on_menu_other_app_fullScreen_button_clicked(bool checked)
 {
-    if (this->isMaximized())
-    {
-        //ui->menu_other_app_fullScreen_button->menu()->actions().at(0)->setText(ACT_MAX);
-        ui->menu_other_app_fullScreen_button->setChecked(false);
-        showNormal();
-    }
+    if (ui->action_fullScreen_maximize->isChecked())
+        ui->action_fullScreen_maximize->setChecked(false);
+    if (checked)
+        showFullScreen();
     else
-    {
-        //ui->menu_other_app_fullScreen_button->menu()->actions().at(0)->setText(ACT_MIN);
-        ui->menu_other_app_fullScreen_button->setChecked(false);
-        showMaximized();
-    }
+        showNormal();
 }
 
 //Возвращает путь к папке с данными
 QString AppDir::dataDirPath()
 {
     return QStandardPaths::writableLocation(QStandardPaths::DataLocation);
+}
+
+//Возвращает путь к програм файлс исходя из значения системной переменной.
+QString AppDir::programmFilesPath()
+{
+    QStringList varibleList =(QProcess::systemEnvironment());
+    foreach (QString varible, varibleList) {
+        qDebug() << varible;
+        if (varible.contains(PROGRAMFILES, Qt::CaseInsensitive) && (varible.indexOf(PROGRAMFILES) == 0)) {
+            QStringList varList = varible.split("=");
+            return varList.at(1);
+            break;
+        }
+    }
+    return " ";
 }
 
 //Копирование программных файлов в системную папку приложения
@@ -385,51 +452,65 @@ void MainWindow::on_menu_other_data_picture_button_clicked()
     QTemporaryDir tempDir;
     if (tempDir.isValid()) {
       const QString tempFile = tempDir.path() + "/temp.png";
-      ui->graph_screen->savePng(tempFile);
+      ui->experiment_graph_tab->savePng(tempFile);
       picture.openPicture(tempFile);
       picture.show();
       QApplication::alert(this, 0);
     }
 }
 
-//Нажатие на кнопку проверить версию MathCad
-void MainWindow::on_menu_other_mathcad_check_button_clicked()
-{
-    mathcad.check();
-    mathcad.show();
-}
-
-//Отркрыть макткад
+//Кнопка отркрыть маткад
 void MainWindow::on_menu_other_mathcad_open_button_clicked()
 {
-    mathcad.check();
-    QDir::setCurrent(mathcad.getFolder());
-    QProcess *mcproc = new QProcess(this);
-    mcproc->startDetached(MAT_EXENAM);
+    QStringList versionList = ui->menu_other_mathcad_versionStatus->text().split(".");
+    QString mathCadPath =  apdr.programmFilesPath() + QString(MAT_PATH) + versionList.at(0) + "\\";
+    QDir::setCurrent(mathCadPath);
+    QProcess *mcproc = new QProcess();
+    if ( mcproc->startDetached(MAT_EXENAM) ) {
+        trayIcon->showMessage(MAT_SUCCPROC, " ", QSystemTrayIcon::Information, TRAY_DELAY/4);
+    }
+    else {
+        trayIcon->showMessage(MAT_ERRPROC, QString(MES_SELFBROWSE) + mathCadPath, QSystemTrayIcon::Critical, TRAY_DELAY/4);
+    }
+}
+
+//Кнопка наличия маткада проверка
+void MainWindow::on_menu_other_mathcad_check_clicked()
+{
+    checkMathCad();
+    bool ok = ui->menu_other_mathcad_messageCheck->isChecked() && ui->menu_other_mathcad_statusCheck->isChecked();
+    if(ok) {
+        QString tittle = QString(MAT_SUCCESSTIT);
+        QString message = QString(MAT_SUCCESSTIT) + ui->menu_other_mathcad_versionStatus->text() + QString(MAT_SUCCESSVERENB);
+        trayIcon->showMessage(tittle, message, QSystemTrayIcon::Information, TRAY_DELAY/4);
+        statusBar()->showMessage(message);
+    }
 }
 
 //Наличие драйверов в системе
 void MainWindow::on_menu_device_driverInfo_button_clicked()
 {
     pushStatusBarMessage(DRIVER_MESSAGEWAIT);
-    bool ividriver = false,
-         ftdidriver = false,
-         agilentdriver = false;
+    bool ividriver = false;
+         //ftdidriver = false,
+         //agilentdriver = false;
 
     //Если компоненты ИВИ установлены => есть системная переменная IVIROOTDIR, проверка:
     QStringList varibleList =(QProcess::systemEnvironment());
     foreach (const QString &varible, varibleList) {
+        qDebug() << varible;
         if (varible.contains(DRIVER_IVIVARIBLE)) {
             ividriver = true;
-            trayIcon->showMessage(QString(DRIVER_TEXT) + QString(DRIVER_IVI) + QString(MAT_SUCCESS), " ", QSystemTrayIcon::Information, TRAY_DELAY/4);
+            //trayIcon->showMessage(QString(DRIVER_TEXT) + QString(DRIVER_IVI) + QString(MAT_SUCCESS), " ", QSystemTrayIcon::Information, TRAY_DELAY/4);
 
             QStringList var = varible.split("=");
             QString libPath = var[1] + DRIVER_AGIVARIBLE;
             if (QFile(libPath).exists()) {
-                agilentdriver = true;
-                trayIcon->showMessage(QString(DRIVER_TEXT) + QString(DRIVER_AGILENT) + QString(MAT_SUCCESS), " ", QSystemTrayIcon::Information, TRAY_DELAY/4);
+                //agilentdriver = true;
+                //trayIcon->showMessage(QString(DRIVER_TEXT) + QString(DRIVER_AGILENT) + QString(MAT_SUCCESS), " ", QSystemTrayIcon::Information, TRAY_DELAY/4);
             }
             else {
+                //agilentdriver = false;
                 trayIcon->showMessage(QString(DRIVER_TEXT) + QString(DRIVER_AGILENT) + QString(MES_NOTCOPIEDF), DRIVER_MESSAGE, QSystemTrayIcon::Critical, TRAY_DELAY/4);
             }
             break;
@@ -439,7 +520,7 @@ void MainWindow::on_menu_device_driverInfo_button_clicked()
         trayIcon->showMessage(QString(DRIVER_TEXT) + QString(DRIVER_IVI) + QString(MES_NOTCOPIEDF), DRIVER_MESSAGE, QSystemTrayIcon::Critical, TRAY_DELAY/4);
 }
 
-//Установить
+//Установить драйвера
 void MainWindow::on_menu_device_driverSetUp_button_clicked()
 {
     QDir::setCurrent(DATA_PATH + "/" + QString(DIR_DRIVERS));
@@ -452,4 +533,15 @@ void MainWindow::on_menu_device_driverSetUp_button_clicked()
     iviproc->startDetached(DRIVER_IVI);
     agilentproc->startDetached(DRIVER_AGILENT);
 
+}
+
+//Действие при нажатии на пункт "Развернуть "меню кнопки полного экрана
+void MainWindow::on_action_fullScreen_maximize_triggered(bool checked)
+{
+    if (ui->menu_other_app_fullScreen_button->isChecked())
+        ui->menu_other_app_fullScreen_button->setChecked(false);
+    if(checked)
+        this->showMaximized();
+    else
+        this->showNormal();
 }

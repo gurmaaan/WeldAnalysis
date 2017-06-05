@@ -12,6 +12,10 @@
 #define LINK_FILE "file:///"
 #endif
 
+#ifndef PROGRAMFILES
+#define PROGRAMFILES "PROGRAMFILES"
+#endif
+
 #ifndef TRAY_DELAY
 #define TRAY_DELAY 3000
 #endif
@@ -398,11 +402,11 @@
 #endif
 
 #ifndef MAT_VERSIONKEY
-#define MAT_VERSIONKEY "DisplayName"
+#define MAT_VERSIONKEY "DisplayVersion"
 #endif
 
 #ifndef MAT_PATH
-#define MAT_PATH "C:\\Program Files (x86)\\Mathcad\\Mathcad "
+#define MAT_PATH "\\Mathcad\\Mathcad "
 #endif
 
 #ifndef MAT_NAME14
@@ -417,12 +421,64 @@
 #define MAT_EXENAM "mathcad.exe"
 #endif
 
-#ifndef MAT_SUCCESS
-#define MAT_SUCCESS " установлен"
+#ifndef MAT_ERRORTIT
+#define MAT_ERRORTIT "MathCad не установлен"
+#endif
+
+#ifndef MAT_SUCCESSTIT
+#define MAT_SUCCESSTIT "MathCad установлен"
+#endif
+
+#ifndef MAT_SUCCESSINF
+#define MAT_SUCCESSINF "Установлен"
+#endif
+
+#ifndef MAT_ERRORINF
+#define MAT_ERRORINF "Не установлен"
+#endif
+
+#ifndef MAT_SUCCPROC
+#define MAT_SUCCPROC "Программа MathCad запущена"
+#endif
+
+#ifndef MAT_ERRPROC
+#define MAT_ERRPROC "Не удалось запустить MathCad "
+#endif
+
+#ifndef MAT_SUCCESSVERINF
+#define MAT_SUCCESSVERINF "Подходит"
+#endif
+
+#ifndef MAT_SUCCESSVERENB
+#define MAT_SUCCESSVERENB " Версия пригодня для нормальной работы."
+#endif
+
+#ifndef MAT_ERRORVERINF
+#define MAT_ERRORVERINF "Не подходит"
+#endif
+
+#ifndef MAT_VERMES
+#define MAT_VERMES "Текущая версия MathCad "
+#endif
+
+#ifndef MAT_ERRORMES
+#define MAT_ERRORMES "Программе не удалось найти MathCad среди установленных приложений. Установите корректную версию MathCad или переустановите существующую."
+#endif
+
+#ifndef MAT_ERRORVERMES
+#define MAT_ERRORVERMES " Требуется установленная версия не ниже 14."
+#endif
+
+#ifndef MAT_ERRORVERTIT
+#define MAT_ERRORVERTIT "Версия MathCad не подходит"
 #endif
 
 #ifndef MAT_SUCCESSCOLOR
 #define MAT_SUCCESSCOLOR "color: rgb(131, 198, 63)"
+#endif
+
+#ifndef MAT_ERRORCOLOR
+#define MAT_ERRORCOLOR "color:rgb(199, 0, 0)"
 #endif
 
 #ifndef MAT_SUCCESSMES

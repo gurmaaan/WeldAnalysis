@@ -5,6 +5,7 @@
 #include <QFileInfo>
 #include <QClipboard>
 #include <QStandardItemModel>
+#include <QDesktopServices>
 #include "constants.h"
 
 AdvancedWindow::AdvancedWindow(QWidget *parent) :
@@ -69,4 +70,9 @@ void AdvancedWindow::on_pathList_refresh_button_clicked()
 {
     manager.saveJsonFile(ui->pathList_table->model());
     updatePathList();
+}
+
+void AdvancedWindow::on_pushButton_clicked()
+{
+    QDesktopServices::openUrl(QUrl(ui->label_2->text(), QUrl::TolerantMode));
 }
