@@ -62,6 +62,40 @@ private slots:
     void on_menu_other_app_fullScreen_button_clicked(bool checked);
     void on_menu_other_mathcad_check_clicked();
     void on_action_fullScreen_maximize_triggered(bool checked);
+    void on_menu_experiment_gridU_spin_valueChanged(double arg1);
+    void on_menu_experiment_gridU_slider_sliderMoved(int position);
+
+    void on_menu_experiment_grid_checkbox_toggled(bool checked);
+
+    void on_menu_experiment_minMax_checkbox_toggled(bool checked);
+
+    void on_menu_experiment_gridT_slider_sliderMoved(int position);
+
+    void on_menu_experiment_gridT_spin_valueChanged(int arg1);
+
+    void on_menu_experiment_curveDT_slider_sliderMoved(int position);
+
+    void on_menu_experiment_curveDT_spin_valueChanged(int arg1);
+
+    void on_checkBox_toggled(bool checked);
+
+    void on_action_driverl_ivi_triggered();
+    
+    void on_action_driver_agilent_triggered();
+    
+    void on_action_driver_ftdi_triggered();
+    
+    void on_menu_experiment_limitsNmax_radio_toggled(bool checked);
+
+    void on_menu_experiment_limitsTinterval_radio_toggled(bool checked);
+
+    void on_action_downloadl_ivi_triggered();
+
+    void on_action_download_agilent_triggered();
+
+    void on_action_downloadr_ftdi_triggered();
+
+    void on_menu_device_driverManual_button_clicked();
 
 private:
     Ui::MainWindow *ui;
@@ -78,6 +112,8 @@ private:
     QSystemTrayIcon *trayIcon;
     QMenu *trayIconMenu;
     void checkMathCad();
+    void pushDownLoadMessage(QString name, QString link, bool status);
+    void pushSetUpMessage(QString name, QString path, bool status, bool exist);
 };
 
 #endif // MAINWINDOW_H

@@ -73,6 +73,8 @@ void MainWindow::setUIlogic()
 {
     ui->menu_other_app_fullScreen_button->installEventFilter(this);
     ui->menu_other_data_table_button->installEventFilter(this);
+    ui->menu_device_driverSetUp_button->installEventFilter(this);
+    ui->menu_device_driverManual_button->installEventFilter(this);
 
     setTablesUI();
     setButtonsMenu();
@@ -118,6 +120,20 @@ void MainWindow::setButtonsMenu()
     menuTable->addAction(ui->action_table_notepad);
     ui->menu_other_data_table_button->setMenu(menuTable);
 
+    //Кнопка установки драйверов
+    QMenu *menuDriverSetUp = new QMenu();
+    menuDriverSetUp->addAction(ui->action_driverl_ivi);
+    menuDriverSetUp->addAction(ui->action_driver_agilent);
+    menuDriverSetUp->addAction(ui->action_driver_ftdi);
+    ui->menu_device_driverSetUp_button->setMenu(menuDriverSetUp);
+
+    //Кнопка скачивания драйверов
+    QMenu *menuDownload = new QMenu();
+    menuDownload->addAction(ui->action_downloadl_ivi);
+    menuDownload->addAction(ui->action_download_agilent);
+    menuDownload->addAction(ui->action_downloadr_ftdi);
+    ui->menu_device_driverManual_button->setMenu(menuDownload);
+
 }
 
 //Обработчик всех нажатий ПКМ по кнопкам
@@ -146,6 +162,31 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
             return false;
         }
     }
+
+    QToolButton *buttonDriverSetUp = ui->menu_device_driverSetUp_button;
+    if ( (watched == buttonDriverSetUp) && (event->type() == QEvent::MouseButtonPress) )
+    {
+        QMouseEvent *e = static_cast<QMouseEvent *>(event);
+        if (e->button() == Qt::RightButton) {
+            buttonDriverSetUp->menu()->popup(buttonDriverSetUp->mapToGlobal(e->pos()));
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    QToolButton *buttonDriverDownload = ui->menu_device_driverManual_button;
+    if ( (watched == buttonDriverDownload) && (event->type() == QEvent::MouseButtonPress) )
+    {
+        QMouseEvent *e = static_cast<QMouseEvent *>(event);
+        if (e->button() == Qt::RightButton) {
+            buttonDriverDownload->menu()->popup(buttonDriverDownload->mapToGlobal(e->pos()));
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     return false;
 }
 
@@ -214,6 +255,27 @@ void MainWindow::checkMathCad()
     }
 
     ui->menu_other_mathcad_open_button->setEnabled(exist && versionGood);
+}
+
+void MainWindow::pushDownLoadMessage(QString name, QString link, bool status)
+{
+    QString tittle = "", message = "";
+    if (status) {
+        tittle = QString(DRIVER_DOWNTIT) + name + QString(DRIVER_DOWNTITYES);
+        message = QString(DRIVER_DOWNMESYES) + name + QString(DRIVER_DOWNMESYESRES) + link;
+        trayIcon->showMessage(tittle, message, QSystemTrayIcon::Information, TRAY_DELAY);
+    }
+    else {
+        tittle = QString(DRIVER_DOWNTIT) + name + QString(DRIVER_DOWNTITNO);
+        message = QString(DRIVER_DOWNMESNO) + link + QString(DRIVER_DOWNMESNOSELF) + link;
+        trayIcon->showMessage(tittle, message, QSystemTrayIcon::Critical, TRAY_DELAY);
+    }
+
+}
+
+void MainWindow::pushSetUpMessage(QString name, QString path, bool status, bool exist)
+{
+
 }
 
 //Настройка статус бара
@@ -523,18 +585,12 @@ void MainWindow::on_menu_device_driverInfo_button_clicked()
 //Установить драйвера
 void MainWindow::on_menu_device_driverSetUp_button_clicked()
 {
-    QDir::setCurrent(DATA_PATH + "/" + QString(DIR_DRIVERS));
-
-    QProcess *ftdiproc = new QProcess(this);
-    QProcess *iviproc = new QProcess(this);
-    QProcess *agilentproc = new QProcess(this);
-
-    ftdiproc->startDetached(DRIVER_FTDI);
-    iviproc->startDetached(DRIVER_IVI);
-    agilentproc->startDetached(DRIVER_AGILENT);
-
+    ui->action_driverl_ivi->trigger();
+    ui->action_driver_agilent->trigger();
+    ui->action_driver_ftdi->trigger();
 }
 
+//TODO Обработчик ResizeEvent ( нормальный)
 //Действие при нажатии на пункт "Развернуть "меню кнопки полного экрана
 void MainWindow::on_action_fullScreen_maximize_triggered(bool checked)
 {
@@ -544,4 +600,140 @@ void MainWindow::on_action_fullScreen_maximize_triggered(bool checked)
         this->showMaximized();
     else
         this->showNormal();
+}
+
+//Изменение спина сетки напряжения
+void MainWindow::on_menu_experiment_gridU_spin_valueChanged(double arg1)
+{
+    ui->menu_experiment_gridU_slider->setValue( static_cast<int>(arg1 * 10));
+}
+
+//Изменения слайдера напряжения
+void MainWindow::on_menu_experiment_gridU_slider_sliderMoved(int position)
+{
+    ui->menu_experiment_gridU_spin->setValue(position * 0.1);
+}
+
+//Изменение галочки сетки
+void MainWindow::on_menu_experiment_grid_checkbox_toggled(bool checked)
+{
+    ui->menu_experiment_gridU_slider->setEnabled(checked);
+    ui->menu_experiment_gridU_spin->setEnabled(checked);
+    ui->menu_experiment_gridT_slider->setEnabled(checked);
+    ui->menu_experiment_gridT_spin->setEnabled(checked);
+}
+
+//Галочка максимумов
+void MainWindow::on_menu_experiment_minMax_checkbox_toggled(bool checked)
+{
+    ui->menu_experiment_minMaxTmax_spin->setEnabled(!checked);
+    ui->menu_experiment_minMaxTmin_spin->setEnabled(!checked);
+    ui->menu_experiment_minMaxUmax_spin->setEnabled(!checked);
+    ui->menu_experiment_minMaxUmin_spin->setEnabled(!checked);
+}
+
+//Изменение сетка Время Слайдер
+void MainWindow::on_menu_experiment_gridT_slider_sliderMoved(int position)
+{
+    ui->menu_experiment_gridT_spin->setValue(position);
+}
+
+//Изменение сетка Время Спин
+void MainWindow::on_menu_experiment_gridT_spin_valueChanged(int arg1)
+{
+    ui->menu_experiment_gridT_slider->setValue(arg1);
+}
+
+//Изменение шаг дискретизации слайдер
+void MainWindow::on_menu_experiment_curveDT_slider_sliderMoved(int position)
+{
+    ui->menu_experiment_curveDT_spin->setValue(position);
+}
+
+//Изменение шаг дискретизации спин
+void MainWindow::on_menu_experiment_curveDT_spin_valueChanged(int arg1)
+{
+    ui->menu_experiment_curveDT_slider->setValue(arg1);
+}
+
+//Галка лимиты
+void MainWindow::on_checkBox_toggled(bool checked)
+{
+    bool nMode = ui->menu_experiment_limitsNmax_radio->isChecked();
+    //bool tMode = ui->menu_experiment_limitsTinterval_radio->isChecked();
+    ui->menu_experiment_limitsNmax_radio->setEnabled(checked);
+    ui->menu_experiment_limitsNmax_spin->setEnabled(checked && nMode);
+    ui->menu_experiment_limitsTintervalT1_spin->setEnabled(checked && !nMode);
+    ui->menu_experiment_limitsTintervalT2_spin->setEnabled(checked && !nMode);
+    ui->menu_experiment_limitsTinterval_radio->setEnabled(checked);
+}
+
+//Установка драйвера IVI
+void MainWindow::on_action_driverl_ivi_triggered()
+{
+    QDir::setCurrent(DATA_PATH + "/" + QString(DIR_DRIVERS));
+    QProcess *iviproc = new QProcess(this);
+    if (iviproc->startDetached(DRIVER_IVI))
+        qDebug() << "Начато";
+    else
+        qDebug() << "Не начато";
+
+}
+
+//Установка жрайвера Agilent
+void MainWindow::on_action_driver_agilent_triggered()
+{
+    QDir::setCurrent(DATA_PATH + "/" + QString(DIR_DRIVERS));
+    QProcess *agilentproc = new QProcess(this);
+    agilentproc->startDetached(DRIVER_AGILENT);
+}
+
+//Установкка драйвера FTDI
+void MainWindow::on_action_driver_ftdi_triggered()
+{
+    QDir::setCurrent(DATA_PATH + "/" + QString(DIR_DRIVERS));
+    QProcess *ftdiproc = new QProcess(this);
+    ftdiproc->startDetached(DRIVER_FTDI);
+}
+
+//Обработка переключения режима лимитов - ограничение числа точек
+void MainWindow::on_menu_experiment_limitsNmax_radio_toggled(bool checked)
+{
+    ui->menu_experiment_limitsTintervalT1_spin->setEnabled(!checked);
+    ui->menu_experiment_limitsTintervalT2_spin->setEnabled(!checked);
+    ui->menu_experiment_limitsNmax_spin->setEnabled(checked);
+}
+
+//Обработка переключения режима лимитов - установка временного интервала
+void MainWindow::on_menu_experiment_limitsTinterval_radio_toggled(bool checked)
+{
+    ui->menu_experiment_limitsNmax_spin->setEnabled(!checked);
+    ui->menu_experiment_limitsTintervalT1_spin->setEnabled(checked);
+    ui->menu_experiment_limitsTintervalT2_spin->setEnabled(checked);
+}
+
+//Загрузка драйвера IVI
+void MainWindow::on_action_downloadl_ivi_triggered()
+{
+    pushDownLoadMessage(QString(DRIVER_IVI), QString(DRIVER_URLIVI), QDesktopServices::openUrl(QUrl(DRIVER_URLIVI)));
+}
+
+//Загрузка драйвера Agilent
+void MainWindow::on_action_download_agilent_triggered()
+{
+    pushDownLoadMessage(QString(DRIVER_AGILENT), QString(DRIVER_URLAGI), QDesktopServices::openUrl(QUrl(DRIVER_URLAGI)));
+}
+
+//Загрузка драйвера FTDI
+void MainWindow::on_action_downloadr_ftdi_triggered()
+{
+    pushDownLoadMessage(QString(DRIVER_FTDI), QString(DRIVER_URLFTDI), QDesktopServices::openUrl(QUrl(DRIVER_URLFTDI)));
+}
+
+//Кнопка загрузки всех драйверов
+void MainWindow::on_menu_device_driverManual_button_clicked()
+{
+    ui->action_downloadl_ivi->trigger();
+    ui->action_download_agilent->trigger();
+    ui->action_downloadr_ftdi->trigger();
 }

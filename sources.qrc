@@ -47,8 +47,4 @@
         <file>DeviceManager.bat</file>
     </qresource>
     <qresource prefix="/Drivers"/>
-    <qresource prefix="/">
-        <file>Hgfdfg.qml</file>
-        <file>HgfdfgForm.ui.qml</file>
-    </qresource>
 </RCC>

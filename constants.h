@@ -234,6 +234,45 @@
 #define DRIVER_TEXT  "Драйвер "
 #endif
 
+#ifndef DRIVER_URLIVI
+#define DRIVER_URLIVI  "http://www.ivifoundation.org/downloads/Shared%20Components/IviSharedComponents64_242.exe"
+#endif
+
+#ifndef DRIVER_URLAGI
+#define DRIVER_URLAGI  "https://www.keysight.com/main/gated.jspx?lb=1&gatedId=2578767&cc=RU&lc=rus&parentContId=1494698&parentContType=sd&parentNid=-11143.0.00&pageType=SW-Current%20Version|.Win&sd=Y"
+#endif
+
+#ifndef DRIVER_URLFTDI
+#define DRIVER_URLFTDI  "http://www.ftdichip.com/Drivers/CDM/CDM%20v2.12.26%20WHQL%20Certified.zip"
+#endif
+
+#ifndef DRIVER_DOWNTIT
+#define DRIVER_DOWNTIT  "Загрузка драйвера  "
+#endif
+
+#ifndef DRIVER_DOWNTITYES
+#define DRIVER_DOWNTITYES  " началась"
+#endif
+
+#ifndef DRIVER_DOWNTITNO
+#define DRIVER_DOWNTITNO  " не была начата"
+#endif
+
+#ifndef DRIVER_DOWNMESNO
+#define DRIVER_DOWNMESNO  "Пожалуйста пройдите по ссылке "
+#endif
+
+#ifndef DRIVER_DOWNMESYES
+#define DRIVER_DOWNMESYES  "Сейчас драйвер  "
+#endif
+
+#ifndef DRIVER_DOWNMESYESRES
+#define DRIVER_DOWNMESYESRES " будет установлен с ресурса  "
+#endif
+
+#ifndef DRIVER_DOWNMESNOSELF
+#define DRIVER_DOWNMESNOSELF  " самостоятельно "
+#endif
 //
 
 //Имена файлов NAM_
