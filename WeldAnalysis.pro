@@ -4,8 +4,9 @@
 #
 #-------------------------------------------------
 
-QT       += core gui printsupport axcontainer help
-
+QT       += core gui printsupport axcontainer serialport
+CONFIG += c++11
+QMAKE_CXXFLAGS += -std=c++11
 #QT += axcontainer - needed for Excel document Read/Write
 #QT+=printer support -needed for QCustomPlot library
 
@@ -25,6 +26,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
+#LIBS += C:/libusb/lib/gcc/libusb.a
+#INCLUDEPATH +=  C:/libusb/include/
+#DEPENDPATH += C:/libusb/include/
+#PRE_TARGETDEPS += C:/libusb/lib/gcc/libusb.a
+
+LIBS += -lusb-1.0
+
 SOURCES += main.cpp\
         mainwindow.cpp \
     exceldatamanager.cpp \
@@ -40,7 +48,8 @@ HEADERS  += mainwindow.h \
     constants.h \
     picturewindow.h \
     advancedwindow.h \
-    ExternalLibs/QCustomPlot/qcustomplot.h
+    ExternalLibs/QCustomPlot/qcustomplot.h \
+    ExternalLibs/LibUSB/libusb.h
 
 FORMS    += mainwindow.ui \
     picturewindow.ui \

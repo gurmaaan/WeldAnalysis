@@ -11,6 +11,7 @@
 #include <QMouseEvent>
 #include <QSystemTrayIcon>
 
+
 namespace Ui {
 class MainWindow;
 }
@@ -96,6 +97,8 @@ private slots:
     void on_action_downloadr_ftdi_triggered();
 
     void on_menu_device_driverManual_button_clicked();
+
+    void on_menu_device_autoSearch_button_clicked();
 
 private:
     Ui::MainWindow *ui;
