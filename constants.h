@@ -1,11 +1,13 @@
 #ifndef CONSTANTS_H
 #define CONSTANTS_H
 
-#include <QString>
-
 //Глобальное
 #ifndef APP_NAME
 #define APP_NAME "WeldAnalysis"
+#endif
+
+#ifndef prntlndbg
+#define prntlndbg QString("--------------")
 #endif
 
 #ifndef LINK_FILE
@@ -18,6 +20,14 @@
 
 #ifndef TRAY_DELAY
 #define TRAY_DELAY 3000
+#endif
+
+#ifndef VID
+#define VID "1027"
+#endif
+
+#ifndef PID
+#define PID "24577"
 #endif
 //
 

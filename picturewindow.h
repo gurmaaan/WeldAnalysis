@@ -22,19 +22,15 @@ signals:
 
 private slots:
     void on_browse_button_clicked();
-    void on_width_spinBox_valueChanged(int w);
-    void on_height_spinBox_valueChanged(int h);
-    void on_resetSize_button_clicked();
     void on_save_button_clicked();
-
     void on_name_lineEdit_textEdited(const QString &arg1);
 
 private:
     Ui::PictureWindow *ui;
     int defH = 0;
     int defW = 0;
+    double k;
     QPixmap defPixMap;
-    void resizePicture(int w, int h, bool ratio);
     QString defName();
 };
 

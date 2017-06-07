@@ -2815,7 +2815,7 @@ PNG</string>
            <cursorShape>CrossCursor</cursorShape>
           </property>
           <property name="currentIndex">
-           <number>1</number>
+           <number>0</number>
           </property>
           <widget class="QCustomPlot" name="experiment_graph_tab">
            <attribute name="title">

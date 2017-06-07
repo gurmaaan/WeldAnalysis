@@ -5,6 +5,7 @@
 #include "advancedwindow.h"
 #include "picturewindow.h"
 #include "jsondatamanager.h"
+#include "usbprocessor.h"
 #include <QDir>
 #include <QString>
 #include <QLabel>
@@ -100,6 +101,8 @@ private slots:
 
     void on_menu_device_autoSearch_button_clicked();
 
+    void on_start_button_clicked();
+
 private:
     Ui::MainWindow *ui;
     AdvancedWindow advanced;
@@ -114,9 +117,9 @@ private:
     bool eventFilter(QObject *watched, QEvent *event);
     QSystemTrayIcon *trayIcon;
     QMenu *trayIconMenu;
+    USBProcessor usbprocessor;
     void checkMathCad();
     void pushDownLoadMessage(QString name, QString link, bool status);
-    void pushSetUpMessage(QString name, QString path, bool status, bool exist);
 };
 
 #endif // MAINWINDOW_H

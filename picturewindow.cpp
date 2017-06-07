@@ -8,6 +8,7 @@
 #include "constants.h"
 #include <QDateTime>
 #include <QDesktopServices>
+#include <QResizeEvent>
 
 PictureWindow::PictureWindow(QWidget *parent) :
     QDialog(parent),
@@ -34,11 +35,12 @@ void PictureWindow::openPicture(QString path)
     defPixMap = picture;
     ui->picture_label->setScaledContents(true);
     ui->picture_label->setPixmap(picture);
-    this->adjustSize();
     defW = picture.size().width();
     defH = picture.size().height();
+    k = (double)defW / (double)defH;
     ui->width_spinBox->setValue(defW);
     ui->height_spinBox->setValue(defH);
+    this->adjustSize();
 }
 
 void PictureWindow::on_browse_button_clicked()
@@ -47,46 +49,10 @@ void PictureWindow::on_browse_button_clicked()
    ui->path_lineEdit->setText(path);
 }
 
-void PictureWindow::on_width_spinBox_valueChanged(int w)
-{
-    bool ratio = ui->aspectRatio_checkBox->isChecked();
-    int h =  ui->picture_label->pixmap()->size().height();
-    resizePicture(w, h, ratio);
-    if (!ratio)
-        ui->height_spinBox->setValue(h);
-}
-
-void PictureWindow::resizePicture(int w, int h, bool ratio)
-{
-    Qt::AspectRatioMode mode = Qt::KeepAspectRatio;
-    if (!ratio)
-        mode = Qt::IgnoreAspectRatio;
-    ui->picture_label->setPixmap(ui->picture_label->pixmap()->scaled(w, h, mode));
-}
 
 QString PictureWindow::defName()
 {
     return NAM_PLOT + QDateTime::currentDateTime().toString(NAM_DATETIMEFORMAT);
-}
-
-
-void PictureWindow::on_height_spinBox_valueChanged(int h)
-{
-    bool ratio = ui->aspectRatio_checkBox->isChecked();
-    int w =  ui->picture_label->pixmap()->size().width();
-    resizePicture(w, h, ratio);
-    if (!ratio)
-        ui->width_spinBox->setValue(w);
-}
-
-void PictureWindow::on_resetSize_button_clicked()
-{
-    ui->picture_label->setPixmap(defPixMap);
-    ui->height_spinBox->setValue(defH);
-    ui->width_spinBox->setValue(defW);
-    ui->aspectRatio_checkBox->setChecked(true);
-    ui->path_lineEdit->setText(QDir::homePath());
-    ui->name_lineEdit->setText(defName());
 }
 
 void PictureWindow::on_save_button_clicked()

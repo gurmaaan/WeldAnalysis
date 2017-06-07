@@ -17,9 +17,6 @@
 #include <QMenu>
 #include <QSettings>
 #include <QDesktopServices>
-#include <ExternalLibs/LibUSB/libusb.h>
-#include <QtSerialPort/QSerialPort>
-#include <QtSerialPort/QSerialPortInfo>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -36,6 +33,8 @@ MainWindow::MainWindow(QWidget *parent) :
     setUIlogic();
 
     checkMathCad();
+
+    ui->start_button->click();
 
     trayIcon = new QSystemTrayIcon(this);
     trayIcon->setToolTip(APP_NAME);
@@ -203,6 +202,7 @@ void MainWindow::checkMathCad()
 
     bool exist = false, versionGood = false;
 
+    QString badMes;
     foreach ( QString key, keyListDisplay)
     {
         const QString currentSetting = settings.value(key).toString();
@@ -222,9 +222,9 @@ void MainWindow::checkMathCad()
             else
             {
                 versionGood = false;
-                QString badMes = QString(MAT_VERMES) + currentVersion + ".";
-                trayIcon->showMessage(MAT_ERRORVERTIT, badMes, QSystemTrayIcon::Critical, TRAY_DELAY/4);
+                badMes = QString(MAT_VERMES) + currentVersion + ".";
                 statusBar()->showMessage(badMes, TRAY_DELAY);
+                break;
             }
 
             break;
@@ -253,6 +253,7 @@ void MainWindow::checkMathCad()
         ui->menu_other_mathcad_messageCheck->setText(MAT_SUCCESSVERINF);
     }
     else{
+       // trayIcon->showMessage(MAT_ERRORVERTIT, badMes, QSystemTrayIcon::Critical, TRAY_DELAY/4);
         ui->menu_other_mathcad_messageCheck->setStyleSheet(MAT_ERRORCOLOR);
         ui->menu_other_mathcad_messageCheck->setText(MAT_ERRORVERINF);
     }
@@ -273,11 +274,6 @@ void MainWindow::pushDownLoadMessage(QString name, QString link, bool status)
         message = QString(DRIVER_DOWNMESNO) + link + QString(DRIVER_DOWNMESNOSELF) + link;
         trayIcon->showMessage(tittle, message, QSystemTrayIcon::Critical, TRAY_DELAY);
     }
-
-}
-
-void MainWindow::pushSetUpMessage(QString name, QString path, bool status, bool exist)
-{
 
 }
 
@@ -309,16 +305,22 @@ void MainWindow::on_menu_other_app_advanced_button_clicked()
 
 //Ручной поиск устройства
 //TODO  интеграция сережиной хуйни
-void MainWindow::on_menu_device_manualSearch_button_clicked() {
+void MainWindow::on_menu_device_manualSearch_button_clicked()
+{
 
-//    std::list<USBDeviceHIDManager> devices = USBDeviceHIDManager::
+    std::list<USBhidDevice> devices = USBManager::getDevicesList();
+    qDebug() << "------------------------HID----------------------" << endl;
+    qDebug() << "Amount of devices: " << devices.size() << endl;
 
-//    for (auto it = devices.begin(); it != devices.end(); ++it) {
-//        qDebug() << QString::fromStdWString(it->name)
-//                 << QString::fromStdString(it->type)
-//                 << QString::fromStdString(it->hidPID)
-//                 << QString::fromStdString(it->hidVID);
-//    }
+    for (auto it = devices.begin(); it != devices.end(); ++it) {
+        qDebug() << QString::fromStdWString(it->name);
+        qDebug() << "\t" << QString::fromStdString(it->type);
+        qDebug() << "\t" << QString::fromStdString(it->hidPID);
+        qDebug() << "\t" << QString::fromStdString(it->hidVID);
+        qDebug() << "**********";
+    }
+
+    qDebug() << "------------------------------------------------------------------------------" << endl << endl;
 }
 
 //Открытие руководства пользователя
@@ -743,88 +745,25 @@ void MainWindow::on_menu_device_driverManual_button_clicked()
 
 void MainWindow::on_menu_device_autoSearch_button_clicked()
 {
-    qDebug() <<"QSerialPort ------------------------ ";
-    const auto infoList = QSerialPortInfo::availablePorts();
-    for (const QSerialPortInfo &info : infoList) {
-        qDebug() << info.portName();
-        qDebug() << info.manufacturer();
-        qDebug() << info.description();
-        qDebug() << info.systemLocation();
-    }
+    usbprocessor.show();
+}
 
-
-    qDebug() <<"LibUSB ------------------------ ";
-    libusb_device **devices;
-    libusb_context *contex = NULL;
-    int returnValue = 0;
-    size_t count;
-
-    returnValue = libusb_init(&contex);
-    if (returnValue < 0 ) {
-       qDebug() << "Error";
-    }
-
-    libusb_set_debug(contex, 3);
-    count = libusb_get_device_list(contex, &devices);
-    if (count < 0) {
-        qDebug() << "Error device";
-    }
-    qDebug() << "Amount of devices: " << count;
-
-    size_t i;
-    for (int i = 0; i < (int)count; i++)
+void MainWindow::on_start_button_clicked()
+{
+    ui->experiment_graph_tab->addGraph();
+    ui->experiment_graph_tab->graph()->setPen(QPen(Qt::blue));
+    ui->experiment_graph_tab->graph()->setBrush(QBrush(QColor(0, 0, 255, 20)));
+    ui->experiment_graph_tab->addGraph();
+    ui->experiment_graph_tab->graph()->setPen(QPen(Qt::red));
+    QVector<double> x(500), y0(500), y1(500);
+    for (int i=0; i<500; ++i)
     {
-
-        libusb_device_descriptor descriptor;
-        libusb_device *dev = devices[i];
-        int r = libusb_get_device_descriptor(dev, &descriptor);
-        if (r < 0 ) {
-            qDebug() << "Fail to get Device description";
-        }
-        else
-        {
-            qDebug() << "Number of possible configurations: " << QString::number( (int)descriptor.bNumConfigurations );
-            qDebug() << "Device Class: "<< QString::number((int)descriptor.bDeviceClass );
-            qDebug() << "VendorID: " << QString::number(descriptor.idVendor);
-            qDebug() << "ProductID: "<< QString::number(descriptor.idProduct);
-
-            libusb_config_descriptor *config = new libusb_config_descriptor();
-            libusb_get_config_descriptor(dev, 0, &config);
-            qDebug() << "\tInterfaces: "<< QString::number( (int)config->bNumInterfaces );
-
-            const libusb_interface *inter;
-            const libusb_interface_descriptor *interdesc;
-            const libusb_endpoint_descriptor *epdesc;
-
-            for(int it = 0 ;  it < (int)config->bNumInterfaces; it++)
-            {
-                inter = &config->interface[it];
-                qDebug() << "\t\tNumber of alternate settings: "<< QString::number(inter->num_altsetting);
-
-                for(int j = 0; j < inter->num_altsetting; j++)
-                {
-                    interdesc = &inter->altsetting[j];
-                    qDebug() << "\t\t\tInterface Number: "<< QString::number( (int)interdesc->bInterfaceNumber );
-                    qDebug() << "\t\t\tNumber of endpoints: "<< QString::number( (int)interdesc->bNumEndpoints );
-
-                    for(int k = 0; k < (int)interdesc->bNumEndpoints; k++)
-                    {
-                        epdesc = &interdesc->endpoint[k];
-                        qDebug() << "\t\t\t\tDescriptor Type: " << QString::number( (int)epdesc->bDescriptorType );
-                        qDebug() << "\t\t\t\tEP Address: " << QString::number( (int)epdesc->bEndpointAddress );
-                    }
-                }
-            }
-
-            libusb_free_config_descriptor(config);
-        }
-
+      x[i] = (i/499.0-0.5)*10;
+      y0[i] = qExp(-x[i]*x[i]*0.25)*qSin(x[i]*5)*5;
+      y1[i] = qExp(-x[i]*x[i]*0.25)*5;
     }
-
-    libusb_free_device_list(devices, 1);
-    libusb_exit(contex);
-    qDebug() <<"------------------------------------------------------------------------------\n";
-
-
-
+    ui->experiment_graph_tab->graph(0)->setData(x, y0);
+    ui->experiment_graph_tab->graph(1)->setData(x, y1);
+    ui->experiment_graph_tab->axisRect()->setupFullAxesBox(true);
+    ui->experiment_graph_tab->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
 }
