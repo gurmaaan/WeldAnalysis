@@ -51,7 +51,7 @@
        <string/>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>3</number>
       </property>
       <property name="tabBarAutoHide">
        <bool>true</bool>
@@ -2812,23 +2812,67 @@ PNG</string>
         <item>
          <widget class="QTabWidget" name="experiment_tabs">
           <property name="cursor">
-           <cursorShape>CrossCursor</cursorShape>
+           <cursorShape>ArrowCursor</cursorShape>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>2</number>
           </property>
-          <widget class="QCustomPlot" name="experiment_graph_tab">
+          <property name="tabsClosable">
+           <bool>false</bool>
+          </property>
+          <property name="tabBarAutoHide">
+           <bool>true</bool>
+          </property>
+          <widget class="QWidget" name="experiment_graph_tab">
            <attribute name="title">
             <string>График</string>
            </attribute>
+           <layout class="QVBoxLayout" name="verticalLayout_6">
+            <item>
+             <widget class="QCustomPlot" name="graph" native="true"/>
+            </item>
+           </layout>
           </widget>
-          <widget class="QWidget" name="experiment_gata_tab">
+          <widget class="QWidget" name="experiment_data_tab">
            <attribute name="title">
             <string>Данные</string>
            </attribute>
            <layout class="QVBoxLayout" name="verticalLayout_4">
             <item>
-             <widget class="QTableView" name="tableView"/>
+             <widget class="QTableView" name="experiment_data_table">
+              <property name="horizontalScrollBarPolicy">
+               <enum>Qt::ScrollBarAlwaysOff</enum>
+              </property>
+              <property name="alternatingRowColors">
+               <bool>true</bool>
+              </property>
+              <property name="sortingEnabled">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QWidget" name="experiment_app_tab">
+           <attribute name="title">
+            <string>Приложения</string>
+           </attribute>
+           <layout class="QVBoxLayout" name="verticalLayout_7">
+            <item>
+             <widget class="QTableView" name="experiment_app_table">
+              <property name="editTriggers">
+               <set>QAbstractItemView::NoEditTriggers</set>
+              </property>
+              <property name="selectionBehavior">
+               <enum>QAbstractItemView::SelectRows</enum>
+              </property>
+              <attribute name="horizontalHeaderDefaultSectionSize">
+               <number>200</number>
+              </attribute>
+              <attribute name="horizontalHeaderStretchLastSection">
+               <bool>false</bool>
+              </attribute>
+             </widget>
             </item>
            </layout>
           </widget>
@@ -3291,8 +3335,8 @@ PNG</string>
    <slot>close()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1058</x>
-     <y>135</y>
+     <x>119</x>
+     <y>122</y>
     </hint>
     <hint type="destinationlabel">
      <x>1051</x>

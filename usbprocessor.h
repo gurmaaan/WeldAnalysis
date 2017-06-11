@@ -15,6 +15,7 @@ public:
     explicit USBProcessor(QWidget *parent = 0);
     int getAgilentConnection();
     ~USBProcessor();
+    void printNeededPorInformation();
 
 private slots:
     void on_pushButton_clicked();
@@ -26,7 +27,7 @@ private slots:
 private:
     Ui::USBProcessor *ui;
     void printUSBlibList();
-    void printQSerialPrtList();
+
 };
 
 #endif // USBPROCESSOR_H

@@ -11,7 +11,7 @@
 #include <QLabel>
 #include <QMouseEvent>
 #include <QSystemTrayIcon>
-
+#include "applicationmanager.h"
 
 namespace Ui {
 class MainWindow;
@@ -31,11 +31,6 @@ private:
     void showCreateMessageBox (QString dirName);
 };
 
-//class ExternalApp
-//{
-//public:
-//    bool isInstalled()
-//};
 
 class MainWindow : public QMainWindow
 {
@@ -103,11 +98,14 @@ private slots:
 
     void on_start_button_clicked();
 
+    void on_experiment_tabs_tabBarDoubleClicked(int index);
+
 private:
     Ui::MainWindow *ui;
     AdvancedWindow advanced;
     PictureWindow picture;
     JsonDataManager jsonManager;
+    ApplicationManager *apps;
     QLabel* portStatus;
     QLabel* connectionStatus;
     void setUIlogic();

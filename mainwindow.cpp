@@ -17,6 +17,9 @@
 #include <QMenu>
 #include <QSettings>
 #include <QDesktopServices>
+#include "applicationmanager.h"
+#include <QWidget>
+#include <QList>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -32,14 +35,14 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     setUIlogic();
 
-    checkMathCad();
-
     ui->start_button->click();
 
     trayIcon = new QSystemTrayIcon(this);
     trayIcon->setToolTip(APP_NAME);
     trayIcon->setIcon(QIcon(RES_APPICON));
     trayIcon->show();
+
+    checkMathCad();
 }
 
 MainWindow::~MainWindow()
@@ -105,6 +108,8 @@ void MainWindow::setTablesUI()
 
     ui->settings_table->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
     ui->realTime_table->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
+
+    ui->experiment_tabs->removeTab(2);
 }
 
 //Добавление меню ПКМ во все кнопки
@@ -195,70 +200,38 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
 //Проверка установленной версии Маткада
 void MainWindow::checkMathCad()
 {
-    QSettings settings(MAT_REGFOLDER, QSettings::NativeFormat);
-    QStringList keyListDisplay = settings.allKeys().filter( MAT_DISPLAYKEY );
-    QStringList versionKeyList = settings.allKeys().filter( MAT_VERSIONKEY );
-    QStringList pathKeyList = settings.allKeys().filter( "InstallLocation");
+    QCheckBox *exCheck = ui->menu_other_mathcad_statusCheck;
+    QLineEdit *verEdit = ui->menu_other_mathcad_versionStatus;
+    QCheckBox *verCheck = ui->menu_other_mathcad_messageCheck;
 
-    bool exist = false, versionGood = false;
+    apps = new ApplicationManager();
+    exCheck->setChecked(apps->isMathCad());
+    verEdit->setText(apps->getMathCadVersion());
+    verCheck->setChecked(apps->isVersion());
 
-    QString badMes;
-    foreach ( QString key, keyListDisplay)
-    {
-        const QString currentSetting = settings.value(key).toString();
-        int step = keyListDisplay.indexOf(key);
-        //const QString currentPath = settings.value(pathKeyList.at(step)).toString();
-        const QString currentVersion = settings.value(versionKeyList.at(step)).toString();
-        if( (currentSetting == MAT_NAME14) || (currentSetting == MAT_NAME15) )
-        {
-            exist = true;
-
-            ui->menu_other_mathcad_versionStatus->setText(currentVersion);
-            QStringList versionList = currentVersion.split(".");
-            bool convertation;
-            int versionNumber = versionList.at(0).toInt(&convertation, 10);
-            if(convertation && (versionNumber >= 14))
-                versionGood = true;
-            else
-            {
-                versionGood = false;
-                badMes = QString(MAT_VERMES) + currentVersion + ".";
-                statusBar()->showMessage(badMes, TRAY_DELAY);
-                break;
-            }
-
-            break;
-        }
-        else
-        {
-            exist = false;
-        }
-    }
-
-    ui->menu_other_mathcad_statusCheck->setChecked(exist);
-    if (exist) {
-        ui->menu_other_mathcad_statusCheck->setStyleSheet(MAT_SUCCESSCOLOR);
-        ui->menu_other_mathcad_statusCheck->setText(MAT_SUCCESSINF);
+    if (exCheck->isChecked()) {
+        exCheck->setStyleSheet(MAT_SUCCESSCOLOR);
+        exCheck->setText(MAT_SUCCESSINF);
     }
     else {
         trayIcon->showMessage(MAT_ERRORTIT, MAT_ERRORMES, QSystemTrayIcon::Critical, TRAY_DELAY/4);
         statusBar()->showMessage(MAT_ERRORTIT, TRAY_DELAY);
-        ui->menu_other_mathcad_statusCheck->setText(MAT_ERRORINF);
-        ui->menu_other_mathcad_statusCheck->setStyleSheet(MAT_ERRORCOLOR);
+        exCheck->setText(MAT_ERRORINF);
+        exCheck->setStyleSheet(MAT_ERRORCOLOR);
     }
 
-    ui->menu_other_mathcad_messageCheck->setChecked(exist && versionGood);
-    if (exist && versionGood) {
-        ui->menu_other_mathcad_messageCheck->setStyleSheet(MAT_SUCCESSCOLOR);
-        ui->menu_other_mathcad_messageCheck->setText(MAT_SUCCESSVERINF);
+    if (verCheck->isChecked()) {
+        verCheck->setStyleSheet(MAT_SUCCESSCOLOR);
+        verCheck->setText(MAT_SUCCESSVERINF);
     }
     else{
-       // trayIcon->showMessage(MAT_ERRORVERTIT, badMes, QSystemTrayIcon::Critical, TRAY_DELAY/4);
-        ui->menu_other_mathcad_messageCheck->setStyleSheet(MAT_ERRORCOLOR);
-        ui->menu_other_mathcad_messageCheck->setText(MAT_ERRORVERINF);
+        if (exCheck->isChecked()) trayIcon->showMessage(MAT_ERRORVERTIT, MAT_ERRORVERMES, QSystemTrayIcon::Critical, TRAY_DELAY/4);
+        statusBar()->showMessage(MAT_ERRORVERTIT, TRAY_DELAY);
+        verCheck->setStyleSheet(MAT_ERRORCOLOR);
+        verCheck->setText(MAT_ERRORVERINF);
     }
 
-    ui->menu_other_mathcad_open_button->setEnabled(exist && versionGood);
+    ui->menu_other_mathcad_open_button->setEnabled(verCheck->isChecked() && exCheck->isChecked());
 }
 
 void MainWindow::pushDownLoadMessage(QString name, QString link, bool status)
@@ -519,7 +492,7 @@ void MainWindow::on_menu_other_data_picture_button_clicked()
     QTemporaryDir tempDir;
     if (tempDir.isValid()) {
       const QString tempFile = tempDir.path() + "/temp.png";
-      ui->experiment_graph_tab->savePng(tempFile);
+      ui->graph->savePng(tempFile);
       picture.openPicture(tempFile);
       picture.show();
       QApplication::alert(this, 0);
@@ -529,8 +502,7 @@ void MainWindow::on_menu_other_data_picture_button_clicked()
 //Кнопка отркрыть маткад
 void MainWindow::on_menu_other_mathcad_open_button_clicked()
 {
-    QStringList versionList = ui->menu_other_mathcad_versionStatus->text().split(".");
-    QString mathCadPath =  apdr.programmFilesPath() + QString(MAT_PATH) + versionList.at(0) + "\\";
+    QString mathCadPath =  apdr.programmFilesPath() + QString(MAT_PATH) + apps->getMathCadHeadVersion() + "\\";
     QDir::setCurrent(mathCadPath);
     QProcess *mcproc = new QProcess();
     if ( mcproc->startDetached(MAT_EXENAM) ) {
@@ -545,12 +517,30 @@ void MainWindow::on_menu_other_mathcad_open_button_clicked()
 void MainWindow::on_menu_other_mathcad_check_clicked()
 {
     checkMathCad();
+    apps->createList();
+    QStandardItemModel *model = apps->getModel();
+    ui->experiment_app_table->setModel(model);
+    ui->experiment_tabs->addTab(ui->experiment_app_tab, tr("Приложения"));
+    ui->experiment_tabs->setCurrentIndex(2);
+
+    int rowC = 0;
+    QList<Application> applications = apps->getList();
+    foreach (Application app, applications) {
+        rowC++;
+        if ((app.getName() == QString(MAT_NAME14)) || (app.getName() == QString(MAT_NAME15)))
+            break;
+
+    }
+
+    ui->experiment_app_table->selectRow(rowC-1);
+    ui->experiment_app_table->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
     bool ok = ui->menu_other_mathcad_messageCheck->isChecked() && ui->menu_other_mathcad_statusCheck->isChecked();
     if(ok) {
         QString tittle = QString(MAT_SUCCESSTIT);
         QString message = QString(MAT_SUCCESSTIT) + ui->menu_other_mathcad_versionStatus->text() + QString(MAT_SUCCESSVERENB);
         trayIcon->showMessage(tittle, message, QSystemTrayIcon::Information, TRAY_DELAY/4);
         statusBar()->showMessage(message);
+        ui->menu_other_mathcad_open_button->setEnabled(true);
     }
 }
 
@@ -745,16 +735,16 @@ void MainWindow::on_menu_device_driverManual_button_clicked()
 
 void MainWindow::on_menu_device_autoSearch_button_clicked()
 {
-    usbprocessor.show();
+    usbprocessor.printNeededPorInformation();
 }
 
 void MainWindow::on_start_button_clicked()
 {
-    ui->experiment_graph_tab->addGraph();
-    ui->experiment_graph_tab->graph()->setPen(QPen(Qt::blue));
-    ui->experiment_graph_tab->graph()->setBrush(QBrush(QColor(0, 0, 255, 20)));
-    ui->experiment_graph_tab->addGraph();
-    ui->experiment_graph_tab->graph()->setPen(QPen(Qt::red));
+    ui->graph->addGraph();
+    ui->graph->graph()->setPen(QPen(Qt::blue));
+    ui->graph->graph()->setBrush(QBrush(QColor(0, 0, 255, 20)));
+    ui->graph->addGraph();
+    ui->graph->graph()->setPen(QPen(Qt::red));
     QVector<double> x(500), y0(500), y1(500);
     for (int i=0; i<500; ++i)
     {
@@ -762,8 +752,17 @@ void MainWindow::on_start_button_clicked()
       y0[i] = qExp(-x[i]*x[i]*0.25)*qSin(x[i]*5)*5;
       y1[i] = qExp(-x[i]*x[i]*0.25)*5;
     }
-    ui->experiment_graph_tab->graph(0)->setData(x, y0);
-    ui->experiment_graph_tab->graph(1)->setData(x, y1);
-    ui->experiment_graph_tab->axisRect()->setupFullAxesBox(true);
-    ui->experiment_graph_tab->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
+    ui->graph->graph(0)->setData(x, y0);
+    ui->graph->graph(1)->setData(x, y1);
+    ui->graph->axisRect()->setupFullAxesBox(true);
+    ui->graph->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
+}
+
+void MainWindow::on_experiment_tabs_tabBarDoubleClicked(int index)
+{
+    if (index == 2) {
+        ui->experiment_tabs->removeTab(index);
+        for (int i = 0; i < ui->experiment_app_table->model()->rowCount(); i++)
+            ui->experiment_app_table->model()->removeRow(0);
+    }
 }

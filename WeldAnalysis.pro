@@ -33,7 +33,8 @@ SOURCES += main.cpp\
     picturewindow.cpp \
     advancedwindow.cpp \
     ExternalLibs/QCustomPlot/qcustomplot.cpp \
-    usbprocessor.cpp
+    usbprocessor.cpp \
+    applicationmanager.cpp
 
 HEADERS  += mainwindow.h \
     exceldatamanager.h \
@@ -44,7 +45,8 @@ HEADERS  += mainwindow.h \
     advancedwindow.h \
     ExternalLibs/QCustomPlot/qcustomplot.h \
     ExternalLibs/LibUSB/libusb.h \
-    usbprocessor.h
+    usbprocessor.h \
+    applicationmanager.h
 
 FORMS    += mainwindow.ui \
     picturewindow.ui \
@@ -60,17 +62,7 @@ TRANSLATIONS +=ru.ts
 
 STATECHARTS +=
 
-win32: LIBS += -L$$PWD/../../../../../Agilent34401/lib/ -lAg34401
-
-INCLUDEPATH += $$PWD/../../../../../Agilent34401/include
-DEPENDPATH += $$PWD/../../../../../Agilent34401/include
-
-win32:!win32-g++: PRE_TARGETDEPS += $$PWD/../../../../../Agilent34401/lib/Ag34401.lib
-#else:win32-g++: PRE_TARGETDEPS += $$PWD/../../../../../Agilent34401/lib/libAg34401.a
-
-
-
-win32: LIBS += -L$$PWD/../../../../../Qt/5.9/mingw53_32/lib/ -llibusb-1.0
+win32: LIBS += -L$$PWD/../../../../../Qt/5.9/mingw53_32/lib/ -llibusb-1.0.dll
 
 INCLUDEPATH += $$PWD/../../../../../Qt/5.9/mingw53_32/include/libusb-1.0
 DEPENDPATH += $$PWD/../../../../../Qt/5.9/mingw53_32/include/libusb-1.0

@@ -4,7 +4,6 @@
 #include <QtSerialPort/QSerialPortInfo>
 #include <QDebug>
 #include "constants.h"
-#include "Ag34401.h"
 #include "libusb.h"
 
 USBProcessor::USBProcessor(QWidget *parent) :
@@ -16,40 +15,40 @@ USBProcessor::USBProcessor(QWidget *parent) :
 
 int USBProcessor::getAgilentConnection()
 {
-    ViStatus status;
-    ViSession session;
-    ViChar str[128];
-    ViInt32 ErrorCode;
-    ViChar ErrorMessage[256];
-    ViBoolean simulate;
-    ViReal64 data;
+//    ViStatus status;
+//    ViSession session;
+//    ViChar str[128];
+//    ViInt32 ErrorCode;
+//    ViChar ErrorMessage[256];
+//    ViBoolean simulate;
+//    ViReal64 data;
 
-    // Edit resource and options as needed.  resource is ignored if option Simulate=true
-    char resource[] = "GPIB0::22::INSTR";
-    //char resource[] = "TCPIP0::<ip or host name>::INSTR";
+//    // Edit resource and options as needed.  resource is ignored if option Simulate=true
+//    char resource[] = "GPIB0::22::INSTR";
+//    //char resource[] = "TCPIP0::<ip or host name>::INSTR";
 
-    char options[]  = "QueryInstrStatus=true, Simulate=true, DriverSetup= Model=, Trace=false, TraceName=c:\\temp\\traceOut";
+//    char options[]  = "QueryInstrStatus=true, Simulate=true, DriverSetup= Model=, Trace=false, TraceName=c:\\temp\\traceOut";
 
-    ViBoolean idQuery = VI_TRUE;
-    ViBoolean reset   = VI_TRUE;
+//    ViBoolean idQuery = VI_TRUE;
+//    ViBoolean reset   = VI_TRUE;
 
-    qDebug() << "ViDriver initial start" << endl;
-    qInfo("Info");
-    qCritical("Critical");
-    qFatal("Fatal");
+//    qDebug() << "ViDriver initial start" << endl;
+//    qInfo("Info");
+//    qCritical("Critical");
+//    qFatal("Fatal");
 
 
-    //Initialize the driver.  See driver help topic "Initializing the IVI-C Driver" for additional information
-    status = Ag34401_InitWithOptions(resource, idQuery, reset, options, &session);
-    if(status)
-    {
-        // Initialization failed
-        Ag34401_GetError(session, &ErrorCode, 255, ErrorMessage);
-        qDebug () << "** InitWithOptions() Error: "<<  ErrorCode <<  ErrorMessage;
-        qDebug () << "Done - Press Enter to Exit";
-        getchar();
-        return ErrorCode;
-    }
+//    //Initialize the driver.  See driver help topic "Initializing the IVI-C Driver" for additional information
+//    status = Ag34401_InitWithOptions(resource, idQuery, reset, options, &session);
+//    if(status)
+//    {
+//        // Initialization failed
+//        Ag34401_GetError(session, &ErrorCode, 255, ErrorMessage);
+//        qDebug () << "** InitWithOptions() Error: "<<  ErrorCode <<  ErrorMessage;
+//        qDebug () << "Done - Press Enter to Exit";
+//        getchar();
+//        return ErrorCode;
+//    }
 //    assert(session != VI_NULL);
 //    printf("Driver Initialized \n");
 
@@ -105,13 +104,13 @@ int USBProcessor::getAgilentConnection()
 //    }
 
     // Close the driver
-    status = Ag34401_close(session);
-    Q_ASSERT( status == VI_SUCCESS );
-    session = VI_NULL;
-    qDebug () <<  "Driver Closed";
+//    status = Ag34401_close(session);
+//    Q_ASSERT( status == VI_SUCCESS );
+//    session = VI_NULL;
+//    qDebug () <<  "Driver Closed";
 
-    qDebug () << "Done - Press Enter to Exit";
-    getchar();
+//    qDebug () << "Done - Press Enter to Exit";
+//    getchar();
 }
 
 USBProcessor::~USBProcessor()
@@ -195,16 +194,10 @@ void USBProcessor::printUSBlibList()
     qDebug() << "------------------------------------------------------------------------------" << endl << endl;
 }
 
-void USBProcessor::printQSerialPrtList()
+void USBProcessor::printNeededPorInformation()
 {
     qDebug() << "------------------------QSerialPort------------------------" << endl;
     const auto infoList = QSerialPortInfo::availablePorts();
-    const QList<qint32> basList = QSerialPortInfo::standardBaudRates();
-
-
-    foreach (auto rate, basList) {
-        qDebug() << QString(rate);
-    }
 
     qDebug() << "Amount of devices: " << infoList.size() << endl;
     QString curVID = "", curPID = "";
@@ -212,14 +205,32 @@ void USBProcessor::printQSerialPrtList()
     for (const QSerialPortInfo &info : infoList) {
         curPID = QString::number(info.productIdentifier());
         curVID = QString::number(info.vendorIdentifier());
-        qDebug() << "Port number: " <<  info.portName();
-        qDebug() << "Manufacture: " <<  info.manufacturer();
-        qDebug() << "Description: " << info.description();
-        qDebug() << "Location: " << info.systemLocation();
-        qDebug() << "PID: " << curPID << QString(PID);
-        qDebug() << "VID: " << curVID << QString(VID);
 
-        qDebug() << "**********";
+        if ((curPID == PID) && (curVID == VID))
+        {
+            qDebug() <<prntlndbg;
+            qDebug() << "Agilent founded in " << info.portName() << " like " << info.description();
+            qDebug() << "Manufacture: " <<  info.manufacturer();
+            qDebug() << "Location: " << info.systemLocation();
+            qDebug() << "PID: " << curPID;
+            qDebug() << "VID: " << curVID;
+            
+            bool portPID = false, portVID = false, portNotNull = false, portNotBussy = false;
+            portPID = info.hasProductIdentifier();
+            portVID = info.hasVendorIdentifier();
+            portNotNull = !info.isNull();
+            portNotBussy = ! info.isBusy();
+
+            if (portPID && portVID && portNotBussy && portNotNull) {
+                qDebug() << "Ready for connection";
+                QSerialPort *port = new QSerialPort();
+                port->open(QIODevice::Append);
+                qDebug() << (QString) port->readAll();
+                //port->waitForReadyRead(100);
+
+            }
+             qDebug() <<prntlndbg;
+        }
     }
 
     qDebug() << "------------------------------------------------------------------------------" << endl << endl;
@@ -232,7 +243,7 @@ void USBProcessor::on_pushButton_clicked()
 
 void USBProcessor::on_pushButton_2_clicked()
 {
-    printQSerialPrtList();
+    printNeededPorInformation();
 }
 
 void USBProcessor::on_pushButton_3_clicked()
