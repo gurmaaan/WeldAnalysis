@@ -15,7 +15,14 @@ private:
     quint16 numPID;
     quint16 numVID;
 public:
-    COMdevice(QString portName, quint16 vid, quint16 pid, QString description);
+    COMdevice(QString portName, quint16 vid, quint16 pid, QString description) {
+        stringDescription = description;
+        numPID = pid;
+        numVID = vid;
+        stringVID = QString::number(vid);
+        stringPID = QString::number(pid);
+        stringPort = portName;
+    }
     QString getVID();
     QString getPID();
     QString getPortName();
@@ -36,7 +43,7 @@ public:
     QStandardItemModel *getComModel();
     void addRootItem(QStandardItemModel *model, const QString portName);
     QList<COMdevice> getCOMDevicesList();
-    QList<COMPort> getCOMPortsList();
+    QStringList getCOMPortsList();
     ~USBProcessor();
 
 private:

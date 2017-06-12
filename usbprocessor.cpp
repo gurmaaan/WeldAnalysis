@@ -183,14 +183,7 @@ void USBProcessor::printUSBlibList()
     qDebug() << "------------------------------------------------------------------------------" << endl << endl;
 }
 
-COMdevice::COMdevice(QString portName, quint16 vid, quint16 pid, QString description) {
-    stringDescription = description;
-    numPID = pid;
-    numVID = vid;
-    stringVID = QString::number(vid);
-    stringPID = QString::number(pid);
-    stringPort = portName;
-}
+
 
 QString COMdevice::getVID()
 {
@@ -244,12 +237,11 @@ QList<COMdevice> USBProcessor::getCOMDevicesList()
     return avalibleCOMlist;
 }
 
-QList<COMPort> USBProcessor::getCOMPortsList()
+QStringList USBProcessor::getCOMPortsList()
 {
-    QList<COMPort> portNameList;
+    QStringList portNameList;
     foreach (COMdevice device, avalibleCOMlist) {
         QString portName(device.getPortName());
-        qDebug() << portName;
         portNameList.append(portName);
     }
     return portNameList;

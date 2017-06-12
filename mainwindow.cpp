@@ -233,7 +233,11 @@ void MainWindow::checkMathCad()
 void MainWindow::loadComPortsInfo()
 {
     usbprocessor = new USBProcessor();
-    ui->menu_device_port_comCombo->addItems(usbprocessor->getCOMPortsList());
+    ui->menu_device_port_com_combobox->addItems(usbprocessor->getCOMPortsList());
+    COMdevice device = usbprocessor->getCOMDevicesList().first();
+    ui->menu_device_port_pid_edit->setText(device.getPID());
+    ui->menu_device_port_vid_edit->setText(device.getVID());
+    ui->menu_device_port_name_edit->setText(device.getDescription());
 }
 
 //Настройка статус бара
@@ -305,11 +309,10 @@ QString AppDir::dataDirPath()
 //Возвращает путь к програм файлс исходя из значения системной переменной.
 QString AppDir::programmFilesPath()
 {
-    QList<COMPort> varibleList =(QProcess::systemEnvironment());
+    QStringList varibleList =(QProcess::systemEnvironment());
     foreach (QString varible, varibleList) {
-        qDebug() << varible;
         if (varible.contains(PROGRAMFILES, Qt::CaseInsensitive) && (varible.indexOf(PROGRAMFILES) == 0)) {
-            QList<COMPort> varList = varible.split("=");
+            QStringList varList = varible.split("=");
             return varList.at(1);
             break;
         }
@@ -531,14 +534,14 @@ void MainWindow::on_menu_device_driverInfo_button_clicked()
          //agilentdriver = false;
 
     //Если компоненты ИВИ установлены => есть системная переменная IVIROOTDIR, проверка:
-    QList<COMPort> varibleList =(QProcess::systemEnvironment());
+    QStringList varibleList =(QProcess::systemEnvironment());
     foreach (const QString &varible, varibleList) {
         qDebug() << varible;
         if (varible.contains(DRIVER_IVIVARIBLE)) {
             ividriver = true;
             //trayIcon->showMessage(QString(DRIVER_TEXT) + QString(DRIVER_IVI) + QString(MAT_SUCCESS), " ", QSystemTrayIcon::Information, TRAY_DELAY/4);
 
-            QList<COMPort> var = varible.split("=");
+            QStringList var = varible.split("=");
             QString libPath = var[1] + DRIVER_AGIVARIBLE;
             if (QFile(libPath).exists()) {
                 //agilentdriver = true;
@@ -791,15 +794,15 @@ void MainWindow::on_menu_device_port_comCombo_currentIndexChanged(const QString 
     QList<COMdevice> comsList = usbprocessor->getCOMDevicesList();
     foreach (auto device, comsList) {
         if (device.getPortName() == arg1) {
-            ui->menu_device_port_pidEdit->setText(device.getPID());
-            ui->menu_device_port_vidEdit->setText(device.getVID());
-            ui->menu_device_port_nameEdit->setText(device.getDescription());
+            ui->menu_device_port_pid_edit->setText(device.getPID());
+            ui->menu_device_port_vid_edit->setText(device.getVID());
+            ui->menu_device_port_name_edit->setText(device.getDescription());
             break;
         }
     }
 
-    connectionStatus->setText(ui->menu_device_port_nameEdit->text());
-    portStatus->setText(ui->menu_device_port_comCombo->currentText());
+    connectionStatus->setText(ui->menu_device_port_name_edit->text());
+    portStatus->setText(ui->menu_device_port_com_combobox->currentText());
 }
 
 void MainWindow::on_menu_device_status_stack_currentChanged(int arg1)
