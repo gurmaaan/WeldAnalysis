@@ -1,33 +1,48 @@
 #ifndef USBPROCESSOR_H
 #define USBPROCESSOR_H
 
-#include <QDialog>
+#include <QString>
+#include <QList>
+#include <QStandardItemModel>
 
-namespace Ui {
-class USBProcessor;
-}
-
-class USBProcessor : public QDialog
+class COMdevice
 {
-    Q_OBJECT
-
+private:
+    QString stringDescription;
+    QString stringPID;
+    QString stringVID;
+    QString stringPort;
+    quint16 numPID;
+    quint16 numVID;
 public:
-    explicit USBProcessor(QWidget *parent = 0);
+    COMdevice(QString portName, quint16 vid, quint16 pid, QString description);
+    QString getVID();
+    QString getPID();
+    QString getPortName();
+    QString getDescription();
+};
+
+class USBProcessor
+{
+public:
+    USBProcessor(){
+        initCOMList();
+    }
+
     int getAgilentConnection();
+    void initCOMList();
+    int comDevicesCount();
+
+    QStandardItemModel *getComModel();
+    void addRootItem(QStandardItemModel *model, const QString portName);
+    QList<COMdevice> getCOMDevicesList();
+    QList<COMPort> getCOMPortsList();
     ~USBProcessor();
-    void printNeededPorInformation();
-
-private slots:
-    void on_pushButton_clicked();
-
-    void on_pushButton_2_clicked();
-
-    void on_pushButton_3_clicked();
 
 private:
-    Ui::USBProcessor *ui;
+    QList<COMdevice> avalibleCOMlist;
+    QStandardItemModel *comModel;
     void printUSBlibList();
-
 };
 
 #endif // USBPROCESSOR_H

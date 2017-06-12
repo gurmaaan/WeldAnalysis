@@ -50,8 +50,7 @@ HEADERS  += mainwindow.h \
 
 FORMS    += mainwindow.ui \
     picturewindow.ui \
-    advancedwindow.ui \
-    usbprocessor.ui
+    advancedwindow.ui
 
 RESOURCES += \
     sources.qrc

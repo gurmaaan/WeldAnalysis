@@ -64,15 +64,6 @@ void MainWindow::pushInformationNotification(QString message)
     trayIcon->showMessage(title, messageText, QSystemTrayIcon::Information, TRAY_DELAY);   
 }
 
-//Открытие проводника после сохранения изображения
-void MainWindow::showSavedFile(QString path)
-{
-    showMinimized();
-    QApplication::alert(this, 0);
-    QDir savedDir(path);
-    QDesktopServices::openUrl(QUrl::fromLocalFile(savedDir.absolutePath()));
-}
-
 //Установка всех предварительных действий в интерфейсе
 void MainWindow::setUIlogic()
 {
@@ -84,6 +75,7 @@ void MainWindow::setUIlogic()
     setTablesUI();
     setButtonsMenu();
     setStatusBarWidgets();
+    loadComPortsInfo();
 }
 
 //Инициализация таблиц
@@ -109,6 +101,7 @@ void MainWindow::setTablesUI()
     ui->settings_table->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
     ui->realTime_table->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
 
+    ui->experiment_tabs->removeTab(2);
     ui->experiment_tabs->removeTab(2);
 }
 
@@ -215,7 +208,7 @@ void MainWindow::checkMathCad()
     }
     else {
         trayIcon->showMessage(MAT_ERRORTIT, MAT_ERRORMES, QSystemTrayIcon::Critical, TRAY_DELAY/4);
-        statusBar()->showMessage(MAT_ERRORTIT, TRAY_DELAY);
+//        statusBar()->showMessage(MAT_ERRORTIT, TRAY_DELAY);
         exCheck->setText(MAT_ERRORINF);
         exCheck->setStyleSheet(MAT_ERRORCOLOR);
     }
@@ -225,8 +218,10 @@ void MainWindow::checkMathCad()
         verCheck->setText(MAT_SUCCESSVERINF);
     }
     else{
-        if (exCheck->isChecked()) trayIcon->showMessage(MAT_ERRORVERTIT, MAT_ERRORVERMES, QSystemTrayIcon::Critical, TRAY_DELAY/4);
-        statusBar()->showMessage(MAT_ERRORVERTIT, TRAY_DELAY);
+        if (exCheck->isChecked()) {
+            trayIcon->showMessage(MAT_ERRORVERTIT, MAT_ERRORVERMES, QSystemTrayIcon::Critical, TRAY_DELAY/4);
+//            statusBar()->showMessage(MAT_ERRORVERTIT, TRAY_DELAY);
+        }
         verCheck->setStyleSheet(MAT_ERRORCOLOR);
         verCheck->setText(MAT_ERRORVERINF);
     }
@@ -234,20 +229,11 @@ void MainWindow::checkMathCad()
     ui->menu_other_mathcad_open_button->setEnabled(verCheck->isChecked() && exCheck->isChecked());
 }
 
-void MainWindow::pushDownLoadMessage(QString name, QString link, bool status)
+//Выводит список ком портов в комбобокс
+void MainWindow::loadComPortsInfo()
 {
-    QString tittle = "", message = "";
-    if (status) {
-        tittle = QString(DRIVER_DOWNTIT) + name + QString(DRIVER_DOWNTITYES);
-        message = QString(DRIVER_DOWNMESYES) + name + QString(DRIVER_DOWNMESYESRES) + link;
-        trayIcon->showMessage(tittle, message, QSystemTrayIcon::Information, TRAY_DELAY);
-    }
-    else {
-        tittle = QString(DRIVER_DOWNTIT) + name + QString(DRIVER_DOWNTITNO);
-        message = QString(DRIVER_DOWNMESNO) + link + QString(DRIVER_DOWNMESNOSELF) + link;
-        trayIcon->showMessage(tittle, message, QSystemTrayIcon::Critical, TRAY_DELAY);
-    }
-
+    usbprocessor = new USBProcessor();
+    ui->menu_device_port_comCombo->addItems(usbprocessor->getCOMPortsList());
 }
 
 //Настройка статус бара
@@ -274,26 +260,6 @@ void MainWindow::on_menu_other_app_advanced_button_clicked()
 {
     advanced.showDirPath(DATA_PATH);
     advanced.show();
-}
-
-//Ручной поиск устройства
-//TODO  интеграция сережиной хуйни
-void MainWindow::on_menu_device_manualSearch_button_clicked()
-{
-
-    std::list<USBhidDevice> devices = USBManager::getDevicesList();
-    qDebug() << "------------------------HID----------------------" << endl;
-    qDebug() << "Amount of devices: " << devices.size() << endl;
-
-    for (auto it = devices.begin(); it != devices.end(); ++it) {
-        qDebug() << QString::fromStdWString(it->name);
-        qDebug() << "\t" << QString::fromStdString(it->type);
-        qDebug() << "\t" << QString::fromStdString(it->hidPID);
-        qDebug() << "\t" << QString::fromStdString(it->hidVID);
-        qDebug() << "**********";
-    }
-
-    qDebug() << "------------------------------------------------------------------------------" << endl << endl;
 }
 
 //Открытие руководства пользователя
@@ -339,11 +305,11 @@ QString AppDir::dataDirPath()
 //Возвращает путь к програм файлс исходя из значения системной переменной.
 QString AppDir::programmFilesPath()
 {
-    QStringList varibleList =(QProcess::systemEnvironment());
+    QList<COMPort> varibleList =(QProcess::systemEnvironment());
     foreach (QString varible, varibleList) {
         qDebug() << varible;
         if (varible.contains(PROGRAMFILES, Qt::CaseInsensitive) && (varible.indexOf(PROGRAMFILES) == 0)) {
-            QStringList varList = varible.split("=");
+            QList<COMPort> varList = varible.split("=");
             return varList.at(1);
             break;
         }
@@ -389,6 +355,7 @@ void AppDir::copyFilesToAppData()
 
 }
 
+//WARNING при первом разе копируется битый битник
 //Функция копирования файла
 void AppDir::copyFile(QDir *dir, QString name)
 {
@@ -486,6 +453,7 @@ void AppDir::showCreateMessageBox(QString dirName)
     }
 }
 
+//TODO Вся область графика
 //Нажатие на кнопку сохранения картинки
 void MainWindow::on_menu_other_data_picture_button_clicked()
 {
@@ -499,6 +467,16 @@ void MainWindow::on_menu_other_data_picture_button_clicked()
     }
 }
 
+//Открытие проводника после сохранения изображения
+void MainWindow::showSavedFile(QString path)
+{
+    showMinimized();
+    QApplication::alert(this, 0);
+    QDir savedDir(path);
+    QDesktopServices::openUrl(QUrl::fromLocalFile(savedDir.absolutePath()));
+}
+
+//TODO Установить маткад и проверить
 //Кнопка отркрыть маткад
 void MainWindow::on_menu_other_mathcad_open_button_clicked()
 {
@@ -547,20 +525,20 @@ void MainWindow::on_menu_other_mathcad_check_clicked()
 //Наличие драйверов в системе
 void MainWindow::on_menu_device_driverInfo_button_clicked()
 {
-    pushStatusBarMessage(DRIVER_MESSAGEWAIT);
+    //pushStatusBarMessage(DRIVER_MESSAGEWAIT);
     bool ividriver = false;
          //ftdidriver = false,
          //agilentdriver = false;
 
     //Если компоненты ИВИ установлены => есть системная переменная IVIROOTDIR, проверка:
-    QStringList varibleList =(QProcess::systemEnvironment());
+    QList<COMPort> varibleList =(QProcess::systemEnvironment());
     foreach (const QString &varible, varibleList) {
         qDebug() << varible;
         if (varible.contains(DRIVER_IVIVARIBLE)) {
             ividriver = true;
             //trayIcon->showMessage(QString(DRIVER_TEXT) + QString(DRIVER_IVI) + QString(MAT_SUCCESS), " ", QSystemTrayIcon::Information, TRAY_DELAY/4);
 
-            QStringList var = varible.split("=");
+            QList<COMPort> var = varible.split("=");
             QString libPath = var[1] + DRIVER_AGIVARIBLE;
             if (QFile(libPath).exists()) {
                 //agilentdriver = true;
@@ -652,7 +630,7 @@ void MainWindow::on_menu_experiment_curveDT_spin_valueChanged(int arg1)
 }
 
 //Галка лимиты
-void MainWindow::on_checkBox_toggled(bool checked)
+void MainWindow::on_menu_experiment_limits_checkBox_toggled(bool checked)
 {
     bool nMode = ui->menu_experiment_limitsNmax_radio->isChecked();
     //bool tMode = ui->menu_experiment_limitsTinterval_radio->isChecked();
@@ -733,9 +711,27 @@ void MainWindow::on_menu_device_driverManual_button_clicked()
     ui->action_downloadr_ftdi->trigger();
 }
 
+//Сообзщение о начатой загрузке
+void MainWindow::pushDownLoadMessage(QString name, QString link, bool status)
+{
+    QString tittle = "", message = "";
+    if (status) {
+        tittle = QString(DRIVER_DOWNTIT) + name + QString(DRIVER_DOWNTITYES);
+        message = QString(DRIVER_DOWNMESYES) + name + QString(DRIVER_DOWNMESYESRES) + link;
+        trayIcon->showMessage(tittle, message, QSystemTrayIcon::Information, TRAY_DELAY);
+    }
+    else {
+        tittle = QString(DRIVER_DOWNTIT) + name + QString(DRIVER_DOWNTITNO);
+        message = QString(DRIVER_DOWNMESNO) + link + QString(DRIVER_DOWNMESNOSELF) + link;
+        trayIcon->showMessage(tittle, message, QSystemTrayIcon::Critical, TRAY_DELAY);
+    }
+
+}
+
+//Кнопка автопоиска драйверов
 void MainWindow::on_menu_device_autoSearch_button_clicked()
 {
-    usbprocessor.printNeededPorInformation();
+    usbprocessor;
 }
 
 void MainWindow::on_start_button_clicked()
@@ -765,4 +761,48 @@ void MainWindow::on_experiment_tabs_tabBarDoubleClicked(int index)
         for (int i = 0; i < ui->experiment_app_table->model()->rowCount(); i++)
             ui->experiment_app_table->model()->removeRow(0);
     }
+}
+
+void MainWindow::on_menu_other_data_table_button_clicked()
+{
+    ui->experiment_tabs->setCurrentIndex(1);
+}
+
+void MainWindow::on_menu_device_test_clicked()
+{
+    std::list<USBhidDevice> devices = USBManager::getDevicesList();
+    qDebug() << "------------------------HID----------------------" << endl;
+    qDebug() << "Amount of devices: " << devices.size() << endl;
+
+    for (auto it = devices.begin(); it != devices.end(); ++it) {
+        qDebug() << QString::fromStdWString(it->name);
+        qDebug() << "\t" << QString::fromStdString(it->type);
+        qDebug() << "\t" << QString::fromStdString(it->hidPID);
+        qDebug() << "\t" << QString::fromStdString(it->hidVID);
+        qDebug() << "**********";
+    }
+
+    qDebug() << "------------------------------------------------------------------------------" << endl << endl;
+}
+
+//Изменение порта в COM comboBox
+void MainWindow::on_menu_device_port_comCombo_currentIndexChanged(const QString &arg1)
+{
+    QList<COMdevice> comsList = usbprocessor->getCOMDevicesList();
+    foreach (auto device, comsList) {
+        if (device.getPortName() == arg1) {
+            ui->menu_device_port_pidEdit->setText(device.getPID());
+            ui->menu_device_port_vidEdit->setText(device.getVID());
+            ui->menu_device_port_nameEdit->setText(device.getDescription());
+            break;
+        }
+    }
+
+    connectionStatus->setText(ui->menu_device_port_nameEdit->text());
+    portStatus->setText(ui->menu_device_port_comCombo->currentText());
+}
+
+void MainWindow::on_menu_device_status_stack_currentChanged(int arg1)
+{
+    qDebug() << "Hi!";
 }

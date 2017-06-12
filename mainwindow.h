@@ -47,75 +47,75 @@ public slots:
     void showSavedFile(QString path);
 
 private slots:
+    void on_action_fullScreen_maximize_triggered(bool checked);
     void on_menu_other_app_advanced_button_clicked();
-    void on_menu_device_manualSearch_button_clicked();
     void on_menu_other_app_reference_button_clicked();
-    void on_menu_device_winManager_button_clicked();
-    void on_menu_file_restart_button_clicked();
     void on_menu_other_data_picture_button_clicked();
     void on_menu_other_mathcad_open_button_clicked();
-    void on_menu_device_driverInfo_button_clicked();
-    void on_menu_device_driverSetUp_button_clicked();
+    void on_menu_other_data_table_button_clicked();
     void on_menu_other_app_fullScreen_button_clicked(bool checked);
     void on_menu_other_mathcad_check_clicked();
-    void on_action_fullScreen_maximize_triggered(bool checked);
-    void on_menu_experiment_gridU_spin_valueChanged(double arg1);
-    void on_menu_experiment_gridU_slider_sliderMoved(int position);
 
-    void on_menu_experiment_grid_checkbox_toggled(bool checked);
-
-    void on_menu_experiment_minMax_checkbox_toggled(bool checked);
-
-    void on_menu_experiment_gridT_slider_sliderMoved(int position);
-
-    void on_menu_experiment_gridT_spin_valueChanged(int arg1);
-
-    void on_menu_experiment_curveDT_slider_sliderMoved(int position);
-
-    void on_menu_experiment_curveDT_spin_valueChanged(int arg1);
-
-    void on_checkBox_toggled(bool checked);
-
+    void on_menu_device_winManager_button_clicked();
+    void on_menu_device_driverInfo_button_clicked();
+    void on_menu_device_driverSetUp_button_clicked();
+    void on_menu_device_driverManual_button_clicked();
+    void on_menu_device_autoSearch_button_clicked();
     void on_action_driverl_ivi_triggered();
-    
     void on_action_driver_agilent_triggered();
-    
     void on_action_driver_ftdi_triggered();
-    
-    void on_menu_experiment_limitsNmax_radio_toggled(bool checked);
-
-    void on_menu_experiment_limitsTinterval_radio_toggled(bool checked);
-
     void on_action_downloadl_ivi_triggered();
-
     void on_action_download_agilent_triggered();
-
     void on_action_downloadr_ftdi_triggered();
 
-    void on_menu_device_driverManual_button_clicked();
+    void on_menu_file_restart_button_clicked();
 
-    void on_menu_device_autoSearch_button_clicked();
+    void on_menu_experiment_gridU_spin_valueChanged(double arg1);
+    void on_menu_experiment_gridU_slider_sliderMoved(int position);
+    void on_menu_experiment_grid_checkbox_toggled(bool checked);
+    void on_menu_experiment_minMax_checkbox_toggled(bool checked);
+    void on_menu_experiment_gridT_slider_sliderMoved(int position);
+    void on_menu_experiment_gridT_spin_valueChanged(int arg1);
+    void on_menu_experiment_curveDT_slider_sliderMoved(int position);
+    void on_menu_experiment_curveDT_spin_valueChanged(int arg1);
+    void on_menu_experiment_limits_checkBox_toggled(bool checked);
+    void on_menu_experiment_limitsNmax_radio_toggled(bool checked);
+    void on_menu_experiment_limitsTinterval_radio_toggled(bool checked);
 
     void on_start_button_clicked();
-
     void on_experiment_tabs_tabBarDoubleClicked(int index);
 
+    void on_menu_device_test_clicked();
+
+    void on_menu_device_port_comCombo_currentIndexChanged(const QString &arg1);
+
+    void on_menu_device_status_stack_currentChanged(int arg1);
+
 private:
+    //Окна и гуишные украшательства
     Ui::MainWindow *ui;
     AdvancedWindow advanced;
     PictureWindow picture;
+    QSystemTrayIcon *trayIcon;
+
+    //Функциональные модули
     JsonDataManager jsonManager;
+    USBProcessor *usbprocessor;
     ApplicationManager *apps;
+
+    //Надписи в статусбаре
     QLabel* portStatus;
     QLabel* connectionStatus;
+
+    //Инициализация гуя
     void setUIlogic();
     void setTablesUI();
     void setButtonsMenu();
     void setStatusBarWidgets();
+    void loadComPortsInfo();
+
+    //Вспомогательные функции гуя
     bool eventFilter(QObject *watched, QEvent *event);
-    QSystemTrayIcon *trayIcon;
-    QMenu *trayIconMenu;
-    USBProcessor usbprocessor;
     void checkMathCad();
     void pushDownLoadMessage(QString name, QString link, bool status);
 };

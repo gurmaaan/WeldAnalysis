@@ -1,21 +1,15 @@
 #include "usbprocessor.h"
-#include "ui_usbprocessor.h"
 #include <QtSerialPort/QSerialPort>
 #include <QtSerialPort/QSerialPortInfo>
+#include <QStandardItem>
 #include <QDebug>
+#include <QList>
 #include "constants.h"
 #include "libusb.h"
 
-USBProcessor::USBProcessor(QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::USBProcessor)
-{
-    ui->setupUi(this);
-}
-
 int USBProcessor::getAgilentConnection()
 {
-//    ViStatus status;
+    //    ViStatus status;
 //    ViSession session;
 //    ViChar str[128];
 //    ViInt32 ErrorCode;
@@ -110,12 +104,7 @@ int USBProcessor::getAgilentConnection()
 //    qDebug () <<  "Driver Closed";
 
 //    qDebug () << "Done - Press Enter to Exit";
-//    getchar();
-}
-
-USBProcessor::~USBProcessor()
-{
-    delete ui;
+    //    getchar();
 }
 
 void USBProcessor::printUSBlibList()
@@ -194,59 +183,74 @@ void USBProcessor::printUSBlibList()
     qDebug() << "------------------------------------------------------------------------------" << endl << endl;
 }
 
-void USBProcessor::printNeededPorInformation()
-{
-    qDebug() << "------------------------QSerialPort------------------------" << endl;
-    const auto infoList = QSerialPortInfo::availablePorts();
+COMdevice::COMdevice(QString portName, quint16 vid, quint16 pid, QString description) {
+    stringDescription = description;
+    numPID = pid;
+    numVID = vid;
+    stringVID = QString::number(vid);
+    stringPID = QString::number(pid);
+    stringPort = portName;
+}
 
-    qDebug() << "Amount of devices: " << infoList.size() << endl;
-    QString curVID = "", curPID = "";
+QString COMdevice::getVID()
+{
+    return stringVID;
+}
+
+QString COMdevice::getPID()
+{
+    return stringPID;
+}
+
+QString COMdevice::getPortName()
+{
+    return stringPort;
+}
+
+QString COMdevice::getDescription()
+{
+    return stringDescription;
+}
+
+void USBProcessor::initCOMList()
+{
+    auto infoList = QSerialPortInfo::availablePorts();
 
     for (const QSerialPortInfo &info : infoList) {
-        curPID = QString::number(info.productIdentifier());
-        curVID = QString::number(info.vendorIdentifier());
-
-        if ((curPID == PID) && (curVID == VID))
-        {
-            qDebug() <<prntlndbg;
-            qDebug() << "Agilent founded in " << info.portName() << " like " << info.description();
-            qDebug() << "Manufacture: " <<  info.manufacturer();
-            qDebug() << "Location: " << info.systemLocation();
-            qDebug() << "PID: " << curPID;
-            qDebug() << "VID: " << curVID;
-            
-            bool portPID = false, portVID = false, portNotNull = false, portNotBussy = false;
-            portPID = info.hasProductIdentifier();
-            portVID = info.hasVendorIdentifier();
-            portNotNull = !info.isNull();
-            portNotBussy = ! info.isBusy();
-
-            if (portPID && portVID && portNotBussy && portNotNull) {
-                qDebug() << "Ready for connection";
-                QSerialPort *port = new QSerialPort();
-                port->open(QIODevice::Append);
-                qDebug() << (QString) port->readAll();
-                //port->waitForReadyRead(100);
-
-            }
-             qDebug() <<prntlndbg;
-        }
+        COMdevice device(info.portName(), info.vendorIdentifier(), info.productIdentifier(), info.description());
+        avalibleCOMlist.append(device);
     }
-
-    qDebug() << "------------------------------------------------------------------------------" << endl << endl;
 }
 
-void USBProcessor::on_pushButton_clicked()
+int USBProcessor::comDevicesCount()
 {
-    printUSBlibList();
+    return avalibleCOMlist.size();
 }
 
-void USBProcessor::on_pushButton_2_clicked()
+QStandardItemModel *USBProcessor::getComModel()
 {
-    printNeededPorInformation();
+    foreach (COMdevice port, avalibleCOMlist) {
+        addRootItem(comModel, port.getPortName());
+    }
 }
 
-void USBProcessor::on_pushButton_3_clicked()
+void USBProcessor::addRootItem(QStandardItemModel *model, const QString portName)
 {
-    getAgilentConnection();
+    QStandardItem* item = new QStandardItem(portName);
+}
+
+QList<COMdevice> USBProcessor::getCOMDevicesList()
+{
+    return avalibleCOMlist;
+}
+
+QList<COMPort> USBProcessor::getCOMPortsList()
+{
+    QList<COMPort> portNameList;
+    foreach (COMdevice device, avalibleCOMlist) {
+        QString portName(device.getPortName());
+        qDebug() << portName;
+        portNameList.append(portName);
+    }
+    return portNameList;
 }

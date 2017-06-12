@@ -40,6 +40,7 @@
         <file>Icons/Device/Agilent.png</file>
         <file>Icons/Device/FTDI.png</file>
         <file>Icons/Device/IVI.png</file>
+        <file>Icons/Device/test.png</file>
     </qresource>
     <qresource prefix="/Other">
         <file>PathList.json</file>

@@ -7,7 +7,7 @@
 
 int Application::detectHeadVersion(QString appVersion)
 {
-    QStringList versionParts = appVersion.split(".");
+    QList<COMPort> versionParts = appVersion.split(".");
     bool convertationStatus = false;
     int verNum = versionParts.at(0).toInt(&convertationStatus, 10);
     if (convertationStatus)
@@ -44,7 +44,7 @@ void ApplicationManager::pushApp(QString name, QString vers)
 QStandardItemModel *ApplicationManager::getModel()
 {
     QStandardItemModel *model = new QStandardItemModel();
-    QStringList headers;
+    QList<COMPort> headers;
     headers.append("Приложение");
     headers.append("Версия");
     model->setHorizontalHeaderLabels(headers);
@@ -113,13 +113,13 @@ bool ApplicationManager::isVersion()
 void ApplicationManager::createList()
 {
     QSettings settings(MAT_REGFOLDER, QSettings::NativeFormat);
-    QStringList keyListDisplay = settings.allKeys().filter ( MAT_DISPLAYKEY );
+    QList<COMPort> keyListDisplay = settings.allKeys().filter ( MAT_DISPLAYKEY );
 
     foreach ( QString key, keyListDisplay)
     {
         const QString currentName = settings.value(key).toString();
 
-        QStringList keyAndFilter = key.split("/");
+        QList<COMPort> keyAndFilter = key.split("/");
         QString vKey = keyAndFilter.at(0) + "/" + MAT_VERSIONKEY;
         const QString currentVersion = settings.value(vKey).toString();
 

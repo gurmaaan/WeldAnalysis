@@ -101,7 +101,7 @@ QStandardItemModel *ExcelDataManager::getSettingsModel(QAxObject *excelFile)
 //Установка заголовков моделей
 QStandardItemModel *ExcelDataManager::setModelHeaders(QAxObject *excelSheet, QStandardItemModel *model)
 {
-    QStringList headers;
+    QList<COMPort> headers;
     for (int colH = 0; colH < 2; colH++) {
         QAxObject* cellH = excelSheet->querySubObject("Cells(int,int)", 1, colH + 1);
         QVariant cellHValue = cellH->property("Value");
