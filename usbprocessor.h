@@ -36,7 +36,6 @@ public:
         initCOMList();
     }
 
-    int getAgilentConnection();
     void initCOMList();
     int comDevicesCount();
 

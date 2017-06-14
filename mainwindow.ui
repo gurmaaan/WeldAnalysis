@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1083</width>
-    <height>600</height>
+    <width>1145</width>
+    <height>609</height>
    </rect>
   </property>
   <property name="contextMenuPolicy">
@@ -527,16 +527,16 @@
        <attribute name="title">
         <string>Устройство</string>
        </attribute>
-       <layout class="QHBoxLayout" name="horizontalLayout_12">
+       <layout class="QHBoxLayout" name="horizontalLayout_9">
         <item>
-         <widget class="QSplitter" name="splitter_2">
+         <widget class="QSplitter" name="splitter_3">
           <property name="orientation">
            <enum>Qt::Vertical</enum>
           </property>
           <widget class="QWidget" name="layoutWidget">
-           <layout class="QHBoxLayout" name="horizontalLayout_10">
+           <layout class="QHBoxLayout" name="horizontalLayout_7">
             <item>
-             <widget class="QToolButton" name="menu_device_port__">
+             <widget class="QToolButton" name="menu_device_port_search_button">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                 <horstretch>0</horstretch>
@@ -549,18 +549,24 @@
                 <height>80</height>
                </size>
               </property>
+              <property name="font">
+               <font>
+                <family>Arial Narrow</family>
+                <pointsize>10</pointsize>
+               </font>
+              </property>
               <property name="toolTip">
-               <string>Просмотр всех подключенных устройств, найденных в системе (Включая HID)</string>
+               <string>Автоматический поиск подключенного устройства</string>
               </property>
               <property name="statusTip">
-               <string>Просмотр всех подключенных устройств, найденных в системе (Включая HID) </string>
+               <string>Автоматический поиск подключенного устройства</string>
               </property>
               <property name="text">
-               <string>Автовыбор</string>
+               <string>Поиск</string>
               </property>
               <property name="icon">
                <iconset resource="sources.qrc">
-                <normaloff>:/GUI/Icons/Device/USBGood.png</normaloff>:/GUI/Icons/Device/USBGood.png</iconset>
+                <normaloff>:/GUI/Icons/Device/PortAuto.png</normaloff>:/GUI/Icons/Device/PortAuto.png</iconset>
               </property>
               <property name="iconSize">
                <size>
@@ -568,11 +574,11 @@
                 <height>50</height>
                </size>
               </property>
-              <property name="checkable">
-               <bool>true</bool>
+              <property name="shortcut">
+               <string>Ctrl+F</string>
               </property>
-              <property name="checked">
-               <bool>true</bool>
+              <property name="popupMode">
+               <enum>QToolButton::InstantPopup</enum>
               </property>
               <property name="toolButtonStyle">
                <enum>Qt::ToolButtonTextUnderIcon</enum>
@@ -580,22 +586,19 @@
               <property name="autoRaise">
                <bool>true</bool>
               </property>
-              <property name="arrowType">
-               <enum>Qt::NoArrow</enum>
-              </property>
              </widget>
             </item>
             <item>
-             <layout class="QVBoxLayout" name="verticalLayout_5">
+             <layout class="QVBoxLayout" name="verticalLayout_10">
               <item>
-               <widget class="QComboBox" name="menu_device_port_com_combobox">
+               <widget class="QComboBox" name="menu_device_port_com_combo">
                 <property name="enabled">
                  <bool>true</bool>
                 </property>
                </widget>
               </item>
               <item>
-               <layout class="QHBoxLayout" name="horizontalLayout_7">
+               <layout class="QHBoxLayout" name="horizontalLayout_3">
                 <item>
                  <widget class="QLabel" name="menu_device_port_vid_label">
                   <property name="text">
@@ -619,10 +622,6 @@
                   </property>
                  </widget>
                 </item>
-               </layout>
-              </item>
-              <item>
-               <layout class="QHBoxLayout" name="horizontalLayout_9">
                 <item>
                  <widget class="QLabel" name="menu_device_port_pid_label">
                   <property name="text">
@@ -654,7 +653,7 @@
              </layout>
             </item>
             <item>
-             <widget class="QToolButton" name="menu_device_port_allButton">
+             <widget class="QToolButton" name="menu_device_port_all_button">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                 <horstretch>0</horstretch>
@@ -713,9 +712,6 @@
            <property name="alignment">
             <set>Qt::AlignCenter</set>
            </property>
-           <property name="buddy">
-            <cstring>menu_device_port_com_combobox</cstring>
-           </property>
           </widget>
          </widget>
         </item>
@@ -727,166 +723,101 @@
          </widget>
         </item>
         <item>
-         <widget class="QSplitter" name="splitter_4">
+         <widget class="QSplitter" name="splitter_2">
           <property name="orientation">
            <enum>Qt::Vertical</enum>
           </property>
-          <widget class="QWidget" name="layoutWidget">
-           <layout class="QHBoxLayout" name="horizontalLayout_11">
+          <widget class="QGroupBox" name="menu_device_set_box">
+           <property name="title">
+            <string>По умолчанию</string>
+           </property>
+           <property name="checkable">
+            <bool>true</bool>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout_5">
             <item>
-             <widget class="QToolButton" name="menu_device_gadget_autoButton">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>80</width>
-                <height>80</height>
-               </size>
-              </property>
-              <property name="font">
-               <font>
-                <family>Arial Narrow</family>
-                <pointsize>10</pointsize>
-               </font>
-              </property>
-              <property name="toolTip">
-               <string>Автоматический поиск подключенного устройства</string>
-              </property>
-              <property name="statusTip">
-               <string>Автоматический поиск подключенного устройства</string>
-              </property>
-              <property name="text">
-               <string>Поиск</string>
-              </property>
-              <property name="icon">
-               <iconset resource="sources.qrc">
-                <normaloff>:/GUI/Icons/Device/PortAuto.png</normaloff>:/GUI/Icons/Device/PortAuto.png</iconset>
-              </property>
-              <property name="iconSize">
-               <size>
-                <width>50</width>
-                <height>50</height>
-               </size>
-              </property>
-              <property name="shortcut">
-               <string>Ctrl+F</string>
-              </property>
-              <property name="popupMode">
-               <enum>QToolButton::InstantPopup</enum>
-              </property>
-              <property name="toolButtonStyle">
-               <enum>Qt::ToolButtonTextUnderIcon</enum>
-              </property>
-              <property name="autoRaise">
-               <bool>true</bool>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QToolButton" name="menu_device_gadget_test_button">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>80</width>
-                <height>80</height>
-               </size>
-              </property>
-              <property name="font">
-               <font>
-                <family>Arial Narrow</family>
-                <pointsize>10</pointsize>
-               </font>
-              </property>
-              <property name="toolTip">
-               <string>Автоматический поиск подключенного устройства</string>
-              </property>
-              <property name="statusTip">
-               <string>Автоматический поиск подключенного устройства</string>
-              </property>
-              <property name="text">
-               <string>Тестовый
-Запрос</string>
-              </property>
-              <property name="icon">
-               <iconset resource="sources.qrc">
-                <normaloff>:/GUI/Icons/Device/test.png</normaloff>:/GUI/Icons/Device/test.png</iconset>
-              </property>
-              <property name="iconSize">
-               <size>
-                <width>50</width>
-                <height>50</height>
-               </size>
-              </property>
-              <property name="shortcut">
-               <string>Ctrl+F</string>
-              </property>
-              <property name="popupMode">
-               <enum>QToolButton::InstantPopup</enum>
-              </property>
-              <property name="toolButtonStyle">
-               <enum>Qt::ToolButtonTextUnderIcon</enum>
-              </property>
-              <property name="autoRaise">
-               <bool>true</bool>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QToolButton" name="menu_device_port_winManager_button">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>80</width>
-                <height>80</height>
-               </size>
-              </property>
-              <property name="mouseTracking">
-               <bool>true</bool>
-              </property>
-              <property name="toolTip">
-               <string>Открыть диспетчер устройств Windows</string>
-              </property>
-              <property name="statusTip">
-               <string>Открыть диспетчер устройств Windows</string>
-              </property>
-              <property name="layoutDirection">
-               <enum>Qt::LeftToRight</enum>
-              </property>
-              <property name="text">
-               <string>Диспетчер
-Устройств</string>
-              </property>
-              <property name="icon">
-               <iconset resource="sources.qrc">
-                <normaloff>:/GUI/Icons/Device/DeviceManager.png</normaloff>:/GUI/Icons/Device/DeviceManager.png</iconset>
-              </property>
-              <property name="iconSize">
-               <size>
-                <width>50</width>
-                <height>50</height>
-               </size>
-              </property>
-              <property name="toolButtonStyle">
-               <enum>Qt::ToolButtonTextUnderIcon</enum>
-              </property>
-              <property name="autoRaise">
-               <bool>true</bool>
-              </property>
-             </widget>
+             <layout class="QGridLayout" name="gridLayout">
+              <item row="0" column="0">
+               <widget class="QLabel" name="menu_device_set_baud_label">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
+                <property name="text">
+                 <string>Бит в секунду</string>
+                </property>
+                <property name="buddy">
+                 <cstring>menu_device_set_baud_combo</cstring>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1">
+               <widget class="QComboBox" name="menu_device_set_baud_combo">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="2">
+               <widget class="QLabel" name="menu_device_set_byte_label">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
+                <property name="text">
+                 <string>Бит данных</string>
+                </property>
+                <property name="buddy">
+                 <cstring>menu_device_set_byte_combo</cstring>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="3">
+               <widget class="QComboBox" name="menu_device_set_byte_combo">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0">
+               <widget class="QLabel" name="menu_device_set_parity_label">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
+                <property name="text">
+                 <string>Четность</string>
+                </property>
+                <property name="buddy">
+                 <cstring>menu_device_set_parity_combo</cstring>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1">
+               <widget class="QComboBox" name="menu_device_set_parity_combo">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="2">
+               <widget class="QLabel" name="menu_device_set_xonxoff_label">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
+                <property name="text">
+                 <string>Упр. потоком</string>
+                </property>
+                <property name="buddy">
+                 <cstring>menu_device_set_xonxoff_combo</cstring>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="3">
+               <widget class="QComboBox" name="menu_device_set_xonxoff_combo">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
+               </widget>
+              </item>
+             </layout>
             </item>
            </layout>
           </widget>
@@ -898,13 +829,10 @@
             </font>
            </property>
            <property name="text">
-            <string>Прибор</string>
+            <string>Настройки</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignCenter</set>
-           </property>
-           <property name="buddy">
-            <cstring>menu_device_gadget_autoButton</cstring>
            </property>
           </widget>
          </widget>
@@ -917,169 +845,105 @@
          </widget>
         </item>
         <item>
-         <widget class="QSplitter" name="splitter_5">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
+         <widget class="QToolButton" name="menu_device_test_button">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
           </property>
-          <widget class="QWidget" name="layoutWidget">
-           <layout class="QHBoxLayout" name="horizontalLayout_3">
-            <item>
-             <widget class="QToolButton" name="menu_device_driverInfo_button">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>80</width>
-                <height>80</height>
-               </size>
-              </property>
-              <property name="toolTip">
-               <string>Наличие в системе установленных драйверов</string>
-              </property>
-              <property name="statusTip">
-               <string>Наличие в системе установленных драйверов</string>
-              </property>
-              <property name="text">
-               <string>Наличие в
-Системе</string>
-              </property>
-              <property name="icon">
-               <iconset resource="sources.qrc">
-                <normaloff>:/GUI/Icons/Device/DriverBad.png</normaloff>:/GUI/Icons/Device/DriverBad.png</iconset>
-              </property>
-              <property name="iconSize">
-               <size>
-                <width>50</width>
-                <height>50</height>
-               </size>
-              </property>
-              <property name="toolButtonStyle">
-               <enum>Qt::ToolButtonTextUnderIcon</enum>
-              </property>
-              <property name="autoRaise">
-               <bool>true</bool>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QToolButton" name="menu_device_driverSetUp_button">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>95</width>
-                <height>80</height>
-               </size>
-              </property>
-              <property name="toolTip">
-               <string>Установить необходимые  драйвера для устройства автоматически</string>
-              </property>
-              <property name="statusTip">
-               <string>Установить необходимые  драйвера для устройства автоматически</string>
-              </property>
-              <property name="layoutDirection">
-               <enum>Qt::LeftToRight</enum>
-              </property>
-              <property name="text">
-               <string>Установить
-Автоматически</string>
-              </property>
-              <property name="icon">
-               <iconset resource="sources.qrc">
-                <normaloff>:/GUI/Icons/Device/DriverSetUp.png</normaloff>:/GUI/Icons/Device/DriverSetUp.png</iconset>
-              </property>
-              <property name="iconSize">
-               <size>
-                <width>50</width>
-                <height>50</height>
-               </size>
-              </property>
-              <property name="popupMode">
-               <enum>QToolButton::MenuButtonPopup</enum>
-              </property>
-              <property name="toolButtonStyle">
-               <enum>Qt::ToolButtonTextUnderIcon</enum>
-              </property>
-              <property name="autoRaise">
-               <bool>true</bool>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QToolButton" name="menu_device_driverManual_button">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>80</width>
-                <height>80</height>
-               </size>
-              </property>
-              <property name="toolTip">
-               <string>Скачать драйверы с оффициальных сайтов производителей</string>
-              </property>
-              <property name="statusTip">
-               <string>Скачать драйверы с оффициальных сайтов производителей</string>
-              </property>
-              <property name="layoutDirection">
-               <enum>Qt::LeftToRight</enum>
-              </property>
-              <property name="text">
-               <string>Скачать
-Ресурс</string>
-              </property>
-              <property name="icon">
-               <iconset resource="sources.qrc">
-                <normaloff>:/GUI/Icons/Device/DriverManual.png</normaloff>:/GUI/Icons/Device/DriverManual.png</iconset>
-              </property>
-              <property name="iconSize">
-               <size>
-                <width>50</width>
-                <height>50</height>
-               </size>
-              </property>
-              <property name="popupMode">
-               <enum>QToolButton::MenuButtonPopup</enum>
-              </property>
-              <property name="toolButtonStyle">
-               <enum>Qt::ToolButtonTextUnderIcon</enum>
-              </property>
-              <property name="autoRaise">
-               <bool>true</bool>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </widget>
-          <widget class="QLabel" name="menu_device_driver_label">
-           <property name="font">
-            <font>
-             <weight>75</weight>
-             <bold>true</bold>
-            </font>
-           </property>
-           <property name="text">
-            <string>Драйвер</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignCenter</set>
-           </property>
-           <property name="buddy">
-            <cstring>menu_device_driverInfo_button</cstring>
-           </property>
-          </widget>
+          <property name="minimumSize">
+           <size>
+            <width>80</width>
+            <height>80</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <family>Arial Narrow</family>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="toolTip">
+           <string>Автоматический поиск подключенного устройства</string>
+          </property>
+          <property name="statusTip">
+           <string>Автоматический поиск подключенного устройства</string>
+          </property>
+          <property name="text">
+           <string>Тестовый
+Запрос</string>
+          </property>
+          <property name="icon">
+           <iconset resource="sources.qrc">
+            <normaloff>:/GUI/Icons/Device/test.png</normaloff>:/GUI/Icons/Device/test.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>50</width>
+            <height>50</height>
+           </size>
+          </property>
+          <property name="shortcut">
+           <string>Ctrl+F</string>
+          </property>
+          <property name="popupMode">
+           <enum>QToolButton::InstantPopup</enum>
+          </property>
+          <property name="toolButtonStyle">
+           <enum>Qt::ToolButtonTextUnderIcon</enum>
+          </property>
+          <property name="autoRaise">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QToolButton" name="menu_device_WinManager_button">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>80</width>
+            <height>80</height>
+           </size>
+          </property>
+          <property name="mouseTracking">
+           <bool>true</bool>
+          </property>
+          <property name="toolTip">
+           <string>Открыть диспетчер устройств Windows</string>
+          </property>
+          <property name="statusTip">
+           <string>Открыть диспетчер устройств Windows</string>
+          </property>
+          <property name="layoutDirection">
+           <enum>Qt::LeftToRight</enum>
+          </property>
+          <property name="text">
+           <string>Диспетчер
+Устройств</string>
+          </property>
+          <property name="icon">
+           <iconset resource="sources.qrc">
+            <normaloff>:/GUI/Icons/Device/DeviceManager.png</normaloff>:/GUI/Icons/Device/DeviceManager.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>50</width>
+            <height>50</height>
+           </size>
+          </property>
+          <property name="toolButtonStyle">
+           <enum>Qt::ToolButtonTextUnderIcon</enum>
+          </property>
+          <property name="autoRaise">
+           <bool>true</bool>
+          </property>
          </widget>
         </item>
         <item>
@@ -1096,7 +960,7 @@
          </spacer>
         </item>
         <item>
-         <widget class="QGroupBox" name="groupBox">
+         <widget class="QGroupBox" name="menu_device_status_box">
           <property name="font">
            <font>
             <weight>75</weight>

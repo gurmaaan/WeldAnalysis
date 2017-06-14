@@ -69,8 +69,6 @@ void MainWindow::setUIlogic()
 {
     ui->menu_other_app_fullScreen_button->installEventFilter(this);
     ui->menu_other_data_table_button->installEventFilter(this);
-    ui->menu_device_driverSetUp_button->installEventFilter(this);
-    ui->menu_device_driverManual_button->installEventFilter(this);
 
     setTablesUI();
     setButtonsMenu();
@@ -118,22 +116,6 @@ void MainWindow::setButtonsMenu()
     menuTable->addAction(ui->action_table_internal);
     menuTable->addAction(ui->action_table_excel);
     menuTable->addAction(ui->action_table_notepad);
-    ui->menu_other_data_table_button->setMenu(menuTable);
-
-    //Кнопка установки драйверов
-    QMenu *menuDriverSetUp = new QMenu();
-    menuDriverSetUp->addAction(ui->action_driverl_ivi);
-    menuDriverSetUp->addAction(ui->action_driver_agilent);
-    menuDriverSetUp->addAction(ui->action_driver_ftdi);
-    ui->menu_device_driverSetUp_button->setMenu(menuDriverSetUp);
-
-    //Кнопка скачивания драйверов
-    QMenu *menuDownload = new QMenu();
-    menuDownload->addAction(ui->action_downloadl_ivi);
-    menuDownload->addAction(ui->action_download_agilent);
-    menuDownload->addAction(ui->action_downloadr_ftdi);
-    ui->menu_device_driverManual_button->setMenu(menuDownload);
-
 }
 
 //Обработчик всех нажатий ПКМ по кнопкам
@@ -157,30 +139,6 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
         QMouseEvent *e = static_cast<QMouseEvent *>(event);
         if (e->button() == Qt::RightButton) {
             buttonFullScreen->menu()->popup(buttonFullScreen->mapToGlobal(e->pos()));
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    QToolButton *buttonDriverSetUp = ui->menu_device_driverSetUp_button;
-    if ( (watched == buttonDriverSetUp) && (event->type() == QEvent::MouseButtonPress) )
-    {
-        QMouseEvent *e = static_cast<QMouseEvent *>(event);
-        if (e->button() == Qt::RightButton) {
-            buttonDriverSetUp->menu()->popup(buttonDriverSetUp->mapToGlobal(e->pos()));
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    QToolButton *buttonDriverDownload = ui->menu_device_driverManual_button;
-    if ( (watched == buttonDriverDownload) && (event->type() == QEvent::MouseButtonPress) )
-    {
-        QMouseEvent *e = static_cast<QMouseEvent *>(event);
-        if (e->button() == Qt::RightButton) {
-            buttonDriverDownload->menu()->popup(buttonDriverDownload->mapToGlobal(e->pos()));
             return true;
         } else {
             return false;
@@ -233,7 +191,8 @@ void MainWindow::checkMathCad()
 void MainWindow::loadComPortsInfo()
 {
     usbprocessor = new USBProcessor();
-    ui->menu_device_port_com_combobox->addItems(usbprocessor->getCOMPortsList());
+    ui->menu_device_port_com_combo->addItems(usbprocessor->getCOMPortsList());
+
     COMdevice device = usbprocessor->getCOMDevicesList().first();
     ui->menu_device_port_pid_edit->setText(device.getPID());
     ui->menu_device_port_vid_edit->setText(device.getVID());
@@ -275,12 +234,6 @@ void MainWindow::on_menu_other_app_reference_button_clicked()
 }
 
 //Менеджер устройств Windows
-void MainWindow::on_menu_device_winManager_button_clicked()
-{
-    QString deviceManagerpath = LINK_FILE + DATA_PATH + "/" + DIR_BAT +NAMS_DEVMAN;
-    qDebug() << deviceManagerpath;
-    QDesktopServices::openUrl(QUrl(deviceManagerpath, QUrl::TolerantMode));
-}
 
 //Обработчик нажатия на кнопку перезагрузки программы
 void MainWindow::on_menu_file_restart_button_clicked()
@@ -348,14 +301,6 @@ void AppDir::copyFilesToAppData()
     //Батник запуска девайс менеджера
     copyFile(&dir, NAM_DEVMAN);
 
-//Перешли в папку дров
-    dir.cdUp();
-    dir.cd(DIR_DRIVERS);
-    //Копируем дрова с ехе
-    copyExeFile(&dir, DRIVER_FTDI);
-    copyExeFile(&dir, DRIVER_IVI);
-    copyExeFile(&dir, DRIVER_AGILENT);
-
 }
 
 //WARNING при первом разе копируется битый битник
@@ -371,21 +316,6 @@ void AppDir::copyFile(QDir *dir, QString name)
     }
     else if (copied)
         showCopyMessageBox(NAM_MANUAL, &abs);
-}
-
-//Копирование экзешников с дровами
-void AppDir::copyExeFile(QDir *dir, QString name)
-{
-    QString absAppData = dir->path() + "/" + name;
-    QString absCoreDir = QCoreApplication::applicationDirPath() + "/" + QString(DIR_DRIVERS) + "/" + name;
-    bool copied = false;
-    if(QFile::copy(absCoreDir, absAppData))
-    {
-        qDebug() << MES_FILE << name << MES_COPIEDF;
-        copied = true;
-    }
-    else if (copied)
-        showCopyMessageBox(NAM_MANUAL, &absAppData);
 }
 
 //Функция создания папки приложения
@@ -525,47 +455,6 @@ void MainWindow::on_menu_other_mathcad_check_clicked()
     }
 }
 
-//Наличие драйверов в системе
-void MainWindow::on_menu_device_driverInfo_button_clicked()
-{
-    //pushStatusBarMessage(DRIVER_MESSAGEWAIT);
-    bool ividriver = false;
-         //ftdidriver = false,
-         //agilentdriver = false;
-
-    //Если компоненты ИВИ установлены => есть системная переменная IVIROOTDIR, проверка:
-    QStringList varibleList =(QProcess::systemEnvironment());
-    foreach (const QString &varible, varibleList) {
-        qDebug() << varible;
-        if (varible.contains(DRIVER_IVIVARIBLE)) {
-            ividriver = true;
-            //trayIcon->showMessage(QString(DRIVER_TEXT) + QString(DRIVER_IVI) + QString(MAT_SUCCESS), " ", QSystemTrayIcon::Information, TRAY_DELAY/4);
-
-            QStringList var = varible.split("=");
-            QString libPath = var[1] + DRIVER_AGIVARIBLE;
-            if (QFile(libPath).exists()) {
-                //agilentdriver = true;
-                //trayIcon->showMessage(QString(DRIVER_TEXT) + QString(DRIVER_AGILENT) + QString(MAT_SUCCESS), " ", QSystemTrayIcon::Information, TRAY_DELAY/4);
-            }
-            else {
-                //agilentdriver = false;
-                trayIcon->showMessage(QString(DRIVER_TEXT) + QString(DRIVER_AGILENT) + QString(MES_NOTCOPIEDF), DRIVER_MESSAGE, QSystemTrayIcon::Critical, TRAY_DELAY/4);
-            }
-            break;
-        }
-    }
-    if (!ividriver)
-        trayIcon->showMessage(QString(DRIVER_TEXT) + QString(DRIVER_IVI) + QString(MES_NOTCOPIEDF), DRIVER_MESSAGE, QSystemTrayIcon::Critical, TRAY_DELAY/4);
-}
-
-//Установить драйвера
-void MainWindow::on_menu_device_driverSetUp_button_clicked()
-{
-    ui->action_driverl_ivi->trigger();
-    ui->action_driver_agilent->trigger();
-    ui->action_driver_ftdi->trigger();
-}
-
 //TODO Обработчик ResizeEvent ( нормальный)
 //Действие при нажатии на пункт "Развернуть "меню кнопки полного экрана
 void MainWindow::on_action_fullScreen_maximize_triggered(bool checked)
@@ -644,34 +533,6 @@ void MainWindow::on_menu_experiment_limits_checkBox_toggled(bool checked)
     ui->menu_experiment_limitsTinterval_radio->setEnabled(checked);
 }
 
-//Установка драйвера IVI
-void MainWindow::on_action_driverl_ivi_triggered()
-{
-    QDir::setCurrent(DATA_PATH + "/" + QString(DIR_DRIVERS));
-    QProcess *iviproc = new QProcess(this);
-    if (iviproc->startDetached(DRIVER_IVI))
-        qDebug() << "Начато";
-    else
-        qDebug() << "Не начато";
-
-}
-
-//Установка жрайвера Agilent
-void MainWindow::on_action_driver_agilent_triggered()
-{
-    QDir::setCurrent(DATA_PATH + "/" + QString(DIR_DRIVERS));
-    QProcess *agilentproc = new QProcess(this);
-    agilentproc->startDetached(DRIVER_AGILENT);
-}
-
-//Установкка драйвера FTDI
-void MainWindow::on_action_driver_ftdi_triggered()
-{
-    QDir::setCurrent(DATA_PATH + "/" + QString(DIR_DRIVERS));
-    QProcess *ftdiproc = new QProcess(this);
-    ftdiproc->startDetached(DRIVER_FTDI);
-}
-
 //Обработка переключения режима лимитов - ограничение числа точек
 void MainWindow::on_menu_experiment_limitsNmax_radio_toggled(bool checked)
 {
@@ -688,55 +549,7 @@ void MainWindow::on_menu_experiment_limitsTinterval_radio_toggled(bool checked)
     ui->menu_experiment_limitsTintervalT2_spin->setEnabled(checked);
 }
 
-//Загрузка драйвера IVI
-void MainWindow::on_action_downloadl_ivi_triggered()
-{
-    pushDownLoadMessage(QString(DRIVER_IVI), QString(DRIVER_URLIVI), QDesktopServices::openUrl(QUrl(DRIVER_URLIVI)));
-}
-
-//Загрузка драйвера Agilent
-void MainWindow::on_action_download_agilent_triggered()
-{
-    pushDownLoadMessage(QString(DRIVER_AGILENT), QString(DRIVER_URLAGI), QDesktopServices::openUrl(QUrl(DRIVER_URLAGI)));
-}
-
-//Загрузка драйвера FTDI
-void MainWindow::on_action_downloadr_ftdi_triggered()
-{
-    pushDownLoadMessage(QString(DRIVER_FTDI), QString(DRIVER_URLFTDI), QDesktopServices::openUrl(QUrl(DRIVER_URLFTDI)));
-}
-
-//Кнопка загрузки всех драйверов
-void MainWindow::on_menu_device_driverManual_button_clicked()
-{
-    ui->action_downloadl_ivi->trigger();
-    ui->action_download_agilent->trigger();
-    ui->action_downloadr_ftdi->trigger();
-}
-
-//Сообзщение о начатой загрузке
-void MainWindow::pushDownLoadMessage(QString name, QString link, bool status)
-{
-    QString tittle = "", message = "";
-    if (status) {
-        tittle = QString(DRIVER_DOWNTIT) + name + QString(DRIVER_DOWNTITYES);
-        message = QString(DRIVER_DOWNMESYES) + name + QString(DRIVER_DOWNMESYESRES) + link;
-        trayIcon->showMessage(tittle, message, QSystemTrayIcon::Information, TRAY_DELAY);
-    }
-    else {
-        tittle = QString(DRIVER_DOWNTIT) + name + QString(DRIVER_DOWNTITNO);
-        message = QString(DRIVER_DOWNMESNO) + link + QString(DRIVER_DOWNMESNOSELF) + link;
-        trayIcon->showMessage(tittle, message, QSystemTrayIcon::Critical, TRAY_DELAY);
-    }
-
-}
-
-//Кнопка автопоиска драйверов
-void MainWindow::on_menu_device_autoSearch_button_clicked()
-{
-    usbprocessor;
-}
-
+//Нажатие на кнопки пуск
 void MainWindow::on_start_button_clicked()
 {
     ui->graph->addGraph();
@@ -757,6 +570,7 @@ void MainWindow::on_start_button_clicked()
     ui->graph->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
 }
 
+//Двойное нажатие по вкладке в таб виджете экспериментов
 void MainWindow::on_experiment_tabs_tabBarDoubleClicked(int index)
 {
     if (index == 2) {
@@ -766,12 +580,31 @@ void MainWindow::on_experiment_tabs_tabBarDoubleClicked(int index)
     }
 }
 
+//Нажатие на кнопку таблица в разделе другое
 void MainWindow::on_menu_other_data_table_button_clicked()
 {
     ui->experiment_tabs->setCurrentIndex(1);
 }
 
-void MainWindow::on_menu_device_test_clicked()
+//Изменение порта в COM comboBox
+void MainWindow::on_menu_device_port_com_combo_currentIndexChanged(const QString &arg1)
+{
+    QList<COMdevice> comsList = usbprocessor->getCOMDevicesList();
+    foreach (auto device, comsList) {
+        if (device.getPortName() == arg1) {
+            ui->menu_device_port_pid_edit->setText(device.getPID());
+            ui->menu_device_port_vid_edit->setText(device.getVID());
+            ui->menu_device_port_name_edit->setText(device.getDescription());
+            break;
+        }
+    }
+
+    connectionStatus->setText(ui->menu_device_port_name_edit->text());
+    portStatus->setText(ui->menu_device_port_com_combo->currentText());
+}
+
+//Нажатие кнопки поиска устройства
+void MainWindow::on_menu_device_port_search_button_clicked()
 {
     std::list<USBhidDevice> devices = USBManager::getDevicesList();
     qDebug() << "------------------------HID----------------------" << endl;
@@ -788,24 +621,10 @@ void MainWindow::on_menu_device_test_clicked()
     qDebug() << "------------------------------------------------------------------------------" << endl << endl;
 }
 
-//Изменение порта в COM comboBox
-void MainWindow::on_menu_device_port_comCombo_currentIndexChanged(const QString &arg1)
+//Кнопка диспетчер устройств
+void MainWindow::on_menu_device_WinManager_button_clicked()
 {
-    QList<COMdevice> comsList = usbprocessor->getCOMDevicesList();
-    foreach (auto device, comsList) {
-        if (device.getPortName() == arg1) {
-            ui->menu_device_port_pid_edit->setText(device.getPID());
-            ui->menu_device_port_vid_edit->setText(device.getVID());
-            ui->menu_device_port_name_edit->setText(device.getDescription());
-            break;
-        }
-    }
-
-    connectionStatus->setText(ui->menu_device_port_name_edit->text());
-    portStatus->setText(ui->menu_device_port_com_combobox->currentText());
-}
-
-void MainWindow::on_menu_device_status_stack_currentChanged(int arg1)
-{
-    qDebug() << "Hi!";
+    QString deviceManagerpath = LINK_FILE + DATA_PATH + "/" + DIR_BAT +NAMS_DEVMAN;
+    qDebug() << deviceManagerpath;
+    QDesktopServices::openUrl(QUrl(deviceManagerpath, QUrl::TolerantMode));
 }

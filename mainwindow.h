@@ -56,17 +56,8 @@ private slots:
     void on_menu_other_app_fullScreen_button_clicked(bool checked);
     void on_menu_other_mathcad_check_clicked();
 
-    void on_menu_device_winManager_button_clicked();
-    void on_menu_device_driverInfo_button_clicked();
-    void on_menu_device_driverSetUp_button_clicked();
-    void on_menu_device_driverManual_button_clicked();
-    void on_menu_device_autoSearch_button_clicked();
-    void on_action_driverl_ivi_triggered();
-    void on_action_driver_agilent_triggered();
-    void on_action_driver_ftdi_triggered();
-    void on_action_downloadl_ivi_triggered();
-    void on_action_download_agilent_triggered();
-    void on_action_downloadr_ftdi_triggered();
+    void on_menu_device_port_com_combo_currentIndexChanged(const QString &arg1);
+    void on_menu_device_port_search_button_clicked();
 
     void on_menu_file_restart_button_clicked();
 
@@ -85,11 +76,8 @@ private slots:
     void on_start_button_clicked();
     void on_experiment_tabs_tabBarDoubleClicked(int index);
 
-    void on_menu_device_test_clicked();
 
-    void on_menu_device_port_comCombo_currentIndexChanged(const QString &arg1);
-
-    void on_menu_device_status_stack_currentChanged(int arg1);
+    void on_menu_device_WinManager_button_clicked();
 
 private:
     //Окна и гуишные украшательства

@@ -27,7 +27,8 @@ SOURCES += main.cpp\
     advancedwindow.cpp \
     ExternalLibs/QCustomPlot/qcustomplot.cpp \
     usbprocessor.cpp \
-    applicationmanager.cpp
+    applicationmanager.cpp \
+    libusbmodul.cpp
 
 HEADERS  += mainwindow.h \
     exceldatamanager.h \
@@ -52,7 +53,13 @@ win32:RC_FILE = iconsource.rc
 
 TRANSLATIONS +=ru.ts
 
+#LibUSB
 win32: LIBS += -L$$PWD/ExternalLibs/LibUSB/ -llibusb-1.0.dll
-
 INCLUDEPATH += $$PWD/ExternalLibs/LibUSB
 DEPENDPATH += $$PWD/ExternalLibs/LibUSB
+
+#Agilent
+
+win32: LIBS += -L$$PWD/ExternalLibs/Agilent/ -Ag34401
+INCLUDEPATH += $$PWD/ExternalLibs/Agilent/Include
+DEPENDPATH += $$PWD/ExternalLibs/Agilent/Include
