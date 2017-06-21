@@ -30,6 +30,9 @@
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
      <widget class="QTabWidget" name="menu_tabs">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
       <property name="maximumSize">
        <size>
         <width>16777215</width>
@@ -164,6 +167,9 @@
                 </property>
                 <property name="shortcut">
                  <string>Ctrl+O</string>
+                </property>
+                <property name="popupMode">
+                 <enum>QToolButton::MenuButtonPopup</enum>
                 </property>
                 <property name="toolButtonStyle">
                  <enum>Qt::ToolButtonTextUnderIcon</enum>
@@ -982,6 +988,9 @@
           <layout class="QVBoxLayout" name="verticalLayout_9">
            <item>
             <widget class="QCheckBox" name="menu_device_status_found">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="font">
               <font>
                <weight>50</weight>
@@ -995,6 +1004,9 @@
            </item>
            <item>
             <widget class="QCheckBox" name="menu_device_status_query">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="font">
               <font>
                <weight>50</weight>
@@ -1008,6 +1020,9 @@
            </item>
            <item>
             <widget class="QCheckBox" name="menu_device_status_request">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="font">
               <font>
                <weight>50</weight>
@@ -1021,6 +1036,9 @@
            </item>
            <item>
             <widget class="QCheckBox" name="menu_device_status_ready">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="font">
               <font>
                <weight>50</weight>
@@ -1131,6 +1149,9 @@
            <layout class="QVBoxLayout" name="menu_experiment_grid_tools">
             <item>
              <widget class="QCheckBox" name="menu_experiment_grid_checkbox">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
               <property name="text">
                <string>Сетка</string>
               </property>
@@ -1147,7 +1168,7 @@
               <item>
                <widget class="QSlider" name="menu_experiment_gridU_slider">
                 <property name="enabled">
-                 <bool>true</bool>
+                 <bool>false</bool>
                 </property>
                 <property name="minimumSize">
                  <size>
@@ -1181,7 +1202,7 @@
               <item>
                <widget class="QDoubleSpinBox" name="menu_experiment_gridU_spin">
                 <property name="enabled">
-                 <bool>true</bool>
+                 <bool>false</bool>
                 </property>
                 <property name="minimumSize">
                  <size>
@@ -1246,7 +1267,7 @@
               <item>
                <widget class="QSlider" name="menu_experiment_gridT_slider">
                 <property name="enabled">
-                 <bool>true</bool>
+                 <bool>false</bool>
                 </property>
                 <property name="minimumSize">
                  <size>
@@ -1280,7 +1301,7 @@
               <item>
                <widget class="QSpinBox" name="menu_experiment_gridT_spin">
                 <property name="enabled">
-                 <bool>true</bool>
+                 <bool>false</bool>
                 </property>
                 <property name="minimumSize">
                  <size>
@@ -1345,7 +1366,7 @@
             <item>
              <widget class="QCheckBox" name="menu_experiment_minMax_checkbox">
               <property name="enabled">
-               <bool>true</bool>
+               <bool>false</bool>
               </property>
               <property name="text">
                <string>Авто</string>
@@ -1645,6 +1666,9 @@
              <layout class="QHBoxLayout" name="menu_experiment_curveLine_tool">
               <item>
                <widget class="QLabel" name="menu_experiment_curveLine_label">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
                 <property name="maximumSize">
                  <size>
                   <width>16777215</width>
@@ -1664,6 +1688,9 @@
               </item>
               <item>
                <widget class="QComboBox" name="menu_experiment_curveLine_combo">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
                 <property name="toolTip">
                  <string>Форма линии графика</string>
                 </property>
@@ -1704,6 +1731,9 @@
             </item>
             <item>
              <widget class="QLabel" name="menu_experiment_curveDT_label">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
               <property name="maximumSize">
                <size>
                 <width>16777215</width>
@@ -1726,7 +1756,7 @@
               <item>
                <widget class="QSlider" name="menu_experiment_curveDT_slider">
                 <property name="enabled">
-                 <bool>true</bool>
+                 <bool>false</bool>
                 </property>
                 <property name="minimumSize">
                  <size>
@@ -1763,7 +1793,7 @@
               <item>
                <widget class="QSpinBox" name="menu_experiment_curveDT_spin">
                 <property name="enabled">
-                 <bool>true</bool>
+                 <bool>false</bool>
                 </property>
                 <property name="minimumSize">
                  <size>
@@ -1838,7 +1868,7 @@
             <item>
              <widget class="QCheckBox" name="checkBox">
               <property name="enabled">
-               <bool>true</bool>
+               <bool>false</bool>
               </property>
               <property name="text">
                <string>Лимиты</string>
@@ -1872,7 +1902,7 @@
               <item>
                <widget class="QLabel" name="menu_experiment_limitsNmax_label">
                 <property name="enabled">
-                 <bool>true</bool>
+                 <bool>false</bool>
                 </property>
                 <property name="minimumSize">
                  <size>
@@ -1978,7 +2008,7 @@
               <item>
                <widget class="QLabel" name="menu_experiment_limitsTintervalT1_label">
                 <property name="enabled">
-                 <bool>true</bool>
+                 <bool>false</bool>
                 </property>
                 <property name="minimumSize">
                  <size>
@@ -2025,7 +2055,7 @@
               <item>
                <widget class="QLabel" name="menu_experiment_limitsTintervalT2_label">
                 <property name="enabled">
-                 <bool>true</bool>
+                 <bool>false</bool>
                 </property>
                 <property name="minimumSize">
                  <size>
@@ -2125,7 +2155,7 @@
           </property>
           <widget class="QToolButton" name="menu_experiment_reset_button">
            <property name="enabled">
-            <bool>true</bool>
+            <bool>false</bool>
            </property>
            <property name="sizePolicy">
             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -2209,6 +2239,9 @@
            <layout class="QHBoxLayout" name="menu_other_data_tools">
             <item>
              <widget class="QToolButton" name="menu_other_data_picture_button">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
               <property name="sizePolicy">
                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                 <horstretch>0</horstretch>
@@ -2254,6 +2287,9 @@ PNG</string>
             </item>
             <item>
              <widget class="QToolButton" name="menu_other_data_table_button">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
               <property name="sizePolicy">
                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                 <horstretch>0</horstretch>
@@ -2888,6 +2924,9 @@ PNG</string>
             <property name="text">
              <string>Старт</string>
             </property>
+            <property name="checkable">
+             <bool>true</bool>
+            </property>
            </widget>
           </item>
           <item>
@@ -2907,22 +2946,6 @@ PNG</string>
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="continue_button">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="font">
-             <font>
-              <family>Arial</family>
-              <pointsize>10</pointsize>
-             </font>
-            </property>
-            <property name="text">
-             <string>Продолжить</string>
-            </property>
-           </widget>
-          </item>
-          <item>
            <widget class="QPushButton" name="reset_button">
             <property name="enabled">
              <bool>false</bool>
@@ -2937,6 +2960,19 @@ PNG</string>
              <string>Сброс</string>
             </property>
            </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer_2">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
           </item>
          </layout>
         </item>
@@ -3024,7 +3060,7 @@ PNG</string>
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="realTime_label">
+         <widget class="QLabel" name="statistics_label">
           <property name="font">
            <font>
             <family>Arial</family>
@@ -3037,12 +3073,12 @@ PNG</string>
            <string>Статистика текущего эксперимента:</string>
           </property>
           <property name="buddy">
-           <cstring>realTime_table</cstring>
+           <cstring>statistics_table</cstring>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QTableView" name="realTime_table">
+         <widget class="QTableView" name="statistics_table">
           <property name="minimumSize">
            <size>
             <width>0</width>
@@ -3079,26 +3115,11 @@ PNG</string>
           <property name="showDropIndicator" stdset="0">
            <bool>false</bool>
           </property>
-          <property name="dragDropOverwriteMode">
-           <bool>false</bool>
-          </property>
           <property name="alternatingRowColors">
            <bool>true</bool>
           </property>
           <property name="selectionBehavior">
            <enum>QAbstractItemView::SelectRows</enum>
-          </property>
-          <property name="textElideMode">
-           <enum>Qt::ElideNone</enum>
-          </property>
-          <property name="verticalScrollMode">
-           <enum>QAbstractItemView::ScrollPerPixel</enum>
-          </property>
-          <property name="horizontalScrollMode">
-           <enum>QAbstractItemView::ScrollPerPixel</enum>
-          </property>
-          <property name="cornerButtonEnabled">
-           <bool>false</bool>
           </property>
           <attribute name="horizontalHeaderVisible">
            <bool>false</bool>
@@ -3221,94 +3242,39 @@ PNG</string>
     <string>Сохранить данные эксперимента в старом формате (текстовый файл)</string>
    </property>
   </action>
-  <action name="action_driverl_ivi">
+  <action name="action_open_txt">
    <property name="icon">
-    <iconset resource="sources.qrc">
-     <normaloff>:/GUI/Icons/Device/IVI.png</normaloff>:/GUI/Icons/Device/IVI.png</iconset>
+    <iconset>
+     <normalon>:/GUI/Icons/Other/TxtTable.png</normalon>
+    </iconset>
    </property>
    <property name="text">
-    <string>Компоненты IVI</string>
+    <string>Текстовый документ </string>
    </property>
    <property name="toolTip">
-    <string>Установка IVI Shared Components для драйвера Agilent</string>
+    <string>Открыть данные эксперимента в старом формате (текстовый файл)</string>
    </property>
    <property name="statusTip">
-    <string>Установка IVI Shared Components для драйвера Agilent</string>
+    <string>Сохранить данные эксперимента в старом формате (текстовый файл)</string>
    </property>
   </action>
-  <action name="action_driver_agilent">
+  <action name="action_open_excel">
    <property name="icon">
-    <iconset resource="sources.qrc">
-     <normaloff>:/GUI/Icons/Device/Agilent.png</normaloff>:/GUI/Icons/Device/Agilent.png</iconset>
+    <iconset>
+     <normalon>:/GUI/Icons/Other/TableExcel.png</normalon>
+    </iconset>
    </property>
    <property name="text">
-    <string>Драйвер Agilent</string>
+    <string>Excel</string>
    </property>
    <property name="toolTip">
-    <string>Установка драйвера взаимодействия с мультиметром Agilent </string>
+    <string>Открыть данные эксперимента в формате документа Excel</string>
    </property>
    <property name="statusTip">
-    <string>Установка драйвера взаимодействия с мультиметром Agilent </string>
+    <string>Сохранить данные эксперимента в формате документа Excel</string>
    </property>
-  </action>
-  <action name="action_driver_ftdi">
-   <property name="icon">
-    <iconset resource="sources.qrc">
-     <normaloff>:/GUI/Icons/Device/FTDI.png</normaloff>:/GUI/Icons/Device/FTDI.png</iconset>
-   </property>
-   <property name="text">
-    <string>Драйвер FTDI</string>
-   </property>
-   <property name="toolTip">
-    <string>Установка драйвера для переходника R232 - USB</string>
-   </property>
-   <property name="statusTip">
-    <string>Установка драйвера для переходника R232 - USB</string>
-   </property>
-  </action>
-  <action name="action_downloadl_ivi">
-   <property name="icon">
-    <iconset resource="sources.qrc">
-     <normaloff>:/GUI/Icons/Device/IVI.png</normaloff>:/GUI/Icons/Device/IVI.png</iconset>
-   </property>
-   <property name="text">
-    <string>Компоненты IVI</string>
-   </property>
-   <property name="toolTip">
-    <string>Загрузка с оффициального сайта IVI Shared Components для драйвера Agilent</string>
-   </property>
-   <property name="statusTip">
-    <string>Загрузка с оффициального сайта IVI Shared Components для драйвера Agilent</string>
-   </property>
-  </action>
-  <action name="action_download_agilent">
-   <property name="icon">
-    <iconset resource="sources.qrc">
-     <normaloff>:/GUI/Icons/Device/Agilent.png</normaloff>:/GUI/Icons/Device/Agilent.png</iconset>
-   </property>
-   <property name="text">
-    <string>Драйвер Agilent</string>
-   </property>
-   <property name="toolTip">
-    <string>Загрузка с оффициального сата драйвера мультиметра Agilent 34401a</string>
-   </property>
-   <property name="statusTip">
-    <string>Загрузка драйвера мультиметра Agilent 34401a с оффициального сайат производителяс </string>
-   </property>
-  </action>
-  <action name="action_downloadr_ftdi">
-   <property name="icon">
-    <iconset resource="sources.qrc">
-     <normaloff>:/GUI/Icons/Device/FTDI.png</normaloff>:/GUI/Icons/Device/FTDI.png</iconset>
-   </property>
-   <property name="text">
-    <string>Драйвер FTDI</string>
-   </property>
-   <property name="toolTip">
-    <string>Загрузка с оффициального сайта драйвера для переходника R232 - USB</string>
-   </property>
-   <property name="statusTip">
-    <string>Загрузка с оффициального сайта драйвера для переходника R232 - USB</string>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
    </property>
   </action>
  </widget>

@@ -20,6 +20,8 @@
 #include "applicationmanager.h"
 #include <QWidget>
 #include <QList>
+#include "experiment.h"
+#include <QTimer>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -35,13 +37,13 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     setUIlogic();
 
-    ui->start_button->click();
-
     trayIcon = new QSystemTrayIcon(this);
     trayIcon->setToolTip(APP_NAME);
     trayIcon->setIcon(QIcon(RES_APPICON));
     trayIcon->show();
 
+    timer = new QTimer();
+    connect(timer, SIGNAL(timeout()), this, SLOT(paintPoint()));
     checkMathCad();
 }
 
@@ -69,35 +71,29 @@ void MainWindow::setUIlogic()
 {
     ui->menu_other_app_fullScreen_button->installEventFilter(this);
     ui->menu_other_data_table_button->installEventFilter(this);
+    ui->menu_file_open_button->installEventFilter(this);
 
     setTablesUI();
     setButtonsMenu();
     setStatusBarWidgets();
     loadComPortsInfo();
+    setUpGraphic();
 }
 
 //Инициализация таблиц
 void MainWindow::setTablesUI()
 {
-    //Создание моделей для установки в tableView
-    QStandardItemModel *settingsModel = new QStandardItemModel;
-    QStandardItemModel *statisticsModel = new QStandardItemModel;
+    //Создание моделей для установки в tableVie
+    Settings *settings = new Settings();
+    settings->loadEmpty();
+    ui->settings_table->setModel(settings->getSetModel());
 
-    QFile settingsFile(RES_EMPTSET);
-    settingsFile.open(QFile::ReadOnly);
-    QFile statisticsFile(RES_EMPSTAT);
-    statisticsFile.open(QFile::ReadOnly);
-
-    settingsModel = jsonManager.getModel(jsonManager.getArrayFromFile(&settingsFile, JS_SETTINGS), JS_KEY, JS_VAL);
-    settingsFile.close();
-    statisticsModel = jsonManager.getModel(jsonManager.getArrayFromFile(&statisticsFile, JS_STATISTICS), JS_KEY, JS_VAL);
-    statisticsFile.close();
-
-    ui->settings_table->setModel(settingsModel);
-    ui->realTime_table->setModel(statisticsModel);
+    Statistics *statistics = new Statistics();
+    statistics->loadEmpty();
+    ui->statistics_table->setModel(statistics->getStatModel());
 
     ui->settings_table->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
-    ui->realTime_table->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
+    ui->statistics_table->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
 
     ui->experiment_tabs->removeTab(2);
     ui->experiment_tabs->removeTab(2);
@@ -116,11 +112,19 @@ void MainWindow::setButtonsMenu()
     menuTable->addAction(ui->action_table_internal);
     menuTable->addAction(ui->action_table_excel);
     menuTable->addAction(ui->action_table_notepad);
+    ui->menu_other_data_table_button->setMenu(menuTable);
+
+    //Кнопка открыть
+    QMenu *menuOpen = new QMenu();
+    menuOpen->addAction(ui->action_open_excel);
+    menuOpen->addAction(ui->action_open_txt);
+    ui->menu_file_open_button->setMenu(menuOpen);
 }
 
 //Обработчик всех нажатий ПКМ по кнопкам
 bool MainWindow::eventFilter(QObject *watched, QEvent *event)
 {
+    //Обработка кнопки таблицы
     QToolButton *buttonTable = ui->menu_other_data_table_button;
     if ( (watched == buttonTable) && (event->type() == QEvent::MouseButtonPress) )
     {
@@ -133,12 +137,26 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
         }
     }
 
+    //Обработка кнопки фулскрин
     QToolButton *buttonFullScreen = ui->menu_other_app_fullScreen_button;
     if ( (watched == buttonFullScreen) && (event->type() == QEvent::MouseButtonPress) )
     {
         QMouseEvent *e = static_cast<QMouseEvent *>(event);
         if (e->button() == Qt::RightButton) {
             buttonFullScreen->menu()->popup(buttonFullScreen->mapToGlobal(e->pos()));
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    //Обработка кнопки открытия
+    QToolButton *buttonOpen = ui->menu_file_open_button;
+    if ( (watched == buttonOpen) && (event->type() == QEvent::MouseButtonPress) )
+    {
+        QMouseEvent *e = static_cast<QMouseEvent *>(event);
+        if (e->button() == Qt::RightButton) {
+            buttonOpen->menu()->popup(buttonOpen->mapToGlobal(e->pos()));
             return true;
         } else {
             return false;
@@ -187,6 +205,44 @@ void MainWindow::checkMathCad()
     ui->menu_other_mathcad_open_button->setEnabled(verCheck->isChecked() && exCheck->isChecked());
 }
 
+void MainWindow::paintPoint()
+{
+    static QTime time(QTime::currentTime());
+
+    double key = time.elapsed()/1000.0; // time elapsed since start of demo, in seconds
+    static double lastPointKey = 0;
+
+    if (key-lastPointKey > 0.002) // at most add point every 2 ms
+    {
+      // add data to lines:
+      usbprocessor->getValueFromDevice();
+      ui->graph->graph(0)->addData(key, qSin(key)+qrand()/(double)RAND_MAX*1*qSin(key/0.3843));
+      // rescale value (vertical) axis to fit the current data:
+      ui->graph->graph(0)->rescaleValueAxis();
+      //ui->customPlot->graph(1)->rescaleValueAxis(true);
+      lastPointKey = key;
+    }
+    // make key axis range scroll with the data (at a constant range size of 8):
+    ui->graph->xAxis->setRange(key, 8, Qt::AlignRight);
+    ui->graph->replot();
+
+    // calculate frames per second:
+    static double lastFpsKey;
+    static int frameCount;
+    ++frameCount;
+    if (key-lastFpsKey > 2) // average fps over 2 seconds
+    {
+      ui->statusBar->showMessage(
+            QString("%1 FPS, Total Data points: %2")
+            .arg(frameCount/(key-lastFpsKey), 0, 'f', 0)
+            .arg(ui->graph->graph(0)->data()->size())
+            , 0);
+      lastFpsKey = key;
+      frameCount = 0;
+    }
+
+}
+
 //Выводит список ком портов в комбобокс
 void MainWindow::loadComPortsInfo()
 {
@@ -197,6 +253,27 @@ void MainWindow::loadComPortsInfo()
     ui->menu_device_port_pid_edit->setText(device.getPID());
     ui->menu_device_port_vid_edit->setText(device.getVID());
     ui->menu_device_port_name_edit->setText(device.getDescription());
+}
+
+void MainWindow::setUpGraphic()
+{
+    //Выбор цвета линии (сейчас синий)
+    ui->graph->addGraph();
+    ui->graph->graph(0)->setPen(QPen(QColor(40, 110, 255)));
+
+    //Ось х - время
+    QSharedPointer<QCPAxisTickerTime> timeTicker(new QCPAxisTickerTime);
+    timeTicker->setTimeFormat("%m:%s");
+    ui->graph->xAxis->setTicker(timeTicker);
+    ui->graph->axisRect()->setupFullAxesBox();
+
+ //TODO сюда засетапить пределы
+    //Ось у - напряжени
+    ui->graph->yAxis->setRange(-0.5, 0.5);
+
+    // Синхронизация осей
+    connect(ui->graph->xAxis, SIGNAL(rangeChanged(QCPRange)), ui->graph->xAxis2, SLOT(setRange(QCPRange)));
+    connect(ui->graph->yAxis, SIGNAL(rangeChanged(QCPRange)), ui->graph->yAxis2, SLOT(setRange(QCPRange)));
 }
 
 //Настройка статус бара
@@ -409,11 +486,10 @@ void MainWindow::showSavedFile(QString path)
     QDesktopServices::openUrl(QUrl::fromLocalFile(savedDir.absolutePath()));
 }
 
-//TODO Установить маткад и проверить
 //Кнопка отркрыть маткад
 void MainWindow::on_menu_other_mathcad_open_button_clicked()
 {
-    QString mathCadPath =  apdr.programmFilesPath() + QString(MAT_PATH) + apps->getMathCadHeadVersion() + "\\";
+    QString mathCadPath =  apdr.programmFilesPath() + QString(MAT_PATH) + apps->getMathCadHeadVersion(ui->menu_other_mathcad_versionStatus->text());
     QDir::setCurrent(mathCadPath);
     QProcess *mcproc = new QProcess();
     if ( mcproc->startDetached(MAT_EXENAM) ) {
@@ -438,7 +514,7 @@ void MainWindow::on_menu_other_mathcad_check_clicked()
     QList<Application> applications = apps->getList();
     foreach (Application app, applications) {
         rowC++;
-        if ((app.getName() == QString(MAT_NAME14)) || (app.getName() == QString(MAT_NAME15)))
+        if ((app.getName() == QString(MAT_NAME14)) || (app.getName().contains(QString(MAT_NAME15))))
             break;
 
     }
@@ -549,27 +625,6 @@ void MainWindow::on_menu_experiment_limitsTinterval_radio_toggled(bool checked)
     ui->menu_experiment_limitsTintervalT2_spin->setEnabled(checked);
 }
 
-//Нажатие на кнопки пуск
-void MainWindow::on_start_button_clicked()
-{
-    ui->graph->addGraph();
-    ui->graph->graph()->setPen(QPen(Qt::blue));
-    ui->graph->graph()->setBrush(QBrush(QColor(0, 0, 255, 20)));
-    ui->graph->addGraph();
-    ui->graph->graph()->setPen(QPen(Qt::red));
-    QVector<double> x(500), y0(500), y1(500);
-    for (int i=0; i<500; ++i)
-    {
-      x[i] = (i/499.0-0.5)*10;
-      y0[i] = qExp(-x[i]*x[i]*0.25)*qSin(x[i]*5)*5;
-      y1[i] = qExp(-x[i]*x[i]*0.25)*5;
-    }
-    ui->graph->graph(0)->setData(x, y0);
-    ui->graph->graph(1)->setData(x, y1);
-    ui->graph->axisRect()->setupFullAxesBox(true);
-    ui->graph->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
-}
-
 //Двойное нажатие по вкладке в таб виджете экспериментов
 void MainWindow::on_experiment_tabs_tabBarDoubleClicked(int index)
 {
@@ -606,19 +661,7 @@ void MainWindow::on_menu_device_port_com_combo_currentIndexChanged(const QString
 //Нажатие кнопки поиска устройства
 void MainWindow::on_menu_device_port_search_button_clicked()
 {
-    std::list<USBhidDevice> devices = USBManager::getDevicesList();
-    qDebug() << "------------------------HID----------------------" << endl;
-    qDebug() << "Amount of devices: " << devices.size() << endl;
 
-    for (auto it = devices.begin(); it != devices.end(); ++it) {
-        qDebug() << QString::fromStdWString(it->name);
-        qDebug() << "\t" << QString::fromStdString(it->type);
-        qDebug() << "\t" << QString::fromStdString(it->hidPID);
-        qDebug() << "\t" << QString::fromStdString(it->hidVID);
-        qDebug() << "**********";
-    }
-
-    qDebug() << "------------------------------------------------------------------------------" << endl << endl;
 }
 
 //Кнопка диспетчер устройств
@@ -627,4 +670,36 @@ void MainWindow::on_menu_device_WinManager_button_clicked()
     QString deviceManagerpath = LINK_FILE + DATA_PATH + "/" + DIR_BAT +NAMS_DEVMAN;
     qDebug() << deviceManagerpath;
     QDesktopServices::openUrl(QUrl(deviceManagerpath, QUrl::TolerantMode));
+}
+
+void MainWindow::on_menu_device_set_box_clicked(bool checked)
+{
+    ui->menu_device_set_baud_combo->setEnabled(!checked);
+    ui->menu_device_set_baud_label->setEnabled(!checked);
+    ui->menu_device_set_byte_combo->setEnabled(!checked);
+    ui->menu_device_set_byte_label->setEnabled(!checked);
+    ui->menu_device_set_parity_combo->setEnabled(!checked);
+    ui->menu_device_set_parity_label->setEnabled(!checked);
+    ui->menu_device_set_xonxoff_combo->setEnabled(!checked);
+    ui->menu_device_set_xonxoff_label->setEnabled(!checked);
+}
+
+void MainWindow::on_start_button_clicked(bool checked)
+{
+    ui->stop_button->setEnabled(checked);
+    if (checked)
+        ui->start_button->setText("Пауза");
+    else
+        ui->start_button->setText("Старт");
+    usbprocessor->setUpDriver();
+
+    timer->start();
+}
+
+void MainWindow::on_stop_button_clicked(bool checked)
+{
+    ui->stop_button->setEnabled(checked);
+    ui->start_button->setText("Пауза");
+    usbprocessor->closeConnection();
+    timer->stop();
 }

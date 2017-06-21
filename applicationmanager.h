@@ -2,6 +2,7 @@
 #define APPLICATIONMANAGER_H
 #include <QString>
 #include <QStandardItemModel>
+#include <QMap>
 
 class Application
 {
@@ -32,11 +33,7 @@ private:
     QString Version = "Null";
 
 public:
-    ApplicationManager() {
-        appList = getList();
-        checkMathCad();
-
-    }
+    ApplicationManager();
     QList<Application> getList();
     void pushApp(QString name, QString vers);
     QStandardItemModel *getModel();
@@ -45,9 +42,27 @@ public:
     bool isMathCad();
     QString getMathCadName();
     QString getMathCadVersion();
-    QString getMathCadHeadVersion();
+    QString getMathCadHeadVersion(QString ver);
     bool isVersion();
     void createList();
+
+//TODO Перегнать константы в это перечисление
+//    enum MCKEYS{
+//        REG_PathToApps,
+//        REG_DisplayName,
+//        REG_DisplayVersion,
+//        ProgramFilesPath,
+//        NAME_14,
+//        NAME_15,
+//        NAME_EXE,
+//        TIT_ApplicationInList,
+//        TIT_VersionInList,
+//        TIT_Error,
+//        TIT_Success,
+//        INF_Success,
+//    };
+
+    //QMap<ApplicationManager::MCKEYS, QString> MCMAP;
 };
 
 #endif // APPLICATIONMANAGER_H

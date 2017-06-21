@@ -73,3 +73,17 @@
 //    libusb_exit(contex);
 //    qDebug() << "------------------------------------------------------------------------------" << endl << endl;
 //}
+
+//std::list<USBhidDevice> devices = USBManager::getDevicesList();
+//qDebug() << "------------------------HID----------------------" << endl;
+//qDebug() << "Amount of devices: " << devices.size() << endl;
+
+//for (auto it = devices.begin(); it != devices.end(); ++it) {
+//    qDebug() << QString::fromStdWString(it->name);
+//    qDebug() << "\t" << QString::fromStdString(it->type);
+//    qDebug() << "\t" << QString::fromStdString(it->hidPID);
+//    qDebug() << "\t" << QString::fromStdString(it->hidVID);
+//    qDebug() << "**********";
+//}
+
+//qDebug() << "------------------------------------------------------------------------------" << endl << endl;

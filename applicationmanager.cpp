@@ -7,13 +7,13 @@
 
 int Application::detectHeadVersion(QString appVersion)
 {
-   QStringList versionParts = appVersion.split(".");
+    QStringList versionParts = appVersion.split(".");
     bool convertationStatus = false;
     int verNum = versionParts.at(0).toInt(&convertationStatus, 10);
     if (convertationStatus)
         return verNum;
-    else
-        return 0;
+     else
+         return 0;
 }
 
 QString Application::getName()
@@ -29,6 +29,18 @@ QString Application::getVersion()
 int Application::getHeadVersion()
 {
     return headVersion;
+}
+
+ApplicationManager::ApplicationManager() {
+//TODO Избавление от констант
+//    MCMAP.insert(MCKEYS::REG_PathToApps, "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall");
+//    MCMAP.insert(MCKEYS::REG_DisplayName, "DisplayName");
+//    MCMAP.insert(MCKEYS::REG_DisplayVersion, "DisplayVersion");
+//    MCMAP.insert(MCKEYS::ProgramFilesPath, "\\Mathcad\\Mathcad ");
+//    MCMAP.insert(MCKEYS::NAME_14, "Mathcad 14");
+//    MCMAP.insert(MCKEYS::NAME_15, "Mathcad 15");
+//    MCMAP.insert(MCKEYS::NAME_EXE, "mathcad.exe");
+//    MCMAP::insert()
 }
 
 QList<Application> ApplicationManager::getList()
@@ -63,7 +75,7 @@ QStandardItemModel *ApplicationManager::getModel()
 bool ApplicationManager::checkMathCad()
 {
     foreach (auto app, appList) {
-        if ( (app.getName() == MAT_NAME14) || (app.getName() == MAT_NAME14) ) {
+        if ( (app.getName() == MAT_NAME14) || (app.getName().contains(QString(MAT_NAME15))) ) {
            MathCad_status = true;
            MathCad = app.getName();
            Version = app.getVersion();
@@ -87,6 +99,8 @@ bool ApplicationManager::checkMathCad()
 
 bool ApplicationManager::isMathCad()
 {
+    createList();
+    checkMathCad();
     return MathCad_status;
 }
 
@@ -100,9 +114,10 @@ QString ApplicationManager::getMathCadVersion()
     return Version;
 }
 
-QString ApplicationManager::getMathCadHeadVersion()
+QString ApplicationManager::getMathCadHeadVersion(QString ver)
 {
-    return QString(Version_head);
+    QStringList versionParts = ver.split(".");
+    return versionParts.at(0);
 }
 
 bool ApplicationManager::isVersion()

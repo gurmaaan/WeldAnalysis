@@ -28,7 +28,8 @@ SOURCES += main.cpp\
     ExternalLibs/QCustomPlot/qcustomplot.cpp \
     usbprocessor.cpp \
     applicationmanager.cpp \
-    libusbmodul.cpp
+    libusbmodul.cpp \
+    experiment.cpp
 
 HEADERS  += mainwindow.h \
     exceldatamanager.h \
@@ -40,7 +41,8 @@ HEADERS  += mainwindow.h \
     ExternalLibs/QCustomPlot/qcustomplot.h \
     ExternalLibs/LibUSB/libusb.h \
     usbprocessor.h \
-    applicationmanager.h
+    applicationmanager.h \
+    experiment.h
 
 FORMS    += mainwindow.ui \
     picturewindow.ui \
@@ -60,6 +62,8 @@ DEPENDPATH += $$PWD/ExternalLibs/LibUSB
 
 #Agilent
 
-win32: LIBS += -L$$PWD/ExternalLibs/Agilent/ -Ag34401
-INCLUDEPATH += $$PWD/ExternalLibs/Agilent/Include
-DEPENDPATH += $$PWD/ExternalLibs/Agilent/Include
+
+win32: LIBS += -L$$PWD/'../../../../../Program Files (x86)/IVI Foundation/IVI/Lib/msc/' -lAg34401
+
+INCLUDEPATH += $$PWD/'../../../../../Program Files (x86)/IVI Foundation/IVI/Include'
+DEPENDPATH += $$PWD/'../../../../../Program Files (x86)/IVI Foundation/IVI/Include'

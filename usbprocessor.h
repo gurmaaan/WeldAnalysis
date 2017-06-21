@@ -4,7 +4,9 @@
 #include <QString>
 #include <QList>
 #include <QStandardItemModel>
+#include "Ag34401.h"
 
+using namespace std;
 class COMdevice
 {
 private:
@@ -43,12 +45,27 @@ public:
     void addRootItem(QStandardItemModel *model, const QString portName);
     QList<COMdevice> getCOMDevicesList();
     QStringList getCOMPortsList();
+
+    void setUpDriver();
+    double getValueFromDevice();
+    void closeConnection();
+
     ~USBProcessor();
 
 private:
     QList<COMdevice> avalibleCOMlist;
     QStandardItemModel *comModel;
     void printUSBlibList();
+    ViStatus status;
+    ViSession session;
+    ViInt32 ErrorCode;
+    ViChar ErrorMessage[255];
+    ViBoolean idQuery = VI_FALSE;
+    ViBoolean reset   = VI_TRUE;
+    ViBoolean AttributeValue;
+    ViBoolean AttributeValue1;
+    ViReal64 Reading;
+    ViInt32 AttributeValue2;
 };
 
 #endif // USBPROCESSOR_H

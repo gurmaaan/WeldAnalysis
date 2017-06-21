@@ -12,6 +12,7 @@
 #include <QMouseEvent>
 #include <QSystemTrayIcon>
 #include "applicationmanager.h"
+#include "experiment.h"
 
 namespace Ui {
 class MainWindow;
@@ -73,11 +74,14 @@ private slots:
     void on_menu_experiment_limitsNmax_radio_toggled(bool checked);
     void on_menu_experiment_limitsTinterval_radio_toggled(bool checked);
 
-    void on_start_button_clicked();
     void on_experiment_tabs_tabBarDoubleClicked(int index);
 
 
     void on_menu_device_WinManager_button_clicked();
+
+    void on_menu_device_set_box_clicked(bool checked);
+
+    void on_start_button_clicked(bool checked);
 
 private:
     //Окна и гуишные украшательства
@@ -90,6 +94,8 @@ private:
     JsonDataManager jsonManager;
     USBProcessor *usbprocessor;
     ApplicationManager *apps;
+    Experiment *experiment = new Experiment();
+    QTimer *timer;
 
     //Надписи в статусбаре
     QLabel* portStatus;
@@ -101,11 +107,16 @@ private:
     void setButtonsMenu();
     void setStatusBarWidgets();
     void loadComPortsInfo();
+    void setUpGraphic();
 
     //Вспомогательные функции гуя
     bool eventFilter(QObject *watched, QEvent *event);
     void checkMathCad();
     void pushDownLoadMessage(QString name, QString link, bool status);
+
+private slots:
+    void paintPoint();
+    void on_stop_button_clicked(bool checked);
 };
 
 #endif // MAINWINDOW_H
