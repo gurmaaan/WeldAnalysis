@@ -3,6 +3,7 @@
 #include <QString>
 #include <QStandardItemModel>
 #include <QMap>
+#include <QDir>
 
 class Application
 {
@@ -63,6 +64,20 @@ public:
 //    };
 
     //QMap<ApplicationManager::MCKEYS, QString> MCMAP;
+};
+
+class AppDir {
+public:
+    bool isFirstRun();
+    QString dataDirPath();
+    QString programmFilesPath();
+    void copyFilesToAppData();
+private:
+    void copyFile (QDir *dir, QString name);
+    void copyExeFile(QDir *dir, QString name);
+    void createDirectory (QDir *dir, QString name);
+    void showCopyMessageBox (QString fileName, QString *filePath);
+    void showCreateMessageBox (QString dirName);
 };
 
 #endif // APPLICATIONMANAGER_H

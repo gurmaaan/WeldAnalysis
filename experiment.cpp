@@ -1,9 +1,6 @@
 #include "experiment.h"
-
-Experiment::Experiment()
-{
-
-}
+#include "jsondatamanager.h"
+#include "constants.h"
 
 QString Experiment::getPath() const
 {
@@ -13,6 +10,23 @@ QString Experiment::getPath() const
 void Experiment::setPath(const QString &value)
 {
     path = value;
+}
+
+void Experiment::createNew(bool created)
+{
+    if (created != ex_exist)
+        ex_exist = created;
+    emit enableGUI(created);
+}
+
+QStandardItemModel *Experiment::updateSetModel()
+{
+    return set->getSetModel();
+}
+
+QStandardItemModel *Experiment::updateStatModel()
+{
+    return stat->getStatModel();
 }
 
 bool Experiment::getOpenStatus() const

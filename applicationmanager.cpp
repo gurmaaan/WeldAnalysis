@@ -1,9 +1,17 @@
 #include "applicationmanager.h"
+#include "constants.h"
+
 #include <QStringList>
 #include <QStandardItemModel>
 #include <QSettings>
-#include "constants.h"
 #include <QStandardItemModel>
+#include <QMessageBox>
+#include <QStandardPaths>
+#include <QDesktopServices>
+#include <QProcess>
+#include <QDebug>
+#include <QFileDialog>
+#include <QUrl>
 
 int Application::detectHeadVersion(QString appVersion)
 {
@@ -139,5 +147,139 @@ void ApplicationManager::createList()
         const QString currentVersion = settings.value(vKey).toString();
 
         this->pushApp(currentName, currentVersion);
+    }
+}
+
+//WARNING Перенес в новый файл и не тестил
+//Возвращает путь к папке с данными
+QString AppDir::dataDirPath()
+{
+    return QStandardPaths::writableLocation(QStandardPaths::DataLocation);
+}
+
+//Возвращает путь к програм файлс исходя из значения системной переменной.
+QString AppDir::programmFilesPath()
+{
+    QStringList varibleList =(QProcess::systemEnvironment());
+    foreach (QString varible, varibleList) {
+        if (varible.contains(PROGRAMFILES, Qt::CaseInsensitive) && (varible.indexOf(PROGRAMFILES) == 0)) {
+            QStringList varList = varible.split("=");
+            return varList.at(1);
+            break;
+        }
+    }
+    return " ";
+}
+
+//Копирование программных файлов в системную папку приложения
+void AppDir::copyFilesToAppData()
+{
+    QString appPath = QStandardPaths::writableLocation(QStandardPaths::DataLocation);\
+    //Проверка пути на валидность создание при отсутствии
+    QDir dir(appPath);
+    if ( !dir.exists() )
+    {
+        if ( dir.mkpath(appPath) )
+            qDebug() << MES_PATH << APP_NAME << MES_CREATEDF;
+        else
+            showCreateMessageBox(APP_NAME);
+    }
+
+//Копирование из ресурсов в корень директории
+    //Руководство пользователя
+    copyFile(&dir, NAM_MANUAL);
+
+    //Создание папок и проверка отсутствия
+    createDirectory(&dir, DIR_DEFAULTS);
+    createDirectory(&dir, DIR_BAT);
+    createDirectory(&dir, DIR_DRIVERS);
+
+//Переход в директорию батников
+    dir.cd(DIR_BAT);
+    //Батник запуска девайс менеджера
+    copyFile(&dir, NAM_DEVMAN);
+
+}
+
+//WARNING при первом разе копируется битый битник
+//Функция копирования файла
+void AppDir::copyFile(QDir *dir, QString name)
+{
+    QString abs = dir->path() + "/" + name;
+    bool copied = false;
+    if(QFile::copy(RES_MANUAL, abs))
+    {
+        qDebug() << MES_FILE << name << MES_COPIEDF;
+        copied = true;
+    }
+    else if (copied)
+        showCopyMessageBox(NAM_MANUAL, &abs);
+}
+
+//Функция создания папки приложения
+void AppDir::createDirectory(QDir *dir, QString name)
+{
+    if (!dir->exists(name))
+    {
+        if(dir->mkdir(name))
+            qDebug() << MES_DIRECTORY << name << MES_CREATEDD;
+        else
+            showCreateMessageBox(name);
+    }
+}
+
+//Отображение окна ошибки при копировании файла
+void AppDir::showCopyMessageBox(QString fileName, QString *filePath)
+{
+    QMessageBox mesBox;
+    mesBox.setText(TIT_ERCOP);
+    QString message = MES_FILE + fileName + MES_NOTCOPIEDF + MES_SELFBROWSE;
+    mesBox.setInformativeText(message);
+
+    mesBox.setStandardButtons(QMessageBox::Yes | QMessageBox::Ignore);
+    mesBox.setIcon(QMessageBox::Warning);
+    mesBox.setDefaultButton(QMessageBox::Yes);
+
+    int answer = mesBox.exec();
+    switch (answer)
+    {
+        case QMessageBox::Yes:
+        {
+            QFileInfo file = QFileDialog::getOpenFileName(0, TIT_BROWSE, QDir::homePath());
+            *filePath = file.absoluteFilePath();
+            break;
+        }
+        case QMessageBox::Ignore:
+        {
+            mesBox.close();
+            break;
+        }
+        default:
+            break;
+    }
+}
+
+//Отображение окошка ошибки при создании папки
+void AppDir::showCreateMessageBox(QString dirName)
+{
+    QMessageBox mesBox;
+    mesBox.setText(TIT_ERCREATE);
+    QString message = MES_DIRECTORY + dirName + MES_NOTCREATEDD + MES_SELFCREATE;
+    mesBox.setInformativeText(message);
+
+    mesBox.setStandardButtons(QMessageBox::Yes | QMessageBox::Ignore);
+    mesBox.setIcon(QMessageBox::Warning);
+    mesBox.setDefaultButton(QMessageBox::Yes);
+
+    int answer = mesBox.exec();
+    switch (answer) {
+    case QMessageBox::Yes:
+        QDesktopServices::openUrl(QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::DataLocation)));
+        break;
+    case QMessageBox::Ignore:
+        mesBox.reject();
+        break;
+    default:
+        break;
     }
 }

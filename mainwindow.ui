@@ -9,7 +9,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1145</width>
+    <width>1209</width>
     <height>609</height>
    </rect>
   </property>
@@ -54,7 +54,7 @@
        <string/>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>3</number>
       </property>
       <property name="tabBarAutoHide">
        <bool>true</bool>
@@ -987,7 +987,7 @@
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_9">
            <item>
-            <widget class="QCheckBox" name="menu_device_status_found">
+            <widget class="QCheckBox" name="menu_device_status_found_check">
              <property name="enabled">
               <bool>false</bool>
              </property>
@@ -997,13 +997,16 @@
                <bold>false</bold>
               </font>
              </property>
+             <property name="styleSheet">
+              <string notr="true">color:rgb(199, 0, 0)</string>
+             </property>
              <property name="text">
-              <string>Найдено</string>
+              <string>Не найдено</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QCheckBox" name="menu_device_status_query">
+            <widget class="QCheckBox" name="menu_device_status_query_check">
              <property name="enabled">
               <bool>false</bool>
              </property>
@@ -1012,6 +1015,9 @@
                <weight>50</weight>
                <bold>false</bold>
               </font>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">color:rgb(199, 0, 0)</string>
              </property>
              <property name="text">
               <string>Запрос</string>
@@ -1019,7 +1025,7 @@
             </widget>
            </item>
            <item>
-            <widget class="QCheckBox" name="menu_device_status_request">
+            <widget class="QCheckBox" name="menu_device_status_request_check">
              <property name="enabled">
               <bool>false</bool>
              </property>
@@ -1028,6 +1034,9 @@
                <weight>50</weight>
                <bold>false</bold>
               </font>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">color:rgb(199, 0, 0)</string>
              </property>
              <property name="text">
               <string>Ответ</string>
@@ -1035,7 +1044,7 @@
             </widget>
            </item>
            <item>
-            <widget class="QCheckBox" name="menu_device_status_ready">
+            <widget class="QCheckBox" name="menu_device_status_ready_check">
              <property name="enabled">
               <bool>false</bool>
              </property>
@@ -1044,6 +1053,9 @@
                <weight>50</weight>
                <bold>false</bold>
               </font>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">color:rgb(199, 0, 0)</string>
              </property>
              <property name="text">
               <string>Не готов</string>
@@ -1062,14 +1074,11 @@
        <attribute name="title">
         <string>Эксперимент</string>
        </attribute>
-       <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <layout class="QHBoxLayout" name="horizontalLayout_18">
         <item>
-         <widget class="QSplitter" name="menu_experiment_channel_group">
+         <widget class="QSplitter" name="splitter_8">
           <property name="orientation">
            <enum>Qt::Vertical</enum>
-          </property>
-          <property name="opaqueResize">
-           <bool>false</bool>
           </property>
           <widget class="QComboBox" name="menu_experiment_channel_combo">
            <property name="minimumSize">
@@ -1138,35 +1147,38 @@
          </widget>
         </item>
         <item>
-         <widget class="QSplitter" name="menu_experiment_grid_group">
+         <widget class="QSplitter" name="splitter_7">
           <property name="orientation">
            <enum>Qt::Vertical</enum>
           </property>
-          <property name="opaqueResize">
-           <bool>false</bool>
-          </property>
-          <widget class="QWidget" name="layoutWidget6">
-           <layout class="QVBoxLayout" name="menu_experiment_grid_tools">
+          <widget class="QGroupBox" name="menu_experiment_grid_box">
+           <property name="title">
+            <string>Сетка</string>
+           </property>
+           <property name="checkable">
+            <bool>true</bool>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout_2">
             <item>
-             <widget class="QCheckBox" name="menu_experiment_grid_checkbox">
-              <property name="enabled">
-               <bool>false</bool>
-              </property>
-              <property name="text">
-               <string>Сетка</string>
-              </property>
-              <property name="checked">
-               <bool>true</bool>
-              </property>
-              <property name="tristate">
-               <bool>false</bool>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <layout class="QHBoxLayout" name="menu_experiment_gridU_tool">
+             <layout class="QHBoxLayout" name="horizontalLayout_16">
               <item>
-               <widget class="QSlider" name="menu_experiment_gridU_slider">
+               <widget class="QLabel" name="label_2">
+                <property name="minimumSize">
+                 <size>
+                  <width>30</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>U</string>
+                </property>
+                <property name="buddy">
+                 <cstring>menu_experiment_grid_U_spin</cstring>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QSlider" name="menu_experiment_grid_U_slider">
                 <property name="enabled">
                  <bool>false</bool>
                 </property>
@@ -1200,13 +1212,13 @@
                </widget>
               </item>
               <item>
-               <widget class="QDoubleSpinBox" name="menu_experiment_gridU_spin">
+               <widget class="QDoubleSpinBox" name="menu_experiment_grid_U_spin">
                 <property name="enabled">
                  <bool>false</bool>
                 </property>
                 <property name="minimumSize">
                  <size>
-                  <width>55</width>
+                  <width>65</width>
                   <height>0</height>
                  </size>
                 </property>
@@ -1230,42 +1242,25 @@
              </layout>
             </item>
             <item>
-             <spacer name="verticalSpacer_3">
-              <property name="orientation">
-               <enum>Qt::Vertical</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>20</width>
-                <height>40</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-            <item>
-             <widget class="Line" name="menu_experiment_gridHorizontal_line">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <spacer name="verticalSpacer_2">
-              <property name="orientation">
-               <enum>Qt::Vertical</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>20</width>
-                <height>40</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-            <item>
-             <layout class="QHBoxLayout" name="menu_experiment_gridT_tool">
+             <layout class="QHBoxLayout" name="horizontalLayout_15">
               <item>
-               <widget class="QSlider" name="menu_experiment_gridT_slider">
+               <widget class="QLabel" name="label">
+                <property name="minimumSize">
+                 <size>
+                  <width>30</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>T</string>
+                </property>
+                <property name="buddy">
+                 <cstring>menu_experiment_grid_T_spin</cstring>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QSlider" name="menu_experiment_grid_T_slider">
                 <property name="enabled">
                  <bool>false</bool>
                 </property>
@@ -1299,13 +1294,13 @@
                </widget>
               </item>
               <item>
-               <widget class="QSpinBox" name="menu_experiment_gridT_spin">
+               <widget class="QSpinBox" name="menu_experiment_grid_T_spin">
                 <property name="enabled">
                  <bool>false</bool>
                 </property>
                 <property name="minimumSize">
                  <size>
-                  <width>55</width>
+                  <width>65</width>
                   <height>0</height>
                  </size>
                 </property>
@@ -1338,7 +1333,7 @@
             <set>Qt::AlignCenter</set>
            </property>
            <property name="buddy">
-            <cstring>menu_experiment_grid_checkbox</cstring>
+            <cstring>menu_experiment_grid_box</cstring>
            </property>
           </widget>
          </widget>
@@ -1351,51 +1346,22 @@
          </widget>
         </item>
         <item>
-         <widget class="QSplitter" name="menu_experiment_minMax_group">
-          <property name="enabled">
-           <bool>true</bool>
-          </property>
+         <widget class="QSplitter" name="splitter_6">
           <property name="orientation">
            <enum>Qt::Vertical</enum>
           </property>
-          <property name="opaqueResize">
-           <bool>false</bool>
-          </property>
-          <widget class="QWidget" name="layoutWidget7">
-           <layout class="QVBoxLayout" name="menu_experiment_minMax_tools">
-            <item>
-             <widget class="QCheckBox" name="menu_experiment_minMax_checkbox">
-              <property name="enabled">
-               <bool>false</bool>
-              </property>
-              <property name="text">
-               <string>Авто</string>
-              </property>
-              <property name="checked">
-               <bool>true</bool>
-              </property>
-              <property name="tristate">
-               <bool>false</bool>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <spacer name="verticalSpacer_11">
-              <property name="orientation">
-               <enum>Qt::Vertical</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>20</width>
-                <height>40</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-            <item>
-             <layout class="QHBoxLayout" name="menu_experiment_minMaxU_tool">
+          <widget class="QGroupBox" name="menu_experiment_minMax_box">
+           <property name="title">
+            <string>Автоматически</string>
+           </property>
+           <property name="checkable">
+            <bool>true</bool>
+           </property>
+           <layout class="QGridLayout" name="gridLayout_2">
+            <item row="0" column="0">
+             <layout class="QHBoxLayout" name="horizontalLayout_11">
               <item>
-               <widget class="QLabel" name="menu_experiment_minMaxUmin_label">
+               <widget class="QLabel" name="menu_experiment_minMax_Umin_label">
                 <property name="enabled">
                  <bool>false</bool>
                 </property>
@@ -1412,18 +1378,18 @@
                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;U&lt;/span&gt;&lt;span style=&quot; font-size:12pt; vertical-align:sub;&quot;&gt;min&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                 </property>
                 <property name="buddy">
-                 <cstring>menu_experiment_minMaxUmin_spin</cstring>
+                 <cstring>menu_experiment_minMax_Umin_spin</cstring>
                 </property>
                </widget>
               </item>
               <item>
-               <widget class="QDoubleSpinBox" name="menu_experiment_minMaxUmin_spin">
+               <widget class="QDoubleSpinBox" name="menu_experiment_minMax_Umin_spin">
                 <property name="enabled">
                  <bool>false</bool>
                 </property>
                 <property name="minimumSize">
                  <size>
-                  <width>55</width>
+                  <width>65</width>
                   <height>0</height>
                  </size>
                 </property>
@@ -1444,8 +1410,12 @@
                 </property>
                </widget>
               </item>
+             </layout>
+            </item>
+            <item row="0" column="1">
+             <layout class="QHBoxLayout" name="horizontalLayout_12">
               <item>
-               <widget class="QLabel" name="menu_experiment_minMaxUmax_label">
+               <widget class="QLabel" name="menu_experiment_minMax_Umax_label">
                 <property name="enabled">
                  <bool>false</bool>
                 </property>
@@ -1462,18 +1432,18 @@
                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;U&lt;/span&gt;&lt;span style=&quot; font-size:12pt; vertical-align:sub;&quot;&gt;max&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                 </property>
                 <property name="buddy">
-                 <cstring>menu_experiment_minMaxUmax_spin</cstring>
+                 <cstring>menu_experiment_minMax_Umax_spin</cstring>
                 </property>
                </widget>
               </item>
               <item>
-               <widget class="QDoubleSpinBox" name="menu_experiment_minMaxUmax_spin">
+               <widget class="QDoubleSpinBox" name="menu_experiment_minMax_Umax_spin">
                 <property name="enabled">
                  <bool>false</bool>
                 </property>
                 <property name="minimumSize">
                  <size>
-                  <width>55</width>
+                  <width>65</width>
                   <height>0</height>
                  </size>
                 </property>
@@ -1496,36 +1466,16 @@
               </item>
              </layout>
             </item>
-            <item>
-             <spacer name="verticalSpacer_4">
-              <property name="orientation">
-               <enum>Qt::Vertical</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>20</width>
-                <height>40</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-            <item>
-             <widget class="Line" name="menu_experiment_minMax_horizontal_line">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <layout class="QHBoxLayout" name="menu_experiment_minMaxT_tool">
+            <item row="1" column="0">
+             <layout class="QHBoxLayout" name="horizontalLayout_13">
               <item>
-               <widget class="QLabel" name="menu_experiment_minMaxTmin_label">
+               <widget class="QLabel" name="menu_experiment_minMax_Tmin_label">
                 <property name="enabled">
                  <bool>false</bool>
                 </property>
                 <property name="minimumSize">
                  <size>
-                  <width>0</width>
+                  <width>30</width>
                   <height>0</height>
                  </size>
                 </property>
@@ -1536,12 +1486,12 @@
                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt;&quot;&gt;t&lt;/span&gt;&lt;span style=&quot; font-size:14pt; vertical-align:sub;&quot;&gt;min&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                 </property>
                 <property name="buddy">
-                 <cstring>menu_experiment_minMaxTmin_spin</cstring>
+                 <cstring>menu_experiment_minMax_Tmin_spin</cstring>
                 </property>
                </widget>
               </item>
               <item>
-               <widget class="QSpinBox" name="menu_experiment_minMaxTmin_spin">
+               <widget class="QSpinBox" name="menu_experiment_minMax_Tmin_spin">
                 <property name="enabled">
                  <bool>false</bool>
                 </property>
@@ -1562,14 +1512,18 @@
                 </property>
                </widget>
               </item>
+             </layout>
+            </item>
+            <item row="1" column="1">
+             <layout class="QHBoxLayout" name="horizontalLayout_14">
               <item>
-               <widget class="QLabel" name="menu_experiment_minMaxTmax_label">
+               <widget class="QLabel" name="menu_experiment_minMax_Tmax_label">
                 <property name="enabled">
                  <bool>false</bool>
                 </property>
                 <property name="minimumSize">
                  <size>
-                  <width>0</width>
+                  <width>30</width>
                   <height>0</height>
                  </size>
                 </property>
@@ -1580,12 +1534,12 @@
                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt;&quot;&gt;t&lt;/span&gt;&lt;span style=&quot; font-size:14pt; vertical-align:sub;&quot;&gt;max&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                 </property>
                 <property name="buddy">
-                 <cstring>menu_experiment_minMaxTmax_spin</cstring>
+                 <cstring>menu_experiment_minMax_Tmax_spin</cstring>
                 </property>
                </widget>
               </item>
               <item>
-               <widget class="QSpinBox" name="menu_experiment_minMaxTmax_spin">
+               <widget class="QSpinBox" name="menu_experiment_minMax_Tmax_spin">
                 <property name="enabled">
                  <bool>false</bool>
                 </property>
@@ -1607,22 +1561,6 @@
                </widget>
               </item>
              </layout>
-            </item>
-            <item>
-             <spacer name="verticalSpacer_5">
-              <property name="orientation">
-               <enum>Qt::Vertical</enum>
-              </property>
-              <property name="sizeType">
-               <enum>QSizePolicy::Fixed</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>20</width>
-                <height>12</height>
-               </size>
-              </property>
-             </spacer>
             </item>
            </layout>
           </widget>
@@ -1640,7 +1578,7 @@
             <set>Qt::AlignCenter</set>
            </property>
            <property name="buddy">
-            <cstring>menu_experiment_minMax_checkbox</cstring>
+            <cstring>menu_experiment_minMax_box</cstring>
            </property>
           </widget>
          </widget>
@@ -1653,21 +1591,24 @@
          </widget>
         </item>
         <item>
-         <widget class="QSplitter" name="menu_experiment_curve_group">
+         <widget class="QSplitter" name="splitter_5">
           <property name="orientation">
            <enum>Qt::Vertical</enum>
           </property>
-          <property name="opaqueResize">
-           <bool>false</bool>
-          </property>
-          <widget class="QWidget" name="layoutWidget8">
-           <layout class="QVBoxLayout" name="menu_experiment_curve_tools">
+          <widget class="QWidget" name="layoutWidget">
+           <layout class="QVBoxLayout" name="verticalLayout_11">
             <item>
-             <layout class="QHBoxLayout" name="menu_experiment_curveLine_tool">
+             <layout class="QHBoxLayout" name="horizontalLayout_2">
               <item>
                <widget class="QLabel" name="menu_experiment_curveLine_label">
                 <property name="enabled">
                  <bool>false</bool>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>130</width>
+                  <height>0</height>
+                 </size>
                 </property>
                 <property name="maximumSize">
                  <size>
@@ -1690,6 +1631,12 @@
                <widget class="QComboBox" name="menu_experiment_curveLine_combo">
                 <property name="enabled">
                  <bool>false</bool>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>100</width>
+                  <height>0</height>
+                 </size>
                 </property>
                 <property name="toolTip">
                  <string>Форма линии графика</string>
@@ -1714,20 +1661,11 @@
              </layout>
             </item>
             <item>
-             <spacer name="verticalSpacer_6">
+             <widget class="Line" name="line_2">
               <property name="orientation">
-               <enum>Qt::Vertical</enum>
+               <enum>Qt::Horizontal</enum>
               </property>
-              <property name="sizeType">
-               <enum>QSizePolicy::Fixed</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>20</width>
-                <height>7</height>
-               </size>
-              </property>
-             </spacer>
+             </widget>
             </item>
             <item>
              <widget class="QLabel" name="menu_experiment_curveDT_label">
@@ -1747,12 +1685,12 @@
                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Шаг дискретизации Δ&lt;span style=&quot; font-size:12pt;&quot;&gt;t&lt;/span&gt;:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
               </property>
               <property name="buddy">
-               <cstring>menu_experiment_curveDT_slider</cstring>
+               <cstring>menu_experiment_curveDT_spin</cstring>
               </property>
              </widget>
             </item>
             <item>
-             <layout class="QHBoxLayout" name="menu_experiment_curveDT_tool">
+             <layout class="QHBoxLayout" name="horizontalLayout_10">
               <item>
                <widget class="QSlider" name="menu_experiment_curveDT_slider">
                 <property name="enabled">
@@ -1773,11 +1711,8 @@
                 <property name="pageStep">
                  <number>5</number>
                 </property>
-                <property name="value">
-                 <number>5</number>
-                </property>
                 <property name="sliderPosition">
-                 <number>5</number>
+                 <number>0</number>
                 </property>
                 <property name="orientation">
                  <enum>Qt::Horizontal</enum>
@@ -1797,7 +1732,7 @@
                 </property>
                 <property name="minimumSize">
                  <size>
-                  <width>55</width>
+                  <width>65</width>
                   <height>0</height>
                  </size>
                 </property>
@@ -1817,19 +1752,6 @@
               </item>
              </layout>
             </item>
-            <item>
-             <spacer name="verticalSpacer">
-              <property name="orientation">
-               <enum>Qt::Vertical</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>20</width>
-                <height>40</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
            </layout>
           </widget>
           <widget class="QLabel" name="menu_experiment_curve_label">
@@ -1845,6 +1767,9 @@
            <property name="alignment">
             <set>Qt::AlignCenter</set>
            </property>
+           <property name="buddy">
+            <cstring>menu_experiment_curveDT_slider</cstring>
+           </property>
           </widget>
          </widget>
         </item>
@@ -1856,29 +1781,25 @@
          </widget>
         </item>
         <item>
-         <widget class="QSplitter" name="splitter">
+         <widget class="QSplitter" name="splitter_4">
           <property name="orientation">
            <enum>Qt::Vertical</enum>
           </property>
-          <property name="opaqueResize">
-           <bool>false</bool>
-          </property>
-          <widget class="QWidget" name="layoutWidget9">
-           <layout class="QVBoxLayout" name="verticalLayout_2">
+          <widget class="QGroupBox" name="menu_experiment_limits_box">
+           <property name="title">
+            <string>Лимиты</string>
+           </property>
+           <property name="checkable">
+            <bool>true</bool>
+           </property>
+           <property name="checked">
+            <bool>false</bool>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout_12">
             <item>
-             <widget class="QCheckBox" name="checkBox">
-              <property name="enabled">
-               <bool>false</bool>
-              </property>
-              <property name="text">
-               <string>Лимиты</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <layout class="QHBoxLayout" name="menu_experiment_limitsNmax_tool">
+             <layout class="QHBoxLayout" name="horizontalLayout_17">
               <item>
-               <widget class="QRadioButton" name="menu_experiment_limitsNmax_radio">
+               <widget class="QRadioButton" name="menu_experiment_limits_N_radio">
                 <property name="enabled">
                  <bool>false</bool>
                 </property>
@@ -1900,13 +1821,13 @@
                </widget>
               </item>
               <item>
-               <widget class="QLabel" name="menu_experiment_limitsNmax_label">
+               <widget class="QLabel" name="menu_experiment_limits_N_label">
                 <property name="enabled">
                  <bool>false</bool>
                 </property>
                 <property name="minimumSize">
                  <size>
-                  <width>30</width>
+                  <width>130</width>
                   <height>0</height>
                  </size>
                 </property>
@@ -1917,37 +1838,18 @@
                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Количество точек&lt;span style=&quot; font-size:12pt;&quot;&gt; N&lt;/span&gt;&lt;span style=&quot; font-size:12pt; vertical-align:sub;&quot;&gt;max&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                 </property>
                 <property name="buddy">
-                 <cstring>menu_experiment_limitsNmax_spin</cstring>
+                 <cstring>menu_experiment_limits_N_spin</cstring>
                 </property>
                </widget>
               </item>
               <item>
-               <spacer name="menu_experiment_limitsNmax_spacer">
-                <property name="enabled">
-                 <bool>false</bool>
-                </property>
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
-                </property>
-                <property name="sizeType">
-                 <enum>QSizePolicy::Fixed</enum>
-                </property>
-                <property name="sizeHint" stdset="0">
-                 <size>
-                  <width>25</width>
-                  <height>20</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
-              <item>
-               <widget class="QSpinBox" name="menu_experiment_limitsNmax_spin">
+               <widget class="QSpinBox" name="menu_experiment_limits_N_spin">
                 <property name="enabled">
                  <bool>false</bool>
                 </property>
                 <property name="minimumSize">
                  <size>
-                  <width>67</width>
+                  <width>65</width>
                   <height>0</height>
                  </size>
                 </property>
@@ -1962,22 +1864,6 @@
              </layout>
             </item>
             <item>
-             <spacer name="verticalSpacer_7">
-              <property name="orientation">
-               <enum>Qt::Vertical</enum>
-              </property>
-              <property name="sizeType">
-               <enum>QSizePolicy::Ignored</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>20</width>
-                <height>13</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-            <item>
              <widget class="Line" name="menu_experiment_limits_horizontal_line">
               <property name="orientation">
                <enum>Qt::Horizontal</enum>
@@ -1985,9 +1871,9 @@
              </widget>
             </item>
             <item>
-             <layout class="QHBoxLayout" name="menu_experiment_limitsTinterval_tool">
+             <layout class="QHBoxLayout" name="menu_experiment_limits_T">
               <item>
-               <widget class="QRadioButton" name="menu_experiment_limitsTinterval_radio">
+               <widget class="QRadioButton" name="menu_experiment_limits_T_radio">
                 <property name="enabled">
                  <bool>false</bool>
                 </property>
@@ -2006,13 +1892,13 @@
                </widget>
               </item>
               <item>
-               <widget class="QLabel" name="menu_experiment_limitsTintervalT1_label">
+               <widget class="QLabel" name="menu_experiment_limits_T1_label">
                 <property name="enabled">
                  <bool>false</bool>
                 </property>
                 <property name="minimumSize">
                  <size>
-                  <width>0</width>
+                  <width>30</width>
                   <height>0</height>
                  </size>
                 </property>
@@ -2029,18 +1915,18 @@
                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;с&lt;/span&gt;&lt;span style=&quot; font-size:14pt;&quot;&gt; t &lt;/span&gt;&lt;span style=&quot; font-size:14pt; vertical-align:sub;&quot;&gt;1&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                 </property>
                 <property name="buddy">
-                 <cstring>menu_experiment_limitsTintervalT1_spin</cstring>
+                 <cstring>menu_experiment_limits_T1_spin</cstring>
                 </property>
                </widget>
               </item>
               <item>
-               <widget class="QSpinBox" name="menu_experiment_limitsTintervalT1_spin">
+               <widget class="QSpinBox" name="menu_experiment_limits_T1_spin">
                 <property name="enabled">
                  <bool>false</bool>
                 </property>
                 <property name="minimumSize">
                  <size>
-                  <width>55</width>
+                  <width>65</width>
                   <height>0</height>
                  </size>
                 </property>
@@ -2053,13 +1939,13 @@
                </widget>
               </item>
               <item>
-               <widget class="QLabel" name="menu_experiment_limitsTintervalT2_label">
+               <widget class="QLabel" name="menu_experiment_limits_T2_label">
                 <property name="enabled">
                  <bool>false</bool>
                 </property>
                 <property name="minimumSize">
                  <size>
-                  <width>0</width>
+                  <width>30</width>
                   <height>0</height>
                  </size>
                 </property>
@@ -2076,18 +1962,18 @@
                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;по&lt;/span&gt;&lt;span style=&quot; font-size:14pt;&quot;&gt; t &lt;/span&gt;&lt;span style=&quot; font-size:14pt; vertical-align:sub;&quot;&gt;2&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                 </property>
                 <property name="buddy">
-                 <cstring>menu_experiment_limitsTintervalT2_spin</cstring>
+                 <cstring>menu_experiment_limits_T2_spin</cstring>
                 </property>
                </widget>
               </item>
               <item>
-               <widget class="QSpinBox" name="menu_experiment_limitsTintervalT2_spin">
+               <widget class="QSpinBox" name="menu_experiment_limits_T2_spin">
                 <property name="enabled">
                  <bool>false</bool>
                 </property>
                 <property name="minimumSize">
                  <size>
-                  <width>55</width>
+                  <width>65</width>
                   <height>0</height>
                  </size>
                 </property>
@@ -2101,25 +1987,9 @@
               </item>
              </layout>
             </item>
-            <item>
-             <spacer name="verticalSpacer_8">
-              <property name="orientation">
-               <enum>Qt::Vertical</enum>
-              </property>
-              <property name="sizeType">
-               <enum>QSizePolicy::Fixed</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>20</width>
-                <height>6</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
            </layout>
           </widget>
-          <widget class="QLabel" name="menu_experiment_limitslabel">
+          <widget class="QLabel" name="menu_experiment_limits_label">
            <property name="font">
             <font>
              <weight>75</weight>
@@ -2133,7 +2003,7 @@
             <set>Qt::AlignCenter</set>
            </property>
            <property name="buddy">
-            <cstring>checkBox</cstring>
+            <cstring>menu_experiment_limits_box</cstring>
            </property>
           </widget>
          </widget>
@@ -2146,12 +2016,9 @@
          </widget>
         </item>
         <item>
-         <widget class="QSplitter" name="menu_experiment_reset_group">
+         <widget class="QSplitter" name="splitter">
           <property name="orientation">
            <enum>Qt::Vertical</enum>
-          </property>
-          <property name="opaqueResize">
-           <bool>false</bool>
           </property>
           <widget class="QToolButton" name="menu_experiment_reset_button">
            <property name="enabled">
@@ -2368,10 +2235,10 @@ PNG</string>
           <property name="orientation">
            <enum>Qt::Vertical</enum>
           </property>
-          <widget class="QWidget" name="layoutWidget">
-           <layout class="QHBoxLayout" name="horizontalLayout_5">
+          <widget class="QWidget" name="">
+           <layout class="QHBoxLayout" name="menu_other_mathcad_tools">
             <item>
-             <widget class="QToolButton" name="menu_other_mathcad_check">
+             <widget class="QToolButton" name="menu_other_mathcad_check_button">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                 <horstretch>0</horstretch>
@@ -2418,105 +2285,90 @@ PNG</string>
              </widget>
             </item>
             <item>
-             <layout class="QVBoxLayout" name="verticalLayout_3">
-              <item>
-               <spacer name="verticalSpacer_10">
-                <property name="orientation">
-                 <enum>Qt::Vertical</enum>
-                </property>
-                <property name="sizeHint" stdset="0">
-                 <size>
-                  <width>20</width>
-                  <height>40</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
-              <item>
-               <widget class="QCheckBox" name="menu_other_mathcad_statusCheck">
-                <property name="enabled">
-                 <bool>false</bool>
-                </property>
-                <property name="font">
-                 <font>
-                  <family>Arial</family>
-                  <pointsize>10</pointsize>
-                 </font>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">color:rgb(199, 0, 0)</string>
-                </property>
-                <property name="text">
-                 <string>Отсутствует</string>
-                </property>
-                <property name="tristate">
-                 <bool>false</bool>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <layout class="QHBoxLayout" name="horizontalLayout_4">
-                <item>
-                 <widget class="QLabel" name="menu_other_mathcad_versionLabel">
-                  <property name="text">
-                   <string>Версия</string>
-                  </property>
-                  <property name="buddy">
-                   <cstring>menu_other_mathcad_versionStatus</cstring>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLineEdit" name="menu_other_mathcad_versionStatus">
-                  <property name="maximumSize">
-                   <size>
-                    <width>100</width>
-                    <height>16777215</height>
-                   </size>
-                  </property>
-                  <property name="readOnly">
-                   <bool>true</bool>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </item>
-              <item>
-               <widget class="QCheckBox" name="menu_other_mathcad_messageCheck">
-                <property name="enabled">
-                 <bool>false</bool>
-                </property>
-                <property name="font">
-                 <font>
-                  <family>Arial</family>
-                  <pointsize>10</pointsize>
-                 </font>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">color:rgb(199, 0, 0)</string>
-                </property>
-                <property name="text">
-                 <string>Не подходит</string>
-                </property>
-                <property name="tristate">
-                 <bool>false</bool>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <spacer name="verticalSpacer_9">
-                <property name="orientation">
-                 <enum>Qt::Vertical</enum>
-                </property>
-                <property name="sizeHint" stdset="0">
-                 <size>
-                  <width>20</width>
-                  <height>40</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
-             </layout>
+             <widget class="QGroupBox" name="menu_other_mathcad_box">
+              <property name="autoFillBackground">
+               <bool>true</bool>
+              </property>
+              <property name="title">
+               <string>Статус</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+              <layout class="QVBoxLayout" name="verticalLayout_3">
+               <item>
+                <widget class="QCheckBox" name="menu_other_mathcad_check">
+                 <property name="enabled">
+                  <bool>false</bool>
+                 </property>
+                 <property name="font">
+                  <font>
+                   <family>Arial</family>
+                   <pointsize>10</pointsize>
+                  </font>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">color:rgb(199, 0, 0)</string>
+                 </property>
+                 <property name="text">
+                  <string>Отсутствует</string>
+                 </property>
+                 <property name="tristate">
+                  <bool>false</bool>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="menu_other_mathcad_version">
+                 <item>
+                  <widget class="QLabel" name="menu_other_mathcad_version_label">
+                   <property name="text">
+                    <string>Версия</string>
+                   </property>
+                   <property name="buddy">
+                    <cstring>menu_other_mathcad_version_edit</cstring>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLineEdit" name="menu_other_mathcad_version_edit">
+                   <property name="maximumSize">
+                    <size>
+                     <width>100</width>
+                     <height>16777215</height>
+                    </size>
+                   </property>
+                   <property name="readOnly">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <widget class="QCheckBox" name="menu_other_mathcad_version_check">
+                 <property name="enabled">
+                  <bool>false</bool>
+                 </property>
+                 <property name="font">
+                  <font>
+                   <family>Arial</family>
+                   <pointsize>10</pointsize>
+                  </font>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">color:rgb(199, 0, 0)</string>
+                 </property>
+                 <property name="text">
+                  <string>Не подходит</string>
+                 </property>
+                 <property name="tristate">
+                  <bool>false</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
             </item>
             <item>
              <widget class="QToolButton" name="menu_other_mathcad_open_button">
@@ -2570,7 +2422,7 @@ PNG</string>
             </item>
            </layout>
           </widget>
-          <widget class="QLabel" name="menu_file_create_label_2">
+          <widget class="QLabel" name="menu_other_mathcad_label">
            <property name="font">
             <font>
              <weight>75</weight>
@@ -2671,7 +2523,7 @@ PNG</string>
              </widget>
             </item>
             <item>
-             <widget class="QToolButton" name="menu_other_app_fullScreen_button">
+             <widget class="QToolButton" name="menu_other_app_screen_button">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                 <horstretch>0</horstretch>
@@ -2855,7 +2707,7 @@ PNG</string>
           </widget>
           <widget class="QWidget" name="experiment_data_tab">
            <attribute name="title">
-            <string>Данные</string>
+            <string>Таблица</string>
            </attribute>
            <layout class="QVBoxLayout" name="verticalLayout_4">
             <item>
@@ -3192,7 +3044,7 @@ PNG</string>
     <string>Ctrl+B</string>
    </property>
   </action>
-  <action name="action_fullScreen_maximize">
+  <action name="action_screen_maximize">
    <property name="checkable">
     <bool>true</bool>
    </property>

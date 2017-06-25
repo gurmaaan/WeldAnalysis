@@ -4,11 +4,9 @@
 #
 #-------------------------------------------------
 
-QT       += core gui printsupport axcontainer serialport
+QT += core gui printsupport axcontainer serialport #printsupport - QCustomPlot, axcontainer - QAxObject, serialport - QSerialPort
 CONFIG += c++11
 QMAKE_CXXFLAGS += -std=c++11
-#QT += axcontainer - needed for Excel document Read/Write
-#QT+=printer support -needed for QCustomPlot library
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -50,8 +48,9 @@ FORMS    += mainwindow.ui \
 
 RESOURCES += \
     sources.qrc
+
 #RC_FILE - needed for Application .exe icon
-win32:RC_FILE = iconsource.rc
+win32: RC_FILE = iconsource.rc
 
 TRANSLATIONS +=ru.ts
 
@@ -61,9 +60,8 @@ INCLUDEPATH += $$PWD/ExternalLibs/LibUSB
 DEPENDPATH += $$PWD/ExternalLibs/LibUSB
 
 #Agilent
-
-
 win32: LIBS += -L$$PWD/'../../../../../Program Files (x86)/IVI Foundation/IVI/Lib/msc/' -lAg34401
-
 INCLUDEPATH += $$PWD/'../../../../../Program Files (x86)/IVI Foundation/IVI/Include'
 DEPENDPATH += $$PWD/'../../../../../Program Files (x86)/IVI Foundation/IVI/Include'
+
+DISTFILES +=

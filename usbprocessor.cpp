@@ -8,6 +8,7 @@
 #include "libusb.h"
 #include <Ag34401.h>
 #include <QMessageBox>
+#include <QTime>
 
 QString COMdevice::getVID()
 {
@@ -49,11 +50,14 @@ QStandardItemModel *USBProcessor::getComModel()
     foreach (COMdevice port, avalibleCOMlist) {
         addRootItem(comModel, port.getPortName());
     }
+
+    return comModel;
 }
 
 void USBProcessor::addRootItem(QStandardItemModel *model, const QString portName)
 {
     QStandardItem* item = new QStandardItem(portName);
+    model->appendRow(item);
 }
 
 QList<COMdevice> USBProcessor::getCOMDevicesList()
@@ -119,22 +123,23 @@ void USBProcessor::setUpDriver()
 
 double USBProcessor::getValueFromDevice()
 {
-    //  Exercise driver methods and properties
-    // Measure DC Voltage
-    printf("\n  Measuring DC Voltage\n");
     Ag34401_DCVoltageConfigure(session, -1, 1.0);  // Negative Range = AutoRange with default Resolution
     Ag34401_Read(session, 2000, &Reading); // Measure and read data
-    printf("Data: %.15g\n", Reading);
+
+    double data;
+    data = (double)Reading;
+    qDebug() << QTime::currentTime() << " value: " << data;
 
     // Check instrument for errors
     ErrorCode = -1;
-    printf("\n");
-    while(ErrorCode!=0)
+    while( ErrorCode != 0 )
     {
-        status = Ag34401_error_query( session, &ErrorCode, ErrorMessage);
-       // assert(status == VI_SUCCESS);
-        printf("error_query: %d, %s\n", ErrorCode, ErrorMessage);
+        status = Ag34401_error_query( session, &ErrorCode, ErrorMessage );
+        Q_ASSERT( status == VI_SUCCESS );
+        qDebug() << "Error guery: " "\n\tError code: " << ErrorCode << "\n\tError message: " << ErrorMessage;
     }
+
+    return data;
 }
 
 void USBProcessor::closeConnection()

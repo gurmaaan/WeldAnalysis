@@ -43,7 +43,6 @@ public:
     Settings() {}
     QList<SettingItem> settings;
     QStandardItemModel *settingsModel;
-    void loadEmpty();
 
     enum SettingCode {
         Name            = 0, //Название эксперимента
@@ -71,6 +70,8 @@ public:
     };
 
     QStandardItemModel *getSetModel();
+    void loadEmpty();
+    void changeByKey(SettingCode key);
 };
 
 class StatisticItem
@@ -121,30 +122,48 @@ public:
     QVector<double> n, t, u;
 };
 
-class Experiment
+class Experiment : public QObject
 {
-public:
-    Experiment();
-    bool openStatus = false;
-    QString path;
-    Settings *set;
-    Statistics *stat;
-    Data *dataArray;
+    Q_OBJECT //NOTE Без этого макроса не работает сигнало-слотовой механизм
+    bool ex_exist;
 
-    void createNew();
-    void openTxt(QString filepath);
-    void openExcel(QString filePath);
+public:
+    Experiment()
+    {
+        set = new Settings();
+        stat = new Statistics();
+        set->loadEmpty();
+        stat->loadEmpty();
+    }
+    ~Experiment() {}
+
+    void createNew(bool created);
+    void openTxt(QString filepath, bool opened);
+    void openExcel(QString filePath, bool opened);
     void saveExcel();
     void saveTxt();
     void startMeasurement();
     void pauseMeasureMent();
     void stopMeasurement();
 
+    QStandardItemModel *updateSetModel();
+    QStandardItemModel *updateStatModel();
 
     bool getOpenStatus() const;
     void setOpenStatus(bool value);
     QString getPath() const;
     void setPath(const QString &value);
+
+signals: 
+    void enableGUI(bool status);
+
+private:
+    Settings *set;
+    Statistics *stat;
+    Data *dataArray;
+    QString path;
+    bool openStatus = false;
+
 };
 
 #endif // EXPERIMENT_H
