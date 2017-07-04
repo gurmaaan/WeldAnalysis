@@ -6,7 +6,7 @@ JsonDataManager::JsonDataManager()
 {
 
 }
-
+          
 QJsonArray JsonDataManager::getArrayFromFile(QFile *file, QString rootItem)
 {
     QJsonDocument doc = QJsonDocument().fromJson(file->readAll());

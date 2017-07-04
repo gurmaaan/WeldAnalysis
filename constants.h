@@ -14,6 +14,10 @@
 #define LINK_FILE "file:///"
 #endif
 
+#ifndef MARGIN
+#define MARGIN 10
+#endif
+
 #ifndef PROGRAMFILES
 #define PROGRAMFILES "PROGRAMFILES"
 #endif

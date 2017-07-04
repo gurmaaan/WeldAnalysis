@@ -150,7 +150,6 @@ void ApplicationManager::createList()
     }
 }
 
-//WARNING Перенес в новый файл и не тестил
 //Возвращает путь к папке с данными
 QString AppDir::dataDirPath()
 {

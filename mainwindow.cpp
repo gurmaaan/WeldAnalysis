@@ -20,7 +20,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(&picture, &PictureWindow::savedFileName, this, &MainWindow::pushStatusBarMessage);
     connect(&picture, &PictureWindow::savedFileName, this, &MainWindow::pushInformationNotification);
     connect(&picture, &PictureWindow::savedFilePath, this, &MainWindow::showSavedFile);
-    connect(experiment, &Experiment::enableGUI, this, &MainWindow::guiUpdater);
+    connect(experiment, &Experiment::enableGUI, this, &MainWindow::guiEnablier);
 
     ui->setupUi(this);
     setUIlogic();
@@ -423,6 +423,54 @@ void MainWindow::on_menu_other_mathcad_open_button_clicked()
 }
 
 //----------------------------------------------------------------_____Программа_____//
+//Кнопка "Скриншоты"
+void MainWindow::on_menu_other_app_prntscrn_button_clicked()
+{
+    QString docPath = QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).first();
+    QString fileName = QFileDialog::getSaveFileName(this, "Save document...", docPath, "*.pdf");
+
+    if (!fileName.isEmpty())
+    {
+        QPrinter printer(QPrinter::HighResolution);
+        printer.setOutputFormat(QPrinter::PdfFormat);
+        printer.setOutputFileName(fileName);
+
+        QMargins pageMargins(MARGIN, MARGIN, MARGIN, MARGIN);
+        QPageLayout pageLayout;
+        pageLayout.setMode(QPageLayout::StandardMode);
+        pageLayout.setOrientation(QPageLayout::Portrait);
+        pageLayout.setPageSize(QPageSize(QPageSize::A4));
+        pageLayout.setUnits(QPageLayout::Millimeter);
+        pageLayout.setMargins(QMarginsF(pageMargins));
+        printer.setPageLayout(pageLayout);
+
+        QTextDocument *doc = new QTextDocument();
+        QTextCursor cursor(doc);
+        cursor.insertHtml("<h1 align=\"center\">Weld Analysis Application</h1>");
+
+        for(int i = 0; i < 4; i++) {
+            cursor.insertText("\n");
+            ui->menu_tabs->setCurrentIndex(i);
+            QPixmap pixmap(this->size());
+            pixmap = this->grab();
+
+            QTemporaryDir tempDir;
+
+            //TODO в HTML поправить размер картинки с размера страницы, а сохранять в директорию приложения
+            QString tempFilePath = qApp->applicationDirPath() +"/" + QString::number(i, 10) + ".png";
+            pixmap.save(tempFilePath, FIL_PNGFORMAT);
+            QString imageHTML = "<img width=\"100%\" src=\"" + tempFilePath + "\">";
+            cursor.insertHtml(imageHTML);
+            //QImage image = pixmap.toImage();
+            //QImage printedImage = image.scaledToWidth( printer.pageLayout().fullRectPoints().width(), Qt::SmoothTransformation);
+            //cursor.insertImage(printedImage);
+        }
+
+        doc->print(&printer);
+        QDesktopServices::openUrl(QUrl(fileName, QUrl::TolerantMode));
+    }
+
+}
 //Кнопка "Открыть Справку"
 //TODO создать само руководство + руководство в формате chm
 void MainWindow::on_menu_other_app_reference_button_clicked()
@@ -461,11 +509,11 @@ void MainWindow::on_menu_other_app_advanced_button_clicked()
 //###########################################################################_____Internal______//
 //----------------------------------------------------------------_____Интерфейс________//
 //Включение/выключение всех соответсвующих элементов интерфейса (слот) при создании/открытии эксперимента
-void MainWindow::guiUpdater(bool status)
+void MainWindow::guiEnablier(bool status)
 {
-    ui->menu_file_close_button->setEnabled(status);
-    ui->menu_file_saveAs_button->setEnabled(status);
-    ui->menu_file_save_button->setEnabled(status);
+//    ui->menu_file_close_button->setEnabled(status);
+//    ui->menu_file_saveAs_button->setEnabled(status);
+//    ui->menu_file_save_button->setEnabled(status);
 }
 //Установка всех предварительных действий в интерфейсе
 void MainWindow::setUIlogic()

@@ -41,6 +41,8 @@
         <file>Icons/Device/FTDI.png</file>
         <file>Icons/Device/IVI.png</file>
         <file>Icons/Device/test.png</file>
+        <file>Defaults/settings.json</file>
+        <file>Icons/Other/printscreen.png</file>
     </qresource>
     <qresource prefix="/Other">
         <file>PathList.json</file>

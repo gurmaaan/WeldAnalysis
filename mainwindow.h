@@ -82,6 +82,7 @@ private slots:
     void on_action_table_notepad_triggered();
     void on_menu_other_mathcad_check_button_clicked();
     void on_menu_other_mathcad_open_button_clicked();
+    void on_menu_other_app_prntscrn_button_clicked();
     void on_menu_other_app_reference_button_clicked();
     void on_menu_other_app_screen_button_clicked(bool checked);
     void on_action_screen_maximize_triggered(bool checked);
@@ -97,7 +98,7 @@ public slots:
     void pushStatusBarMessage(QString message);
     void pushInformationNotification(QString message);
     void showSavedFile(QString path);
-    void guiUpdater(bool status);
+    void guiEnablier(bool status);
 
 private:
     //Окна и гуишные украшательства
@@ -129,6 +130,14 @@ private:
     bool eventFilter(QObject *watched, QEvent *event);
     void checkMathCad();
     void pushDownLoadMessage(QString name, QString link, bool status);
+
+    void enAll(bool st);
+    void enFileTab(bool st);
+    void enDeviceTab(bool st);
+    void enExperimentTab(bool st);
+    void enOtherTab(bool st);
+
+
 
 };
 
